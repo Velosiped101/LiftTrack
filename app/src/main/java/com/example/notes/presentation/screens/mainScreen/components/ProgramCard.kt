@@ -1,4 +1,4 @@
-package com.example.notes.presentation.screens.maincards
+package com.example.notes.presentation.screens.mainScreen.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -18,18 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.notes.data.local.program.Program
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiAction
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiState
 
 @Composable
-fun ExercisesCard(
+fun ProgramCard(
+    uiState: MainScreenUiState,
+    uiAction: (MainScreenUiAction) -> Unit,
+    navigateToProgramManager: () -> Unit,
+    navigateToProgramExec: () -> Unit,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    date: String,
-    dayType: String,
-    startProgram: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -43,19 +43,16 @@ fun ExercisesCard(
             Modifier.padding(4.dp)
         ) {
             Row {
-                Column {
-                    Text(text = date)
-                    Text(text = dayType, fontSize = 30.sp)
-                }
+                Text(text = if (uiState.isRestDay) "Rest day" else "Training day", fontSize = 10.sp)
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     // TODO: Image
-                    if (dayType != "Rest day")
-                    IconButton(onClick = startProgram) {
-                        Text(text = "start")
-                    }
+                    if (uiState.isRestDay.not())
+                        IconButton(onClick = navigateToProgramExec) {
+                            Text(text = "start")
+                        }
                 }
             }
             Card(
@@ -71,15 +68,9 @@ fun ExercisesCard(
             Text(
                 modifier = Modifier
                     .align(Alignment.End)
-                    .clickable { onClick() },
+                    .clickable { navigateToProgramManager() },
                 text = "Manage your program"
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    ExercisesCard(date = "20.02.25", dayType = "Rest day", onClick = {}, startProgram = {})
 }

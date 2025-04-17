@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.notes.presentation.screens.diet.DietViewModel
+import com.example.notes.presentation.screens.diet.addMealScreen.AddMealViewModel
 import com.example.notes.presentation.navigation.Navigation
-import com.example.notes.presentation.screens.training.ProgramViewModel
+import com.example.notes.presentation.screens.diet.foodManagerScreen.FoodManagerViewModel
+import com.example.notes.presentation.screens.diet.newRecipeScreen.NewRecipeViewModel
+import com.example.notes.presentation.screens.mainScreen.MainViewModel
+import com.example.notes.presentation.screens.training.programEditScreen.ProgramEditViewModel
+import com.example.notes.presentation.screens.training.programExecScreen.ProgramExecViewModel
 import com.example.notes.ui.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,36 +20,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            val dietViewModel = viewModel(modelClass = DietViewModel::class.java)
-            val programViewModel = viewModel(modelClass = ProgramViewModel::class.java)
-            val context = applicationContext
+            val addMealViewModel = viewModel(modelClass = AddMealViewModel::class.java)
+            val foodManagerViewModel = viewModel(modelClass = FoodManagerViewModel::class.java)
+            val mainViewModel = viewModel(modelClass = MainViewModel::class.java)
+            val programEditViewModel = viewModel(modelClass = ProgramEditViewModel::class.java)
+            val newRecipeViewModel = viewModel(modelClass = NewRecipeViewModel::class.java)
+            val programExecViewModel = viewModel(modelClass = ProgramExecViewModel::class.java)
             NotesTheme {
-                val programList = programViewModel.programList.collectAsState(initial = emptyList()).value
-                val todayProgram = programList.filter { it.dayOfWeek == programViewModel.currentDayOfWeek }
                 Navigation(
                     navController = navController,
-                    foodList = dietViewModel.foodListState.collectAsState(emptyList()).value,
-                    insertToFoodDb = {dietViewModel.createFood(it)},
-                    deleteFromFoodDb = {dietViewModel.deleteFood(it)},
-                    onSearch = { dietViewModel.onSearch() },
-                    foodHolderState = dietViewModel.foodHolderState,
-                    massText = dietViewModel.massText,
-                    pickedFood = dietViewModel.pickedFood,
-                    onDialogConfirm = {dietViewModel.addFoodToPickedList()},
-                    pickedFoodList = dietViewModel.pickedFoodList,
-                    onConfirm = { dietViewModel.addToHistory() },
-                    mealHistory = dietViewModel.mealHistoryList.collectAsState(initial = emptyList()).value,
-                    exerciseList = programViewModel.exerciseList.collectAsState(initial = emptyList()).value,
-                    insertToProgram = { programViewModel.insertToProgram(it) },
-                    deleteFromProgram = { programViewModel.deleteFromProgram(it) },
-                    programList = programList,
-                    todayProgram = todayProgram,
-                    date = programViewModel.date,
-                    dayType = if (todayProgram.isEmpty()) "Rest day" else "Training day",
-                    searchText = dietViewModel.searchText,
-                    getFromRemote = dietViewModel.getFromRemote,
-                    getFromLocal = dietViewModel.getFromLocal,
-                    onCreateFromRecipe = { dietViewModel.createFood(it) }
+                    addMealUiState = addMealViewModel.uiState.collectAsState().value,
+                    addMealUiActions = { addMealViewModel.uiAction(it) },
+                    foodManagerUiState = foodManagerViewModel.uiState.collectAsState().value,
+                    foodManagerUiActions = { foodManagerViewModel.uiActions(it) },
+                    newRecipeUiState = newRecipeViewModel.uiState.collectAsState().value,
+                    newRecipeUiActions = { newRecipeViewModel.uiActions(it) },
+                    programEditUiAction = { programEditViewModel.uiAction(it) },
+                    programEditUiState = programEditViewModel.uiState.collectAsState().value,
+                    programExecUiAction = { programExecViewModel.uiAction(it) },
+                    programExecUiState = programExecViewModel.uiState.collectAsState().value,
+                    mainScreenUiState = mainViewModel.uiState.collectAsState().value,
+                    mainScreenUiAction = { mainViewModel.uiAction(it) }
                 )
             }
         }

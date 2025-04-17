@@ -10,4 +10,14 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val GreenDay = Color(0xFF9BFF66)
+val ProgramDay = Color(0xFF9BFF66)
+
+// my colors
+val surfaceDark = Color(0xFF000000)
+val surfaceLight = Color(0xFFFFFFFF)
+val dialogDark = Color(0xFF474747)
+val dialogLight = Color(0xFFFFFFFF)
+val cardBorderDark = Color(0xFFFFFFFF)
+val cardBorderLight = Color(0xFF141414)
+val errorOutline = Color(0xFFB40000)
+val errorSurface = Color(0xFFEB2626)

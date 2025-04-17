@@ -1,6 +1,4 @@
-package com.example.notes.utils
-
-import com.example.notes.data.local.program.Program
+package com.example.notes.presentation.screens.diet.addMealScreen
 
 sealed class FoodHolder<T>(
     val data: T? = null,

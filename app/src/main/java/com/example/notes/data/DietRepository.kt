@@ -1,70 +1,66 @@
 package com.example.notes.data
 
-import android.content.ContentProvider
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
-import coil3.Bitmap
-import coil3.Uri
-import coil3.util.CoilUtils
-import com.example.notes.NotesApplication
 import com.example.notes.Service
 import com.example.notes.data.local.food.Food
 import com.example.notes.data.local.food.FoodDao
+import com.example.notes.data.local.food.Ingredient
+import com.example.notes.data.local.food.IngredientDao
 import com.example.notes.data.local.saveddata.mealhistory.MealHistory
 import com.example.notes.data.local.saveddata.mealhistory.MealHistoryDao
 import com.example.notes.data.remote.FoodApiConstants
 import com.example.notes.data.remote.FoodApiResponse
 import com.example.notes.data.remote.FoodApiService
 import com.example.notes.data.remote.Product
-import com.example.notes.utils.FoodHolder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.notes.presentation.screens.diet.addMealScreen.FoodHolder
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Calendar
-import kotlin.io.path.Path
 
 class DietRepository(
     private val dao: FoodDao = Service.db.foodDao(),
-    private val mealHistoryDao: MealHistoryDao = Service.db.mealHistoryDao()
-): NotesRepository<Food> {
+    private val mealHistoryDao: MealHistoryDao = Service.db.mealHistoryDao(),
+    private val ingredientDao: IngredientDao = Service.db.ingredientDao()
+) {
     private val apiService: FoodApiService = Retrofit.Builder()
         .baseUrl(FoodApiConstants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(FoodApiService::class.java)
 
-    override fun getAll(): Flow<List<Food>> {
+    fun getAll(): Flow<List<Food>> {
         return dao.getFoodList()
     }
 
-    override fun getSearched(text: String): List<Food> {
+    suspend fun getIngredient(name: String): List<Ingredient> {
+        return ingredientDao.getIngredient(name)
+    }
+
+    suspend fun insertIngredient(ingredient: Ingredient) {
+        ingredientDao.insertIngredient(ingredient)
+    }
+
+    fun getSearched(text: String): List<Food> {
         return dao.getSearchedFoodList(text)
     }
 
-    override suspend fun delete(list: List<Food>) {
+    suspend fun delete(list: List<Food>) {
         dao.deleteFood(list)
     }
 
-    override suspend fun update(element: Food) {
+    suspend fun update(element: Food) {
         dao.updateFood(element)
     }
 
-    override suspend fun insert(element: Food) {
-        dao.insertFood(element)
+    suspend fun insert(element: Food) {
+        val formattedFood = element.copy(
+            protein = BigDecimal(element.protein).setScale(1, RoundingMode.HALF_UP).toDouble(),
+            fat = BigDecimal(element.fat).setScale(1, RoundingMode.HALF_UP).toDouble(),
+            carbs = BigDecimal(element.carbs).setScale(1, RoundingMode.HALF_UP).toDouble(),
+        )
+        dao.insertFood(formattedFood)
     }
 
     suspend fun insertToHistory(element: MealHistory) {
@@ -75,7 +71,7 @@ class DietRepository(
         return mealHistoryDao.getAll()
     }
 
-    private suspend fun getFoodFromApi(text:String): FoodApiResponse {
+    private suspend fun getFoodFromApi(text: String): FoodApiResponse {
         return apiService.getFood(text)
     }
 

@@ -1,6 +1,5 @@
-package com.example.notes.presentation.screens.maincards
+package com.example.notes.presentation.screens.mainScreen.components
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -31,45 +30,44 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notes.R
 import com.example.notes.data.local.saveddata.mealhistory.MealHistory
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiAction
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiState
 import com.example.notes.ui.theme.Typography
+
 
 @Composable
 fun DietCard(
-    onCreateNewRecipe: () -> Unit,
-    onAddMeal: () -> Unit,
-    onManageLocalFoodDb: () -> Unit,
-    mealHistory: List<MealHistory>
+    uiState: MainScreenUiState,
+    uiAction: (MainScreenUiAction) -> Unit,
+    navigateToNewRecipe: () -> Unit,
+    navigateToAddMeal: () -> Unit,
+    navigateToFoodDbManager: () -> Unit
 ) {
-    val isMealHistoryExpanded = remember {
+    var isDialogActive by remember {
         mutableStateOf(false)
     }
-    val isDialogActive = remember {
+    val isMealHistoryExpanded = remember {
         mutableStateOf(false)
     }
     val rotationAngle = animateFloatAsState(
         targetValue = if (isMealHistoryExpanded.value) 180f else 0f,
         label = "animate"
     )
-    val totalProtein = mealHistory.sumOf { it.protein.toDouble() * it.mass/100 }
-    val totalFat = mealHistory.sumOf { it.fat.toDouble() * it.mass/100 }
-    val totalCarbs = mealHistory.sumOf { it.carbs.toDouble() * it.mass/100 }
-    val totalCals = (totalProtein + totalCarbs) * 4 + totalFat * 9
     val mealHistoryColumnHeight = 180.dp
     Card(
         modifier = Modifier
@@ -78,7 +76,7 @@ fun DietCard(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp),
-        onClick = { isDialogActive.value = true }
+        onClick = { isDialogActive = true }
     ) {
         Column(
             modifier = Modifier
@@ -94,12 +92,12 @@ fun DietCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "$totalCals/2500",
+                text = "${uiState.totalCals}/2500",
                 style = Typography.headlineLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = {(totalCals/2500.0).toFloat()},
+                progress = {(uiState.totalCals/2500.0).toFloat()},
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -110,17 +108,17 @@ fun DietCard(
             ) {
                 NutrientText(
                     nutrientType = "Protein",
-                    nutrientCount = totalProtein,
+                    nutrientCount = uiState.totalProtein,
                     modifier = Modifier.weight(1f)
                 )
                 NutrientText(
                     nutrientType = "Fat",
-                    nutrientCount = totalFat,
+                    nutrientCount = uiState.totalFat,
                     modifier = Modifier.weight(1f)
                 )
                 NutrientText(
                     nutrientType = "Carbs",
-                    nutrientCount = totalCarbs,
+                    nutrientCount = uiState.totalCarbs,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -130,7 +128,7 @@ fun DietCard(
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
-                if (mealHistory.isEmpty())  Text(
+                if (uiState.mealHistory.isEmpty())  Text(
                     text = "Empty",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -146,12 +144,12 @@ fun DietCard(
                             .height(mealHistoryColumnHeight)
                     ) {
 
-                        items(mealHistory) {
+                        items(uiState.mealHistory) {
                             MealHistoryItem(
                                 time = it.time,
                                 name = it.name,
-                                mass = it.mass,
-                                cals = it.totalCal
+                                mass = it.mass.toString(),
+                                cals = it.totalCal.toString()
                             )
                         }
                     }
@@ -171,12 +169,12 @@ fun DietCard(
             )
         }
     }
-    if (isDialogActive.value) {
+    if (isDialogActive) {
         PickDialog(
-            isDialogActive = isDialogActive,
-            onCreateNewRecipe = onCreateNewRecipe,
-            onAddMeal = onAddMeal,
-            onManageLocalFoodDb = onManageLocalFoodDb
+            onDismiss = { isDialogActive = false },
+            onCreateNewRecipe = navigateToNewRecipe,
+            onAddMeal = navigateToAddMeal,
+            onManageLocalFoodDb = navigateToFoodDbManager
         )
     }
 }
@@ -199,11 +197,11 @@ private fun NutrientText(
 
 @Composable
 private fun MealHistoryItem(
-    modifier: Modifier = Modifier,
     time: String,
     name: String,
-    mass: Int,
-    cals: Double
+    mass: String,
+    cals: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = Modifier
@@ -224,13 +222,13 @@ private fun MealHistoryItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PickDialog(
-    modifier: Modifier = Modifier,
-    isDialogActive: MutableState<Boolean>,
+    onDismiss: () -> Unit,
     onCreateNewRecipe: () -> Unit,
     onAddMeal: () -> Unit,
-    onManageLocalFoodDb: () -> Unit
+    onManageLocalFoodDb: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    BasicAlertDialog(onDismissRequest = {isDialogActive.value = false}) {
+    BasicAlertDialog(onDismissRequest = onDismiss) {
         Card(
             border = BorderStroke(1.dp, Color.Black)
         ) {
@@ -246,7 +244,6 @@ private fun PickDialog(
                     iconRes = R.drawable.new_recipe,
                     text = "New recipe",
                     onClick = {
-                        isDialogActive.value = false
                         onCreateNewRecipe()
                     }
                 )
@@ -255,7 +252,6 @@ private fun PickDialog(
                     iconRes = R.drawable.add_meal,
                     text = "Add meal",
                     onClick = {
-                        isDialogActive.value = false
                         onAddMeal()
                     }
                 )
@@ -264,7 +260,6 @@ private fun PickDialog(
                     iconRes = R.drawable.manage_food_db,
                     text = "Food manager",
                     onClick = {
-                        isDialogActive.value = false
                         onManageLocalFoodDb()
                     }
                 )
@@ -275,10 +270,10 @@ private fun PickDialog(
 
 @Composable
 private fun DialogItem(
-    modifier: Modifier = Modifier,
     iconRes: Int,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -298,17 +293,5 @@ private fun DialogItem(
             text = text,
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Preview
-@Composable
-private fun Preview() {
-    PickDialog(
-        isDialogActive = mutableStateOf(true),
-        onCreateNewRecipe = { /*TODO*/ },
-        onAddMeal = { /*TODO*/ }) {
-
     }
 }

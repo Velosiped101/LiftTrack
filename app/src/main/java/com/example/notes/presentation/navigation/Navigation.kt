@@ -1,122 +1,107 @@
 package com.example.notes.presentation.navigation
 
-import android.net.Uri
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import coil3.Bitmap
-import com.example.notes.data.local.food.Food
-import com.example.notes.data.local.program.Exercise
-import com.example.notes.data.local.program.Program
 import com.example.notes.data.local.saveddata.mealhistory.MealHistory
-import com.example.notes.presentation.screens.MainScreen
-import com.example.notes.presentation.screens.diet.AddMealScreen
-import com.example.notes.presentation.screens.diet.FoodManagerScreen
-import com.example.notes.presentation.screens.diet.NewRecipeScreen
-import com.example.notes.presentation.screens.training.ProgramEditScreen
-import com.example.notes.presentation.screens.training.ProgramExecScreen
-import com.example.notes.utils.FoodHolder
+import com.example.notes.presentation.screens.mainScreen.MainScreen
+import com.example.notes.presentation.screens.diet.addMealScreen.AddMealScreen
+import com.example.notes.presentation.screens.diet.addMealScreen.AddMealUiAction
+import com.example.notes.presentation.screens.diet.addMealScreen.AddMealUiState
+import com.example.notes.presentation.screens.diet.foodManagerScreen.FoodManagerScreen
+import com.example.notes.presentation.screens.diet.foodManagerScreen.FoodManagerUiAction
+import com.example.notes.presentation.screens.diet.foodManagerScreen.FoodManagerUiState
+import com.example.notes.presentation.screens.diet.newRecipeScreen.NewRecipeScreen
+import com.example.notes.presentation.screens.diet.newRecipeScreen.NewRecipeUiAction
+import com.example.notes.presentation.screens.diet.newRecipeScreen.NewRecipeUiState
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiAction
+import com.example.notes.presentation.screens.mainScreen.MainScreenUiState
+import com.example.notes.presentation.screens.training.programEditScreen.ProgramEditScreen
+import com.example.notes.presentation.screens.training.programEditScreen.ProgramEditUiAction
+import com.example.notes.presentation.screens.training.programEditScreen.ProgramEditUiState
+import com.example.notes.presentation.screens.training.programExecScreen.ProgramExecScreen
+import com.example.notes.presentation.screens.training.programExecScreen.ProgramExecUiAction
+import com.example.notes.presentation.screens.training.programExecScreen.ProgramExecUiState
 
 @Composable
 fun Navigation(
     navController: NavHostController,
-    foodList: List<Food>,
-    deleteFromFoodDb: (SnapshotStateList<Food>) -> Unit,
-    insertToFoodDb: (Food) -> Unit,
-    onSearch: () -> Unit,
-    foodHolderState: MutableState<FoodHolder<List<Food>>>,
-    onDialogConfirm: () -> Unit,
-    massText: MutableState<String>,
-    pickedFood: MutableState<Food>,
-    pickedFoodList: MutableMap<Food, Int>,
-    onConfirm: () -> Unit,
-    mealHistory: List<MealHistory>,
-    exerciseList: List<Exercise>,
-    programList: List<Program>,
-    insertToProgram: (Program) -> Unit,
-    deleteFromProgram: (Program) -> Unit,
-    date: String,
-    dayType: String,
-    todayProgram: List<Program>,
-    searchText: MutableState<String>,
-    getFromLocal: MutableState<Boolean>,
-    getFromRemote: MutableState<Boolean>,
-    onCreateFromRecipe: (Food) -> Unit
+    addMealUiState: AddMealUiState,
+    addMealUiActions: (AddMealUiAction) -> Unit,
+    foodManagerUiState: FoodManagerUiState,
+    foodManagerUiActions: (FoodManagerUiAction) -> Unit,
+    newRecipeUiState: NewRecipeUiState,
+    newRecipeUiActions: (NewRecipeUiAction) -> Unit,
+    programEditUiState: ProgramEditUiState,
+    programEditUiAction: (ProgramEditUiAction) -> Unit,
+    programExecUiState: ProgramExecUiState,
+    programExecUiAction: (ProgramExecUiAction) -> Unit,
+    mainScreenUiState: MainScreenUiState,
+    mainScreenUiAction: (MainScreenUiAction) -> Unit
 ) {
-    NavHost(navController = navController, startDestination = Routes.Main.name) {
+    NavHost(
+        navController = navController,
+        startDestination = Routes.Main.name,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
         composable(Routes.Main.name) {
             MainScreen(
-                mealHistory = mealHistory,
-                onCreateNewRecipe = {
+                uiState = mainScreenUiState,
+                uiAction = mainScreenUiAction,
+                navigateToNewRecipe = {
                     navController.navigate(Routes.NewRecipe.name)
                 },
-                onAddMeal = {
+                navigateToAddMeal = {
                     navController.navigate(Routes.AddMeal.name)
                 },
-                onManageLocalFoodDb = {
+                navigateToFoodDbManager = {
                     navController.navigate(Routes.FoodManager.name)
                 },
-                onProgramFieldClicked = {
-                    navController.navigate(
-                        Routes.ProgramEdit.name
-                    )
+                navigateToProgramManager = {
+                    navController.navigate(Routes.ProgramEdit.name)
                 },
-                date = date,
-                dayType = dayType,
-                startProgram = {
+                navigateToProgramExec = {
                     navController.navigate(Routes.ProgramExec.name)
                 }
             )
         }
         composable(Routes.AddMeal.name) { AddMealScreen(
-            onSearch = onSearch,
-            foodHolderState = foodHolderState,
-            massText = massText,
-            onClick = { onDialogConfirm() },
-            pickedFoodList = pickedFoodList,
-            pickedFood = pickedFood,
-            onBackButtonClicked = { navController.navigateUp() },
-            onConfirm = {
-                onConfirm()
-                navController.navigate(Routes.Main.name) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
-                    }
-                }
-            },
-            searchText = searchText,
-            getFromLocal = getFromLocal,
-            getFromRemote = getFromRemote
+            uiState = addMealUiState,
+            uiActions = addMealUiActions,
+            onNavigateBack = { navController.navigateUp() }
         ) }
         composable(Routes.FoodManager.name) {
             FoodManagerScreen(
-                onBackButtonClicked = { navController.navigateUp() },
-                foodList = foodList,
-                onDelete = { deleteFromFoodDb(it) },
-                onConfirm = { insertToFoodDb(it) }
+                uiState = foodManagerUiState,
+                uiActions = foodManagerUiActions,
+                onNavigateBack = { navController.navigateUp() }
             )
         }
         composable(Routes.ProgramEdit.name) {
             ProgramEditScreen(
-                onBackClick = {navController.navigateUp()},
-                exerciseList = exerciseList,
-                onClick = insertToProgram,
-                onDelete = deleteFromProgram,
-                programList = programList
+                uiState = programEditUiState,
+                uiAction = programEditUiAction,
+                onNavigateBack = { navController.navigateUp() }
             )
         }
         composable(Routes.ProgramExec.name) {
-            ProgramExecScreen(programList = todayProgram)
+            ProgramExecScreen(
+                uiState = programExecUiState,
+                uiAction = programExecUiAction
+            )
         }
         composable(Routes.NewRecipe.name) {
             NewRecipeScreen(
-                onBackButtonClicked = { navController.navigateUp() }
-            ) {
-                onCreateFromRecipe(it)
-            }
+                uiState = newRecipeUiState,
+                uiActions = newRecipeUiActions,
+                onNavigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }
