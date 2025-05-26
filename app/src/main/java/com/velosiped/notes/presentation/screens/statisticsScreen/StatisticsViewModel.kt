@@ -48,7 +48,7 @@ class StatisticsViewModel @Inject constructor(
         viewModelScope.launch {
             getGraphData(formula)
                 .collectLatest { graphMap ->
-                    val currentExercise = exercise ?: graphMap.keys.first()
+                    val currentExercise = exercise ?: if (graphMap.isEmpty()) return@collectLatest else graphMap.keys.first().ifEmpty { return@collectLatest }
                     val dateTriples = graphMap[currentExercise]?.map { it.date } ?: emptyList()
                     val dates = dateTriples.map {
                         val dateDay = it.first.let { dayNumber ->
