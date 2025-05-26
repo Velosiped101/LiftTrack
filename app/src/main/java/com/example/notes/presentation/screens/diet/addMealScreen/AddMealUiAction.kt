@@ -1,15 +1,15 @@
 package com.example.notes.presentation.screens.diet.addMealScreen
 
-import com.example.notes.data.local.food.Food
+import com.example.notes.data.database.food.Food
+import com.example.notes.utils.SearchMode
 
 sealed interface AddMealUiAction {
-    data object ResetUi : AddMealUiAction
-    data class Search(val name: String) : AddMealUiAction
+    data class SearchBarTextChanged(val name: String) : AddMealUiAction
     data object ConfirmMeal : AddMealUiAction
     data class PickFood(val food: Food) : AddMealUiAction
     data object AddFoodToPickedList : AddMealUiAction
     data class RemoveFromPickedList(val food: Food) : AddMealUiAction
-    data object SearchInLocal : AddMealUiAction
-    data object SearchInRemote : AddMealUiAction
+    data class SetSearchMode(val searchMode: SearchMode) : AddMealUiAction
     data class OnMassInputChanged(val mass: String) : AddMealUiAction
+    data object ClearSearchBarInput: AddMealUiAction
 }

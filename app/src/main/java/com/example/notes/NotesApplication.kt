@@ -1,43 +1,15 @@
 package com.example.notes
 
 import android.app.Application
-import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
-import com.example.notes.Service.dietRepository
-import java.util.concurrent.TimeUnit
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import com.example.notes.data.worker.WorkScheduler
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
-class NotesApplication: Application(){
-    override fun onCreate() {
-        super.onCreate()
-        Service.provide(this)
-
-        class CleanHistoryWorker(
-            appContext: Context,
-            workerParameters: WorkerParameters
-        ): CoroutineWorker(appContext,workerParameters) {
-            override suspend fun doWork(): Result {
-                dietRepository.clearMealHistory()
-                return Result.success()
-            }
-        }
-        val clearMealHistoryRequest: OneTimeWorkRequest =
-            OneTimeWorkRequestBuilder<CleanHistoryWorker>()
-                .setInitialDelay(
-                    dietRepository.getWorkDelay(),
-                    TimeUnit.SECONDS
-                )
-                .build()
-        WorkManager
-            .getInstance(this)
-            .enqueueUniqueWork(
-                "clearHistory",
-                ExistingWorkPolicy.KEEP,
-                clearMealHistoryRequest
-            )
-    }
+@HiltAndroidApp
+class NotesApplication: Application(), Configuration.Provider {
+    @Inject lateinit var workerFactory: HiltWorkerFactory
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
 }

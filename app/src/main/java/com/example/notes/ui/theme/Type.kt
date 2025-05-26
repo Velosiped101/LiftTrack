@@ -3,6 +3,7 @@ package com.example.notes.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -36,29 +37,13 @@ val Typography = Typography(
     */
 )
 
-val Typography.input: TextStyle
+val Typography.foodInformationInput: TextStyle
+    @Composable
     get() = TextStyle(
         textAlign = TextAlign.Center,
         fontFamily = FontFamily.Default,
-        fontSize = 20.sp
-    )
-
-val Typography.ingredientNameInput: TextStyle
-    @Composable
-    get() = TextStyle(
-        textAlign = TextAlign.Start,
-        fontFamily = FontFamily.Default,
-        fontSize = 26.sp,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-
-val Typography.ingredientNutrientInput: TextStyle
-    @Composable
-    get() = TextStyle(
-        textAlign = TextAlign.Start,
-        fontFamily = FontFamily.Default,
-        fontSize = 14.sp,
-        color = MaterialTheme.colorScheme.onSurface
+        fontSize = 20.sp,
+        color = MaterialTheme.colorScheme.surfaceTint
     )
 
 val Typography.underlineHint: TextStyle
@@ -67,5 +52,158 @@ val Typography.underlineHint: TextStyle
         textAlign = TextAlign.Start,
         fontFamily = FontFamily.Default,
         fontSize = 9.sp,
+        color = MaterialTheme.colorScheme.surfaceTint
+    )
+
+val Typography.topBarHeadline: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 24.sp,
         color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.foodName: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.foodNutrientShort: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 9.sp,
+        color = Color.Black
+    )
+
+val Typography.foodNutrientInformation: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.foodNutrientCount: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 9.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.largeCounter: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 90.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.smallCounter: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 40.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.screenMessageLarge: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 26.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.screenMessageMedium: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 20.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.screenMessageSmall: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 14.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.tableHeadline: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 18.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.tableItems: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.inputFieldNameSided: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 20.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.inputFieldInput: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = FontFamily.Default,
+        fontSize = 20.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
+val Typography.searchCheckbox: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.surfaceTint
+    )
+
+val Typography.searchBarInput: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 24.sp,
+        color = MaterialTheme.colorScheme.surfaceTint
+    )
+
+val Typography.pickedFood: TextStyle
+    @Composable
+    get() = TextStyle(
+        textAlign = TextAlign.Start,
+        fontFamily = FontFamily.Default,
+        fontSize = 20.sp,
+        color = MaterialTheme.colorScheme.surfaceTint
     )

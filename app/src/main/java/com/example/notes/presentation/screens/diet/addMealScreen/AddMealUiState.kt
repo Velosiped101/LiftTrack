@@ -1,19 +1,35 @@
 package com.example.notes.presentation.screens.diet.addMealScreen
 
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.snapshots.SnapshotStateMap
-import com.example.notes.data.local.food.Food
+import androidx.paging.PagingData
+import com.example.notes.data.api.foodApi.cut
+import com.example.notes.data.database.food.Food
 import com.example.notes.utils.EMPTY_STRING
+import com.example.notes.utils.SearchMode
+import kotlinx.coroutines.flow.Flow
 
 data class AddMealUiState(
-    val holder: FoodHolder<List<Food>> = FoodHolder.Start(),
+    val pagingDataFlow: Flow<PagingData<Food>>? = null,
     val foodMass: Int? = null,
     val pickedFood: Food? = null,
-    val pickedFoodList: SnapshotStateMap<Food, Int> = mutableStateMapOf(),
+    val pickedFoodList: Map<Food, Int> = mapOf(),
     val searchBarText: String = EMPTY_STRING,
-    val getFromLocal: Boolean = true,
-    val getFromRemote: Boolean = false
+    val searchMode: SearchMode = SearchMode.Local,
+    val currentTotalCals: Int = 0,
+    val currentTotalProtein: Double = 0.0,
+    val currentTotalFat: Double = 0.0,
+    val currentTotalCarbs: Double = 0.0,
+    val targetCalories: Int = 0
 ) {
     val isMassValid: Boolean
         get() = (foodMass != null)
+    val pickedFoodListTotalProtein = pickedFoodList.entries.sumOf { (food, mass) ->
+        food.protein * mass/100
+    }.cut()
+    val pickedFoodListTotalFat = pickedFoodList.entries.sumOf { (food, mass) ->
+        food.fat * mass/100
+    }.cut()
+    val pickedFoodListTotalCarbs = pickedFoodList.entries.sumOf { (food, mass) ->
+        food.carbs * mass/100
+    }.cut()
+    val pickedFoodTotalCals = (pickedFoodListTotalProtein + pickedFoodListTotalCarbs) * 4 + pickedFoodListTotalFat * 9
 }

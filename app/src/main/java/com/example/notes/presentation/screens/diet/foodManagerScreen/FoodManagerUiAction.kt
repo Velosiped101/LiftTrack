@@ -2,7 +2,7 @@ package com.example.notes.presentation.screens.diet.foodManagerScreen
 
 import android.content.Context
 import android.net.Uri
-import com.example.notes.data.local.food.Food
+import com.example.notes.data.database.food.Food
 
 sealed interface FoodManagerUiAction {
     data object ExitDeleteMode: FoodManagerUiAction
@@ -15,8 +15,8 @@ sealed interface FoodManagerUiAction {
     data class OnFoodProteinChanged(val protein: String): FoodManagerUiAction
     data class OnFoodFatChanged(val fat: String): FoodManagerUiAction
     data class OnFoodCarbsChanged(val carbs: String): FoodManagerUiAction
-    data object DeleteFoodImage: FoodManagerUiAction
+    data object DeleteFoodPicture: FoodManagerUiAction
     data class CreateImageFile(val context: Context): FoodManagerUiAction
     data class DeleteImageFile(val context: Context, val uri: Uri): FoodManagerUiAction
-    data object UpdateImage: FoodManagerUiAction
+    data class UpdateImageFile(val context: Context): FoodManagerUiAction
 }

@@ -1,7 +1,7 @@
 package com.example.notes.presentation.screens.training.programEditScreen
 
-import com.example.notes.data.local.program.Exercise
-import com.example.notes.data.local.program.Program
+import com.example.notes.data.database.exercise.Exercise
+import com.example.notes.data.database.program.Program
 import com.example.notes.utils.DayOfWeek
 import com.example.notes.utils.ExerciseType
 
@@ -14,6 +14,6 @@ sealed interface ProgramEditUiAction {
     data class ChangeReps(val reps: Float): ProgramEditUiAction
     data object InsertToProgram: ProgramEditUiAction
     data object DeleteFromProgram: ProgramEditUiAction
-    data object NavigateBackFromSetter: ProgramEditUiAction
-    data object DismissDialog: ProgramEditUiAction
+    data object DropProgramForDay: ProgramEditUiAction
+    data object DropProgram: ProgramEditUiAction
 }

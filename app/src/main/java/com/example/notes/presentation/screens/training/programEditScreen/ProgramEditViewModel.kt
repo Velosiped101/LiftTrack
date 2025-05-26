@@ -2,34 +2,35 @@ package com.example.notes.presentation.screens.training.programEditScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.notes.Service
-import com.example.notes.data.ExerciseRepository
-import com.example.notes.data.ProgramRepository
-import com.example.notes.data.local.program.Exercise
-import com.example.notes.data.local.program.Program
+import com.example.notes.data.database.exercise.Exercise
+import com.example.notes.data.database.program.Program
+import com.example.notes.data.repository.exercise.ExerciseRepository
+import com.example.notes.data.repository.program.ProgramRepository
 import com.example.notes.utils.DayOfWeek
+import com.example.notes.utils.EMPTY_STRING
 import com.example.notes.utils.ExerciseType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProgramEditViewModel(
-    private val programRepository: ProgramRepository = Service.programRepository,
-    private val exerciseRepository: ExerciseRepository = Service.exerciseRepository
+@HiltViewModel
+class ProgramEditViewModel @Inject constructor(
+    private val programRepository: ProgramRepository,
+    private val exerciseRepository: ExerciseRepository
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ProgramEditUiState> = MutableStateFlow(ProgramEditUiState())
         val uiState = _uiState.asStateFlow()
 
     init {
-        val program = programRepository.getAll()
-        val exercises = exerciseRepository.getAll()
         viewModelScope.launch {
-            program.collect { programList ->
-                exercises.collect { exerciseList ->
-                    _uiState.update {
-                        it.copy(programList = programList, exerciseList = exerciseList)
-                    }
+            val exercises = exerciseRepository.getAll().first()
+            programRepository.getAll().collect { programList ->
+                _uiState.update {
+                    it.copy(programList = programList, exerciseList = exercises)
                 }
             }
         }
@@ -37,101 +38,94 @@ class ProgramEditViewModel(
 
     fun uiAction(action: ProgramEditUiAction) {
         when (action) {
-            is ProgramEditUiAction.SelectExerciseType -> selectExerciseType(action.exerciseType)
+            is ProgramEditUiAction.SelectExerciseType -> setExerciseType(action.exerciseType)
             is ProgramEditUiAction.SelectNewExercise -> selectNewExercise(action.newExercise)
-            is ProgramEditUiAction.SelectProgramDay -> selectProgramDay(action.dayOfWeek)
+            is ProgramEditUiAction.SelectProgramDay -> setProgramDay(action.dayOfWeek)
             is ProgramEditUiAction.SelectProgramExercise -> selectProgramExercise(action.programExercise)
             is ProgramEditUiAction.ChangeReps -> changeReps(action.reps)
             is ProgramEditUiAction.ChangeSets -> changeSets(action.sets)
             is ProgramEditUiAction.DeleteFromProgram -> deleteFromProgram()
             ProgramEditUiAction.InsertToProgram -> insertToProgram()
-            ProgramEditUiAction.NavigateBackFromSetter -> navigateBackFromSetter()
-            ProgramEditUiAction.DismissDialog -> dismissDialog()
+            ProgramEditUiAction.DropProgram -> dropProgram()
+            ProgramEditUiAction.DropProgramForDay -> dropProgramForDay()
         }
     }
 
-    private fun selectExerciseType(exerciseType: ExerciseType) {
+    private fun setExerciseType(exerciseType: ExerciseType) {
         _uiState.update {
-            it.copy(selectedExerciseType = exerciseType)
+            it.copy(exerciseType = exerciseType)
         }
     }
 
-    private fun selectProgramDay(day: DayOfWeek) {
+    private fun setProgramDay(day: DayOfWeek) {
         _uiState.update {
-            it.copy(selectedProgramDay = day)
+            it.copy(day = day)
         }
     }
 
-    private fun selectNewExercise(newExercise: Exercise) {
+    private fun selectNewExercise(exercise: Exercise) {
         _uiState.update {
+            val newProgramExercise = _uiState.value.selectedProgramItem?.copy(exercise = exercise.name, reps = 1)
             it.copy(
-                selectedNewExercise = newExercise,
-                isInSetter = true,
-                sets = 0f,
-                reps = 0f
+                selectedProgramItem = newProgramExercise,
+                sets = 1
             )
         }
     }
 
     private fun selectProgramExercise(programExercise: Program?) {
+        val programItem = programExercise ?: Program(
+            exercise = EMPTY_STRING,
+            dayOfWeek = _uiState.value.day.name,
+            reps = 1
+        )
         _uiState.update {
-            val isInSetter = programExercise != null
             it.copy(
-                selectedProgramExercise = programExercise,
-                isDialogActive = true,
-                isInSetter = isInSetter
+                selectedProgramItem = programItem,
+                sets = 1,
             )
         }
     }
 
     private fun changeSets(sets: Float) {
         _uiState.update {
-            it.copy(sets = sets)
+            it.copy(sets = sets.toInt())
         }
     }
 
     private fun changeReps(reps: Float) {
+        val pickedProgramExercise = _uiState.value.selectedProgramItem
+        val updatedProgramExercise = pickedProgramExercise?.copy(reps = reps.toInt())
         _uiState.update {
-            it.copy(reps = reps)
+            it.copy(selectedProgramItem = updatedProgramExercise)
         }
     }
 
     private fun insertToProgram() {
-        val item = Program(
-            dayOfWeek = _uiState.value.selectedProgramDay.name,
-            reps = _uiState.value.reps.toInt(),
-            exercise = _uiState.value.selectedNewExercise?.name ?: return
-        )
+        val item = _uiState.value.selectedProgramItem ?: return
         viewModelScope.launch {
-            repeat(_uiState.value.sets.toInt()) {
+            repeat(_uiState.value.sets) {
                 programRepository.insertToProgram(item)
             }
-        }
-        _uiState.update {
-            it.copy(isDialogActive = false, isInSetter = false)
         }
     }
 
     private fun deleteFromProgram() {
-        val item = _uiState.value.selectedProgramExercise ?: return
+        val item = _uiState.value.selectedProgramItem ?: return
         viewModelScope.launch {
             programRepository.deleteFromProgram(item)
         }
-        _uiState.update {
-            it.copy(isDialogActive = false, isInSetter = false)
+    }
+
+    private fun dropProgramForDay() {
+        viewModelScope.launch {
+            programRepository.dropProgramForDay(_uiState.value.day.name)
         }
     }
 
-    private fun navigateBackFromSetter() {
-        _uiState.update {
-            if (_uiState.value.selectedProgramExercise == null) it.copy(isInSetter = false)
-            else it.copy(isDialogActive = false, isInSetter = false)
-        }
-    }
-
-    private fun dismissDialog() {
-        _uiState.update {
-            it.copy(isDialogActive = false, isInSetter = false)
+    private fun dropProgram() {
+        viewModelScope.launch {
+            programRepository.dropProgram()
         }
     }
 }

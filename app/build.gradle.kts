@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.devtools.ksp") version "2.0.20-1.0.24"
     alias(libs.plugins.compose.compiler)
+    id ("com.google.protobuf") version "0.9.4"
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -12,8 +14,8 @@ android {
     defaultConfig {
         applicationId = "com.example.notes"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 8
+        targetSdk = 35
+        versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,7 +26,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -84,4 +87,39 @@ dependencies {
     implementation ("androidx.room:room-runtime:$room_version")
     ksp ("androidx.room:room-compiler:$room_version")
     implementation ("androidx.room:room-ktx:$room_version")
+
+    implementation (libs.androidx.datastore)
+    implementation ("com.google.protobuf:protobuf-javalite:3.18.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.5")
+    implementation("androidx.datastore:datastore-preferences-core:1.1.5")
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation (libs.androidx.room.paging)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    implementation("com.google.dagger:hilt-android:2.56.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.1")
+    ksp("com.google.dagger:hilt-compiler:2.56.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
+
+    implementation ("io.github.ehsannarmani:compose-charts:0.1.7")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.7"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

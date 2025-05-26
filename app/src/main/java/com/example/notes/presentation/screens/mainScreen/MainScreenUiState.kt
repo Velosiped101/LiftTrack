@@ -1,37 +1,23 @@
 package com.example.notes.presentation.screens.mainScreen
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import com.example.notes.data.local.saveddata.mealhistory.MealHistory
-import com.example.notes.utils.Date
-import com.example.notes.utils.Nutrient
-import java.math.BigDecimal
-import java.math.RoundingMode
+import com.example.notes.data.api.foodApi.cut
+import com.example.notes.data.database.saveddata.mealhistory.MealHistory
+import com.example.notes.utils.DayProgress
 
 data class MainScreenUiState(
-    val mealHistory: SnapshotStateList<MealHistory> = mutableStateListOf(),
-    val isRestDay: Boolean = false,
+    val mealHistory: List<MealHistory> = listOf(),
+    val dayProgress: DayProgress = DayProgress.Rest,
+    val targetCalories: Int = 2500,
+    val currentExercise: String? = null,
+    val currentValues: List<Double> = listOf(),
+    val dates: List<String> = listOf()
 ) {
     val totalProtein: Double
-        get() = getTotalNutrient(mealHistory, Nutrient.Protein)
+        get() = mealHistory.sumOf { it.protein * it.mass/100 }.cut()
     val totalFat: Double
-        get() = getTotalNutrient(mealHistory, Nutrient.Fat)
+        get() = mealHistory.sumOf { it.fat * it.mass/100 }.cut()
     val totalCarbs: Double
-        get() = getTotalNutrient(mealHistory, Nutrient.Carbs)
+        get() = mealHistory.sumOf { it.carbs * it.mass/100 }.cut()
     val totalCals: Int
-        get() = calculateTotalCals(totalProtein, totalFat, totalCarbs)
-
-    private fun getTotalNutrient(mealHistory: SnapshotStateList<MealHistory>, nutrient: Nutrient): Double {
-        val totalNutrient = when (nutrient) {
-            Nutrient.Protein -> mealHistory.sumOf { it.protein * it.mass/100 }
-            Nutrient.Fat -> mealHistory.sumOf { it.fat * it.mass/100 }
-            Nutrient.Carbs -> mealHistory.sumOf { it.carbs * it.mass/100 }
-        }
-        return BigDecimal(totalNutrient).setScale(2, RoundingMode.HALF_UP).toDouble()
-    }
-
-    private fun calculateTotalCals(protein: Double, fat: Double, carbs: Double): Int {
-        val cals = (protein + carbs) * 4 + fat * 9
-        return cals.toInt()
-    }
+        get() = ((totalProtein + totalCarbs) * 4 + totalFat * 9).toInt()
 }
