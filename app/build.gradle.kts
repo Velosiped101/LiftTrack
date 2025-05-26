@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.notes"
+    namespace = "com.velosiped.notes"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.notes"
+        applicationId = "com.velosiped.notes"
         minSdk = 21
         targetSdk = 35
         versionCode = 1
