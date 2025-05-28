@@ -393,7 +393,8 @@ private fun FormulaPicker(
             ) {
                 Text(
                     text = stringResource(currentFormula.textId),
-                    style = MaterialTheme.typography.screenMessageSmall
+                    style = MaterialTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
+                    modifier = Modifier.weight(1f)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.expand_meal_history),
@@ -501,15 +502,6 @@ private fun getLabeledGraphData(
 
         else -> listOf()
     }
-}
-
-@Composable
-private fun getRawTableData(
-    graphData: List<ProgramData>
-): List<List<RawGraphData>> {
-    return listOf(
-        graphData.mapNotNull { it.rawData }
-    )
 }
 
 @Preview(showBackground = true)
