@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notes</string>
+    <string name="app_name" translatable="false">LiftTrack</string>
     <string name="food_manager_headline">My food</string>
     <string name="new_recipe_headline">New dish</string>
     <string name="program_edit_headline">My program</string>
@@ -26,7 +26,7 @@
     <string name="mass">%1$d g.</string>
     <string name="cals">%1$d cal.</string>
     <string name="enter_mass">Mass, g</string>
-    <string name="auto">Auto</string>
+    <string name="auto" translatable="false">Auto</string>
     <string name="manual">Manual</string>
     <string name="default_recipe_name">My recipe</string>
     <string name="empty_program_message">Rest day…</string>
@@ -71,7 +71,7 @@
     <string name="body_mass">Mass, kg</string>
     <string name="target_calories">Target calories</string>
     <string name="define_target_cals">Define your target calories</string>
-    <string name="confirm_settings">Confirm settings</string>
+    <string name="confirm_settings">Confirm</string>
     <string name="hour">Hour</string>
     <string name="minute">Minute</string>
     <string name="reset_time">Daily reset time</string>
@@ -91,7 +91,7 @@
     <string name="small_graph_data">Not enough data to show</string>
     <string name="not_enough_graph_data">Not enough data to show for %1$s</string>
     <string name="graph_headline_volume">volume, kg</string>
-    <string name="graph_indicator_volume">K</string>
+    <string name="graph_indicator_volume" translatable="false">K</string>
     <string name="graph_total_volume">Total volume, kg</string>
     <string name="graph_one_rep_max">One rep max, kg</string>
     <string name="graph_raw_avg_reps">Average reps done</string>
@@ -133,4 +133,17 @@
     <string name="start_new">Start new</string>
     <string name="program_changed_message">Looks like you\'ve changed your program</string>
     <string name="increase_hint">Time to increase (%1$.2f)</string>
+    <string name="unknown_host">Unknown host</string>
+    <string name="socket_timeout">Server timeout</string>
+    <string name="connection_error">Connection failed</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="unknown_connection_error">Unknown connection error</string>
+    <string name="bad_request">Bad request</string>
+    <string name="forbidden">Forbidden</string>
+    <string name="not_found">Not found</string>
+    <string name="too_many_requests">Too many requests</string>
+    <string name="server_error">Server error</string>
+    <string name="bad_gateway">Bad gateway</string>
+    <string name="server_unavailable">Server unavailable</string>
+    <string name="unknown_http_error">Unknown error</string>
 </resources>

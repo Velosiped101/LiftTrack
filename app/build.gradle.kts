@@ -106,6 +106,8 @@ dependencies {
     ksp("androidx.hilt:hilt-compiler:1.2.0")
 
     implementation ("io.github.ehsannarmani:compose-charts:0.1.7")
+
+    implementation ("com.yandex.android:mobileads:7.12.3")
 }
 
 protobuf {

@@ -18,6 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Notes">
+        <meta-data
+            android:name="com.yandex.mobile.ads.AUTOMATIC_SDK_INITIALIZATION"
+            android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

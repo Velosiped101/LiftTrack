@@ -202,7 +202,7 @@ private fun SearchModeSwitcher(
                     ) { onModeSelected(mode) }
             ) {
                 Text(
-                    text = mode.name,
+                    text = stringResource(mode.textId),
                     style = MaterialTheme.typography.searchCheckbox,
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
@@ -244,8 +244,8 @@ private fun PagingDataScreen(
         is LoadState.Error -> {
             val rawError = (foodList.loadState.refresh as LoadState.Error).error
             val error = when (rawError) {
-                is HttpException -> rawError.toHttpError().message
-                is IOException -> rawError.toIOError().message
+                is HttpException -> stringResource(id = rawError.toHttpError().messageId)
+                is IOException -> stringResource(id = rawError.toIOError().messageId)
                 else -> stringResource(id = R.string.unknown_error)
             }
             Log.e("paging error", rawError.message.toString())

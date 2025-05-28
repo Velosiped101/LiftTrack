@@ -335,6 +335,9 @@ private fun IngredientsPage(
     uiActions: (NewRecipeUiAction) -> Unit
 ) {
     val ingredientsList = uiState.ingredientsList
+    var currentIngredientId by remember {
+        mutableIntStateOf(0)
+    }
     val deletedItems = remember {
         mutableStateListOf<IngredientInput>()
     }
@@ -363,6 +366,7 @@ private fun IngredientsPage(
                     IngredientCard(
                         ingredient = ingredient,
                         uiActions = uiActions,
+                        currentIngredientId = ingredient.id,
                         onDelete = {
                             if (isAnimationRunning) return@IngredientCard
                             else {
@@ -520,6 +524,7 @@ private fun InputField(
 @Composable
 private fun IngredientCard(
     ingredient: IngredientInput,
+    currentIngredientId: Int,
     ingredientsFound: List<Ingredient>,
     uiActions: (NewRecipeUiAction) -> Unit,
     onDelete: (IngredientInput) -> Unit,
@@ -574,11 +579,22 @@ private fun IngredientCard(
                         onUnderlineHeightMeasured = { dropMenuOffset = it },
                         isReadOnly = isReadOnly,
                         showLockIcon = true,
-                        modifier = Modifier.onGloballyPositioned { coordinates ->
-                            inputWidth = coordinates.size.width
-                        }.onFocusChanged {
-                            isExpanded = it.isFocused
-                        },
+                        modifier = Modifier
+                            .onGloballyPositioned { coordinates ->
+                                inputWidth = coordinates.size.width
+                            }
+                            .onFocusChanged {
+                                isExpanded = false
+                                if (it.isFocused && ingredient.id == currentIngredientId) {
+                                    uiActions(
+                                        NewRecipeUiAction.OnIngredientNameChanged(
+                                            ingredient,
+                                            ingredient.name
+                                        )
+                                    )
+                                    isExpanded = true
+                                }
+                            },
                     )
                     if (ingredientsFound.isNotEmpty()) DropdownMenu(
                         expanded = isExpanded,

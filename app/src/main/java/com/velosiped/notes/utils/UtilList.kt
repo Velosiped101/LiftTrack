@@ -9,6 +9,7 @@ const val SPACE = " "
 const val DOUBLE_PATTERN = "^\\d{0,2}(\\.\\d{0,2})?$"
 const val INT_PATTERN = "^\\d*$"
 const val GENERATED_ID_INITIAL = 2000000000
+const val DEMO_BANNER_YANDEX = "demo-banner-yandex"
 
 fun ClosedFloatingPointRange<Float>.toFloatList(step: Float): List<Float> {
     if (step <= 0f) throw IllegalArgumentException("Step value must be positive")
@@ -38,9 +39,9 @@ enum class WeightIncrement(val weight: Float) {
     VerySmall(.5f)
 }
 
-enum class SearchMode {
-    Local,
-    Remote
+enum class SearchMode(val textId: Int) {
+    Local(R.string.local),
+    Remote(R.string.remote)
 }
 
 enum class DayOfWeek {
