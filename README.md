@@ -3,23 +3,23 @@
 
 # Стек
 
--Kotlin
+- Kotlin
 
--Jetpack Compose
+- Jetpack Compose
 
-Coroutines + Flow
+- Coroutines + Flow
 
-Hilt - DI
+- Hilt - DI
 
-Room - все базы данных
+- Room - все базы данных
 
-Retrofit - сетевые запросы к Open Food Facts API, заполнение google формы отзыва
+- Retrofit - сетевые запросы к Open Food Facts API, заполнение google формы отзыва
 
-Proto DataStore - хранение настроек и временных параметров приложения
+- Proto DataStore - хранение настроек и временных параметров приложения
 
-WorkManager - сброс показателей в назначенное время
+- WorkManager - сброс показателей в назначенное время
 
-JUnit + Google Truth - unit тестирование
+- JUnit + Google Truth - unit тестирование
 
-ComposeCharts by ehsannarmani - графики
+- ComposeCharts by ehsannarmani - графики
 
