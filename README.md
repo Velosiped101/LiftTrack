@@ -25,11 +25,13 @@
 
 ## Скриншоты
 
-<p >
+<p>
   <img src="screenshots/scr1.png" width="200"/>
   <img src="screenshots/scr2.png" width="200"/>
   <img src="screenshots/scr3.png" width="200"/>
-  
+</p>
+
+<p>
   <img src="screenshots/scr4.png" width="200"/>
   <img src="screenshots/scr5.png" width="200"/>
 </p>
