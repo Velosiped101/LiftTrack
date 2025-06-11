@@ -51,4 +51,4 @@
 Причиной для создания use cases стала необходимость в практике написания unit тестов, которые я оставил напоследок, чтобы
 не разбираться во всем одновременно - весь процесс написания приложения сопровождался ручным тестированием.
 
-[RuStore] (https://www.rustore.ru/catalog/app/com.velosiped.notes)
+[RuStore](https://www.rustore.ru/catalog/app/com.velosiped.notes)
