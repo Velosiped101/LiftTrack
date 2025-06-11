@@ -2,8 +2,8 @@
 Данное приложение предназначено для отслеживания прогресса силовых тренировок и питания
 
 # Стек
-Kotlin
-Jetpack Compose
+-Kotlin
+-Jetpack Compose
 Coroutines + Flow
 Hilt - DI
 Room - все базы данных
