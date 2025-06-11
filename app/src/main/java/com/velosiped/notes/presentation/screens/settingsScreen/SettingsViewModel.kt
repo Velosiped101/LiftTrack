@@ -2,7 +2,7 @@ package com.velosiped.notes.presentation.screens.settingsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velosiped.notes.data.repository.tempProgress.AppProtoDataStoreRepository
+import com.velosiped.notes.domain.usecase.settings.SettingsUseCase
 import com.velosiped.notes.utils.CalorieSurplus
 import com.velosiped.notes.utils.DailyActivityK
 import com.velosiped.notes.utils.Sex
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val appProtoDataStoreRepository: AppProtoDataStoreRepository
+    private val useCase: SettingsUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<SettingsUiState> = MutableStateFlow(SettingsUiState())
         val uiState = _uiState.asStateFlow()
@@ -44,7 +44,7 @@ class SettingsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            appProtoDataStoreRepository.appProtoStoreFlow.collect { data ->
+            useCase.getUserSettingsUseCase().collect { data ->
                 val prefs = data.appPreferences
                 val state = if (prefs.isNotFirstLaunch) SettingsUiState().copy(
                     appThemeMode = prefs.themeMode.toAppThemeMode(),
@@ -109,7 +109,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun confirmSettings() {
-        viewModelScope.launch { appProtoDataStoreRepository.updateSettings(_uiState.value) }
+        viewModelScope.launch { useCase.updateUserSettingsUseCase(_uiState.value) }
     }
 
     private fun changeResetTimeHour(hour: Int) {

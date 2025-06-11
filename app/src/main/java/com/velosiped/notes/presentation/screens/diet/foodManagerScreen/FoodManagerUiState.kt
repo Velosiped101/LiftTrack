@@ -2,7 +2,7 @@ package com.velosiped.notes.presentation.screens.diet.foodManagerScreen
 
 import android.net.Uri
 import com.velosiped.notes.data.database.food.Food
-import com.velosiped.notes.utils.EMPTY_STRING
+import com.velosiped.notes.utils.Constants
 
 data class FoodManagerUiState(
     val foodList: List<Food> = listOf(),
@@ -20,19 +20,9 @@ data class FoodManagerUiState(
 }
 
 data class FoodInput(
-    val name: String = EMPTY_STRING,
-    val protein: String = EMPTY_STRING,
-    val fat: String = EMPTY_STRING,
-    val carbs: String = EMPTY_STRING,
+    val name: String = Constants.EMPTY_STRING,
+    val protein: String = Constants.EMPTY_STRING,
+    val fat: String = Constants.EMPTY_STRING,
+    val carbs: String = Constants.EMPTY_STRING,
     val imageUri: String? = null
 )
-
-fun FoodInput.toFood(): Food {
-    return Food(
-        name = this.name,
-        protein = this.protein.toDouble(),
-        fat = this.fat.toDouble(),
-        carbs = this.carbs.toDouble(),
-        imageUrl = this.imageUri
-    )
-}

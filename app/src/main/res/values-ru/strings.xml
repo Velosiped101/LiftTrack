@@ -28,7 +28,7 @@
     <string name="enter_mass">Масса, г.</string>
     <string name="manual">Своя</string>
     <string name="default_recipe_name">Мой рецепт</string>
-    <string name="empty_program_message">День отдыха...</string>
+    <string name="empty_program_message">День отдыха…</string>
     <string name="build_program_exercise_message">или нет?</string>
     <string name="return_back">Вернуться</string>
     <string name="clear_program">Очистить программу</string>
@@ -89,7 +89,7 @@
     <string name="empty_graph_data">Нет данных</string>
     <string name="small_graph_data">Недостаточно данных</string>
     <string name="not_enough_graph_data">Недостаточно данных (%1$s)</string>
-    <string name="graph_headline_volume">Объем, кг</string>
+    <string name="graph_headline_volume">(объем, кг)</string>
     <string name="graph_total_volume">Общий объем, кг</string>
     <string name="graph_one_rep_max">Максимальный вес на 1 повторение, кг.</string>
     <string name="graph_raw_avg_reps">Среднее число повторений</string>
@@ -144,4 +144,12 @@
     <string name="bad_gateway">Ошибка 502 (Bad Gateway)</string>
     <string name="server_unavailable">Сервер недоступен</string>
     <string name="unknown_http_error">Неизвестная ошибка</string>
+    <string name="ingredient_name">Ингредиент</string>
+    <string name="monday">Пн</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
+    <string name="sunday">Вс</string>
 </resources>

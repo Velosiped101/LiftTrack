@@ -7,9 +7,9 @@ import com.velosiped.notes.utils.Sex
 
 data class SettingsUiState(
     val appThemeMode: ThemeMode = ThemeMode.System,
-    val bodyMass: Float = 55f,
+    val bodyMass: Float = 72f,
     val height: Int = 169,
-    val age: Int = 26,
+    val age: Int = 25,
     val sex: Sex = Sex.Male,
     val resetTimeHour: Int = 0,
     val resetTimeMinute: Int = 0,

@@ -82,10 +82,9 @@ import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.ui.theme.tableHeadline
 import com.velosiped.notes.ui.theme.tableItems
 import com.velosiped.notes.ui.theme.topBarHeadline
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.DayOfWeek
-import com.velosiped.notes.utils.EMPTY_STRING
 import com.velosiped.notes.utils.ExerciseType
-import com.velosiped.notes.utils.SPACE
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
@@ -165,7 +164,6 @@ private fun MainPage(
             .fillMaxSize()
     ) {
         DayPicker(
-            uiState = uiState,
             uiAction = uiAction,
             changedFromPicker = changedFromPicker,
             pagerState = pagerState
@@ -182,7 +180,6 @@ private fun MainPage(
 
 @Composable
 private fun DayPicker(
-    uiState: ProgramEditUiState,
     uiAction: (ProgramEditUiAction) -> Unit,
     changedFromPicker: MutableState<Boolean>,
     pagerState: PagerState
@@ -220,7 +217,7 @@ private fun DayPicker(
             ) {
                 days.forEach { day ->
                     DayText(
-                        text = day.name,
+                        textId = day.textId,
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -248,7 +245,7 @@ private fun DayPicker(
 
 @Composable
 private fun DayText(
-    text: String,
+    textId: Int,
     modifier: Modifier,
 ) {
     Box(
@@ -256,7 +253,7 @@ private fun DayText(
         modifier = modifier
     ) {
         Text(
-            text = text.slice(0..2),
+            text = stringResource(id = textId),
             style = MaterialTheme.typography.screenMessageSmall,
             modifier = Modifier.fillMaxWidth()
         )
@@ -569,8 +566,7 @@ private fun SetsAndRepsSetter(
     onRepsChanged: (Float) -> Unit,
     onBackButtonClicked: () -> Unit,
     onDelete: () -> Unit,
-    onConfirm: () -> Unit,
-    modifier: Modifier = Modifier,
+    onConfirm: () -> Unit
 ) {
     val exerciseId = uiState.selectedProgramItem?.id
     BackHandler {
@@ -583,7 +579,7 @@ private fun SetsAndRepsSetter(
             .fillMaxSize()
     ) {
         Text(
-            text = uiState.selectedProgramItem?.exercise ?: EMPTY_STRING,
+            text = uiState.selectedProgramItem?.exercise ?: Constants.EMPTY_STRING,
             style = MaterialTheme.typography.screenMessageMedium,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -592,14 +588,14 @@ private fun SetsAndRepsSetter(
                 initialValue = uiState.sets.toFloat(),
                 range = 1f..5f,
                 onValueChange = { onSetsChanged(it) },
-                text = stringResource(id = R.string.program_sets) + SPACE + uiState.sets.toString()
+                text = stringResource(id = R.string.program_sets) + Constants.SPACE + uiState.sets.toString()
             )
         }
         SetterSlider(
             initialValue = uiState.selectedProgramItem?.reps?.toFloat() ?: 1f,
             range = 1f..20f,
             onValueChange = { onRepsChanged(it) },
-            text = stringResource(id = R.string.program_reps) + SPACE + uiState.selectedProgramItem?.reps.toString()
+            text = stringResource(id = R.string.program_reps) + Constants.SPACE + uiState.selectedProgramItem?.reps.toString()
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -629,7 +625,6 @@ private fun SetsAndRepsSetter(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SetterSlider(
     text: String,
@@ -650,26 +645,11 @@ private fun SetterSlider(
             value = initialValue,
             onValueChange = { onValueChange(it) },
             valueRange = range,
-            track = {
-                SliderDefaults.Track(
-                    sliderState = it,
-                    colors = SliderDefaults.colors(
-                        inactiveTrackColor = Color.Gray,
-                        activeTrackColor = Color.Black,
-                    ),
-                    modifier = Modifier.height(2.dp)
-                )
-            },
-            thumb = {
-                SliderDefaults.Thumb(
-                    interactionSource = remember {
-                        MutableInteractionSource()
-                    },
-                    colors = SliderDefaults.colors(
-                        thumbColor = Color.Black
-                    )
-                )
-            }
+            colors = SliderDefaults.colors(
+                activeTrackColor = MaterialTheme.colorScheme.surfaceTint,
+                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                thumbColor = MaterialTheme.colorScheme.outline
+            )
         )
     }
 }
@@ -698,8 +678,7 @@ private fun ProgramRow(
 @Composable
 private fun TopBar(
     onNavigateBack: () -> Unit,
-    onShowDeleteDialog: () -> Unit,
-    modifier: Modifier = Modifier
+    onShowDeleteDialog: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -742,8 +721,7 @@ private fun DeleteProgramDialog(
     onDismiss: () -> Unit,
     onDropCurrentDayProgram: () -> Unit,
     onDropProgram: () -> Unit,
-    onShowToast: () -> Unit,
-    modifier: Modifier = Modifier
+    onShowToast: () -> Unit
 ) {
     BasicAlertDialog(onDismissRequest = { onDismiss() }) {
         Card(
@@ -756,36 +734,21 @@ private fun DeleteProgramDialog(
                     .fillMaxWidth()
                     .padding(8.dp)
             ){
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        DialogIcon(
-                            onTap = { onShowToast() },
-                            onDoubleTap = { onDropProgram() },
-                            painter = painterResource(id = R.drawable.drop),
-                            text = stringResource(id = R.string.clear_program),
-                            enableDoubleTap = true
-                        )
-                        DialogIcon(
-                            onTap = { onShowToast() },
-                            onDoubleTap = { onDropCurrentDayProgram() },
-                            painter = painterResource(id = R.drawable.drop_current),
-                            text = stringResource(id = R.string.clear_current_day_program),
-                            enableDoubleTap = true
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
                     DialogIcon(
-                        onTap = { onDismiss() },
-                        onDoubleTap = {  },
-                        painter = painterResource(id = R.drawable.back),
-                        text = stringResource(id = R.string.return_back),
-                        enableDoubleTap = false
+                        onTap = { onShowToast() },
+                        onDoubleTap = { onDropProgram() },
+                        painter = painterResource(id = R.drawable.drop),
+                        text = stringResource(id = R.string.clear_program)
+                    )
+                    DialogIcon(
+                        onTap = { onShowToast() },
+                        onDoubleTap = { onDropCurrentDayProgram() },
+                        painter = painterResource(id = R.drawable.drop_current),
+                        text = stringResource(id = R.string.clear_current_day_program)
                     )
                 }
             }
@@ -798,17 +761,12 @@ private fun DialogIcon(
     onTap: () -> Unit,
     onDoubleTap: () -> Unit,
     painter: Painter,
-    text: String,
-    enableDoubleTap: Boolean
+    text: String
 ) {
-    val modifier = if (enableDoubleTap) Modifier.pointerInput(Unit) {
+    val modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(
             onTap = { onTap() },
             onDoubleTap = { onDoubleTap() }
-        )
-    } else Modifier.pointerInput(Unit) {
-        detectTapGestures(
-            onTap = { onTap() }
         )
     }
     Box(
@@ -819,16 +777,13 @@ private fun DialogIcon(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.align(Alignment.Center)
         ){
-            if (enableDoubleTap) Text(
-                text = text,
-                style = MaterialTheme.typography.screenMessageSmall
-            )
             Icon(
                 painter = painter,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.surfaceTint,
+                modifier = Modifier.size(36.dp)
             )
-            if (!enableDoubleTap) Text(
+            Text(
                 text = text,
                 style = MaterialTheme.typography.screenMessageSmall
             )

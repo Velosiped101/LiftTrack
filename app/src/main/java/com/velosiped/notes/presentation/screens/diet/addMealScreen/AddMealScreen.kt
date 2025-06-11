@@ -1,6 +1,5 @@
 package com.velosiped.notes.presentation.screens.diet.addMealScreen
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
@@ -58,6 +57,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,6 +74,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
@@ -83,13 +84,12 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.food.Food
-import com.velosiped.notes.presentation.screens.diet.components.FoodItemCard
+import com.velosiped.notes.presentation.screens.components.FoodItemCard
 import com.velosiped.notes.ui.theme.CustomTheme
 import com.velosiped.notes.ui.theme.pickedFood
 import com.velosiped.notes.ui.theme.screenMessageLarge
@@ -98,7 +98,7 @@ import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.ui.theme.searchBarInput
 import com.velosiped.notes.ui.theme.searchCheckbox
 import com.velosiped.notes.ui.theme.underlineHint
-import com.velosiped.notes.utils.EMPTY_STRING
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.SearchMode
 import com.velosiped.notes.utils.interpolateColors
 import com.velosiped.notes.utils.toHttpError
@@ -305,7 +305,7 @@ private fun PagingLoadingIndicator() {
             ),
             label = ""
     )
-    val color = MaterialTheme.colorScheme.secondaryContainer
+    val color = CustomTheme.colors.readOnlyFieldColor
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -493,7 +493,7 @@ private fun MassDialog(
                 ){
                     BasicTextField(
                         value = TextFieldValue(
-                            text = uiState.foodMass?.toString() ?: EMPTY_STRING,
+                            text = uiState.foodMass?.toString() ?: Constants.EMPTY_STRING,
                             selection = TextRange(uiState.foodMass.toString().length)
                         ),
                         onValueChange = {
@@ -505,6 +505,7 @@ private fun MassDialog(
                             keyboardType = KeyboardType.Number,
                             showKeyboardOnFocus = true
                         ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceTint),
                         decorationBox = {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
@@ -667,7 +668,7 @@ private fun NutrientsProgressBar(
     val currentProgress = (uiState.currentTotalCals.toFloat() / uiState.targetCalories).coerceIn(0f, 1f)
     val additionalProgress = (uiState.pickedFoodTotalCals.toFloat() / uiState.targetCalories).coerceIn(0f, 1f)
     var totalWidth by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
     val color = interpolateColors(totalProgress, colorsList)
 
@@ -796,20 +797,4 @@ private fun TopBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
     )
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    MassDialog(uiState = AddMealUiState(
-        pickedFood = Food(
-            name = "Pasta carbonara with sauce",
-            protein = 2.0,
-            fat = 3.0,
-            carbs = 5.0,
-            imageUrl = null
-        ),
-        foodMass = 100
-    ), uiActions = {}, showDialog = mutableStateOf(true))
 }

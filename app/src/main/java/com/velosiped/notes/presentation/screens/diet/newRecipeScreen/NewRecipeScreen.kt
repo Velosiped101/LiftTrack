@@ -91,13 +91,13 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.ingredient.Ingredient
-import com.velosiped.notes.presentation.screens.diet.components.FoodLargeImage
+import com.velosiped.notes.presentation.screens.components.FoodLargeImage
 import com.velosiped.notes.ui.theme.CustomTheme
 import com.velosiped.notes.ui.theme.inputFieldInput
 import com.velosiped.notes.ui.theme.inputFieldNameSided
 import com.velosiped.notes.ui.theme.topBarHeadline
 import com.velosiped.notes.ui.theme.underlineHint
-import com.velosiped.notes.utils.EMPTY_STRING
+import com.velosiped.notes.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -124,7 +124,9 @@ fun NewRecipeScreen(
     }
     fun backHandler() {
         when (pagerState.currentPage) {
-            ingredientsPage -> uiState.generatedUri?.let { uiActions(NewRecipeUiAction.DeleteImageFile(context, it)) } ?: onNavigateBack()
+            ingredientsPage -> uiState.generatedUri?.let { uiActions(NewRecipeUiAction.DeleteImageFile(context,
+                it.toString()
+            )) } ?: onNavigateBack()
             else -> scope.launch { pagerState.animateScrollToPage(ingredientsPage) }
         }
     }
@@ -191,7 +193,7 @@ fun NewRecipeScreen(
                 },
                     shape = RoundedCornerShape(100),
                     elevation = FloatingActionButtonDefaults.elevation(0.dp),
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface
                 ) {
                     val rotationAngle = animateFloatAsState(
                         targetValue = when (pagerState.currentPage) {
@@ -224,7 +226,7 @@ private fun ConfirmationPage(
     ) { success ->
         if (success) {
             uiActions(NewRecipeUiAction.UpdateImage)
-        } // TODO: Если крашнуть приложение, то файл останется мертвым грузом
+        }
     }
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission())
@@ -335,9 +337,6 @@ private fun IngredientsPage(
     uiActions: (NewRecipeUiAction) -> Unit
 ) {
     val ingredientsList = uiState.ingredientsList
-    var currentIngredientId by remember {
-        mutableIntStateOf(0)
-    }
     val deletedItems = remember {
         mutableStateListOf<IngredientInput>()
     }
@@ -464,7 +463,7 @@ private fun InputField(
     textFieldAlignment: Alignment = Alignment.Center,
     textStyle: TextStyle = MaterialTheme.typography.inputFieldInput,
     keyboardType: KeyboardType = KeyboardType.Number,
-    underlineHint: String = EMPTY_STRING,
+    underlineHint: String = Constants.EMPTY_STRING,
     isReadOnly: Boolean = false,
     showLockIcon: Boolean = false,
     onUnderlineHeightMeasured: (Dp) -> Unit = {}
@@ -478,9 +477,8 @@ private fun InputField(
         textStyle = textStyle,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = true,
-        cursorBrush = SolidColor(CustomTheme.colors.textSelectionHandleColor),
         decorationBox = { inputField ->
-            val bgColor = if (isReadOnly) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+            val bgColor = if (isReadOnly) CustomTheme.colors.readOnlyFieldColor else Color.Transparent
             Column(
                 horizontalAlignment = alignment
             ) {
@@ -516,6 +514,7 @@ private fun InputField(
                 )
             }
         },
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceTint),
         readOnly = isReadOnly,
         modifier = modifier
     )
@@ -574,7 +573,7 @@ private fun IngredientCard(
                         alignment = Alignment.Start,
                         textFieldAlignment = Alignment.CenterStart,
                         keyboardType = KeyboardType.Unspecified,
-                        underlineHint = stringResource(id = R.string.name),
+                        underlineHint = stringResource(id = R.string.ingredient_name),
                         textStyle = MaterialTheme.typography.inputFieldNameSided,
                         onUnderlineHeightMeasured = { dropMenuOffset = it },
                         isReadOnly = isReadOnly,
@@ -585,7 +584,7 @@ private fun IngredientCard(
                             }
                             .onFocusChanged {
                                 isExpanded = false
-                                if (it.isFocused && ingredient.id == currentIngredientId) {
+                                if (it.isFocused && ingredient.id == currentIngredientId && !isReadOnly) {
                                     uiActions(
                                         NewRecipeUiAction.OnIngredientNameChanged(
                                             ingredient,

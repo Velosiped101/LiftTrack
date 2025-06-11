@@ -1,8 +1,6 @@
 package com.velosiped.notes.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -17,8 +15,6 @@ data class CustomColors(
     val proteinColor: Color,
     val fatColor: Color,
     val carbsColor: Color,
-    val textSelectionHandleColor: Color,
-    val textSelectionBackgroundColor: Color,
     val selectedOptionColor: Color,
     val notAchievedColor: Color,
     val littleAchievedColor: Color,
@@ -28,15 +24,14 @@ data class CustomColors(
     val oneRepMaxColor: Color,
     val avgRepsDoneColor: Color,
     val avgRepsPlannedColor: Color,
-    val avgWeightDoneColor: Color
+    val avgWeightDoneColor: Color,
+    val readOnlyFieldColor: Color
 )
 
 private val lightColors = CustomColors(
     proteinColor = ProteinColorLight,
     fatColor = FatColorLight,
     carbsColor = CarbsColorLight,
-    textSelectionHandleColor = TextSelectionHandleLight,
-    textSelectionBackgroundColor = TextSelectionBackgroundLight,
     selectedOptionColor = SelectedOptionLight,
     notAchievedColor = NotAchievedLight,
     littleAchievedColor = LittleAchievedLight,
@@ -46,15 +41,14 @@ private val lightColors = CustomColors(
     oneRepMaxColor = OneRepMaxColorLight,
     avgRepsDoneColor = AvgRepsColorLight,
     avgRepsPlannedColor = AvgPlannedRepsColorLight,
-    avgWeightDoneColor = AvgWeightColorLight
+    avgWeightDoneColor = AvgWeightColorLight,
+    readOnlyFieldColor = ReadOnlyFieldColorLight
 )
 
 private val darkColors = CustomColors(
     proteinColor = ProteinColorDark,
     fatColor = FatColorDark,
     carbsColor = CarbsColorDark,
-    textSelectionHandleColor = TextSelectionHandleDark,
-    textSelectionBackgroundColor = TextSelectionBackgroundDark,
     selectedOptionColor = SelectedOptionDark,
     notAchievedColor = NotAchievedDark,
     littleAchievedColor = LittleAchievedDark,
@@ -64,7 +58,8 @@ private val darkColors = CustomColors(
     oneRepMaxColor = OneRepMaxColorDark,
     avgRepsDoneColor = AvgRepsColorDark,
     avgRepsPlannedColor = AvgPlannedRepsColorDark,
-    avgWeightDoneColor = AvgWeightColorDark
+    avgWeightDoneColor = AvgWeightColorDark,
+    readOnlyFieldColor = ReadOnlyFieldColorDark
 )
 
 private val LocalCustomColors = staticCompositionLocalOf {
@@ -72,8 +67,6 @@ private val LocalCustomColors = staticCompositionLocalOf {
         proteinColor = Color.Unspecified,
         fatColor = Color.Unspecified,
         carbsColor = Color.Unspecified,
-        textSelectionHandleColor = Color.Unspecified,
-        textSelectionBackgroundColor = Color.Unspecified,
         selectedOptionColor = Color.Unspecified,
         notAchievedColor = Color.Unspecified,
         littleAchievedColor = Color.Unspecified,
@@ -83,7 +76,8 @@ private val LocalCustomColors = staticCompositionLocalOf {
         oneRepMaxColor = Color.Unspecified,
         avgRepsDoneColor = Color.Unspecified,
         avgRepsPlannedColor = Color.Unspecified,
-        avgWeightDoneColor = Color.Unspecified
+        avgWeightDoneColor = Color.Unspecified,
+        readOnlyFieldColor = Color.Unspecified
     )
 }
 
@@ -124,15 +118,9 @@ fun CustomTheme(
         darkTheme -> darkColors
         else -> lightColors
     }
-    
-    val textSelectionColors = TextSelectionColors(
-        handleColor = customColors.textSelectionHandleColor,
-        backgroundColor = customColors.textSelectionBackgroundColor
-    )
 
     CompositionLocalProvider(
-        LocalCustomColors provides customColors,
-        LocalTextSelectionColors provides textSelectionColors
+        LocalCustomColors provides customColors
     ) {
         val colorScheme = when {
             darkTheme -> DarkColorScheme

@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.velosiped.notes.data.api.feedbackApi.FeedbackApiService
-import com.velosiped.notes.utils.EMPTY_STRING
+import com.velosiped.notes.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +33,7 @@ class FeedbackViewModel @Inject constructor(
     val sendingCompleted = _sendingCompleted.asSharedFlow()
 
     private fun sendFeedback() {
-        val systemInfo = if (_uiState.value.allowSystemInformation) getSystemInformation() else EMPTY_STRING
+        val systemInfo = if (_uiState.value.allowSystemInformation) getSystemInformation() else Constants.EMPTY_STRING
         _uiState.update {
             it.copy(isSending = true)
         }

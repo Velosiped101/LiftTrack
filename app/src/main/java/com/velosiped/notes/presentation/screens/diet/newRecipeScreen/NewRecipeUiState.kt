@@ -2,14 +2,13 @@ package com.velosiped.notes.presentation.screens.diet.newRecipeScreen
 
 import android.net.Uri
 import com.velosiped.notes.data.database.ingredient.Ingredient
-import com.velosiped.notes.utils.EMPTY_STRING
-import com.velosiped.notes.utils.GENERATED_ID_INITIAL
+import com.velosiped.notes.utils.Constants
 
 data class NewRecipeUiState(
     val ingredientsList: List<IngredientInput> = listOf(IngredientInput()),
     val ingredientsFoundList: List<Ingredient> = listOf(),
-    val recipeName: String = EMPTY_STRING,
-    val userDefinedTotalMass: String = EMPTY_STRING,
+    val recipeName: String = Constants.EMPTY_STRING,
+    val userDefinedTotalMass: String = Constants.EMPTY_STRING,
     val useAutoMass: Boolean = true,
     val imageUri: Uri? = null,
     val generatedUri: Uri? = null,
@@ -26,12 +25,12 @@ data class NewRecipeUiState(
 }
 
 data class IngredientInput(
-    val id: Int = GENERATED_ID_INITIAL,
-    val name: String = EMPTY_STRING,
-    val protein: String = EMPTY_STRING,
-    val fat: String = EMPTY_STRING,
-    val carbs: String = EMPTY_STRING,
-    val mass: String = EMPTY_STRING,
+    val id: Int = Constants.GENERATED_ID_INITIAL,
+    val name: String = Constants.EMPTY_STRING,
+    val protein: String = Constants.EMPTY_STRING,
+    val fat: String = Constants.EMPTY_STRING,
+    val carbs: String = Constants.EMPTY_STRING,
+    val mass: String = Constants.EMPTY_STRING,
     val readOnly: Boolean = false
 ) {
     val isValidIngredient: Boolean

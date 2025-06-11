@@ -1,6 +1,5 @@
 package com.velosiped.notes.presentation.screens.mainScreen
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -24,7 +23,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -33,7 +31,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -47,7 +44,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,11 +63,11 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.velosiped.notes.R
@@ -81,17 +77,12 @@ import com.velosiped.notes.ui.theme.screenMessageLarge
 import com.velosiped.notes.ui.theme.screenMessageMedium
 import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.ui.theme.underlineHint
-import com.velosiped.notes.utils.DEMO_BANNER_YANDEX
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.DayProgress
-import com.velosiped.notes.utils.SPACE
 import com.velosiped.notes.utils.interpolateColors
-import com.yandex.mobile.ads.banner.BannerAdEventListener
 import com.yandex.mobile.ads.banner.BannerAdSize
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.AdRequest
-import com.yandex.mobile.ads.common.AdRequestError
-import com.yandex.mobile.ads.common.ImpressionData
-import com.yandex.mobile.ads.instream.media3.YandexAdsLoader
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.extensions.format
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -99,10 +90,7 @@ import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.cos
@@ -145,7 +133,7 @@ fun MainScreen(
             .background(bgColor)
             .padding(8.dp)
     ) {
-        AdBanner(DEMO_BANNER_YANDEX)
+        AdBanner(Constants.AD_BANNER_ID)
         DietCard(
             uiState = uiState,
             navigateToNewRecipe = navigateToNewRecipe,
@@ -232,6 +220,7 @@ private fun DietCard(
                                 showBottomSheet = true
                             }
                         }
+                        .testTag("eye")
                 )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
@@ -532,8 +521,7 @@ private fun ProgramCard(
     uiState: MainScreenUiState,
     uiAction: (MainScreenUiAction) -> Unit,
     navigateToProgramManager: () -> Unit,
-    navigateToStatistics: () -> Unit,
-    modifier: Modifier = Modifier,
+    navigateToStatistics: () -> Unit
 ) {
     var isDialogActive by remember {
         mutableStateOf(false)
@@ -653,7 +641,7 @@ private fun Graph(
     ) {
         val graphColor = MaterialTheme.colorScheme.outline
         val indicatorText = stringResource(id = R.string.graph_indicator_volume)
-        val headlineText = SPACE + stringResource(id = R.string.graph_headline_volume)
+        val headlineText = Constants.SPACE + stringResource(id = R.string.graph_headline_volume)
         AnimatedContent(
             targetState = exercise,
             label = "",
@@ -684,6 +672,7 @@ private fun Graph(
                                     )
                                 )
                             },
+                            curvedEdges = false,
                             labelProperties = LabelProperties(
                                 enabled = true,
                                 labels = dates,
@@ -729,7 +718,8 @@ private fun MealHistorySheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
-        sheetState = sheetState
+        sheetState = sheetState,
+        modifier = Modifier.testTag("bottom sheet")
     ){
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -835,7 +825,7 @@ private fun ConfirmationDialog(
 }
 
 @Composable
-private fun AdBanner(adUnitId: String?) {
+private fun AdBanner(adUnitId: String) {
     val bannerHeight = LocalConfiguration.current.screenHeightDp * .15f
     Card(
         shape = RoundedCornerShape(15.dp),

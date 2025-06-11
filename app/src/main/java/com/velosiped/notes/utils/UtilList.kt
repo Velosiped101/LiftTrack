@@ -1,18 +1,19 @@
 package com.velosiped.notes.utils
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import com.velosiped.notes.R
+import com.velosiped.notes.data.api.foodApi.Product
+import com.velosiped.notes.data.database.food.Food
+import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgress
+import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodInput
+import com.velosiped.notes.proto.ProtoProgramProgress
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Calendar
 import kotlin.math.abs
 
-const val EMPTY_STRING = ""
-const val SPACE = " "
-const val DOUBLE_PATTERN = "^\\d{0,2}(\\.\\d{0,2})?$"
-const val INT_PATTERN = "^\\d*$"
-const val GENERATED_ID_INITIAL = 2000000000
-const val DEMO_BANNER_YANDEX = "demo-banner-yandex"
-
 fun ClosedFloatingPointRange<Float>.toFloatList(step: Float): List<Float> {
-    if (step <= 0f) throw IllegalArgumentException("Step value must be positive")
     val list = mutableListOf<Float>()
     var currentValue = start
     while (currentValue <= endInclusive) {
@@ -22,45 +23,96 @@ fun ClosedFloatingPointRange<Float>.toFloatList(step: Float): List<Float> {
     return list
 }
 
+fun FoodInput.toFood(): Food {
+    return Food(
+        name = this.name,
+        protein = this.protein.toDouble(),
+        fat = this.fat.toDouble(),
+        carbs = this.carbs.toDouble(),
+        imageUrl = this.imageUri
+    )
+}
+
+fun Food?.toFoodInput(): FoodInput = this?.let {
+    FoodInput(
+        name = this.name,
+        protein = this.protein.toString(),
+        fat = this.fat.toString(),
+        carbs = this.carbs.toString(),
+        imageUri = this.imageUrl
+    )
+} ?: FoodInput()
+
 fun <T: Number> List<T>.getClosestIndex(value: T): Int =
     minByOrNull { abs(it.toFloat() - value.toFloat()) }?.let { indexOf(it) } ?: 0
 
-enum class DayProgress {
-    Rest,
-    Training,
-    TrainingFinished
+fun List<Product>?.toFoodList(): List<Food> {
+    return this?.filter { params ->
+        listOf(
+            params.productName,
+            params.nutriments,
+            params.nutriments?.proteins,
+            params.nutriments?.fat,
+            params.nutriments?.carbohydrates
+        ).none { it == null }
+    }?.map {
+        Food(
+            name = it.productName!!,
+            protein = it.nutriments!!.proteins!!.toDouble().cut(),
+            fat = it.nutriments.fat!!.toDouble().cut(),
+            carbs = it.nutriments.carbohydrates!!.toDouble().cut(),
+            imageUrl = it.imageUrl
+        )
+    } ?: listOf()
 }
 
-enum class WeightIncrement(val weight: Float) {
-    Large(5f),
-    Big(2.5f),
-    Medium(1.25f),
-    Small(1f),
-    VerySmall(.5f)
+fun Double.cut(): Double {
+    return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble()
 }
 
-enum class SearchMode(val textId: Int) {
-    Local(R.string.local),
-    Remote(R.string.remote)
+fun List<ProtoProgramProgress>.toProgramProgressList(): List<ProgramProgress> {
+    return this.map {
+        ProgramProgress(
+            day = it.day,
+            month = it.month,
+            year = it.year,
+            exercise = it.exercise,
+            reps = it.reps,
+            repsPlanned = it.repsPlanned,
+            weight = it.weight
+        )
+    }
 }
 
-enum class DayOfWeek {
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday
+fun List<ProgramProgress>.toProgramTempProgressItemsList(): List<ProtoProgramProgress> {
+    return this.map {
+        ProtoProgramProgress
+            .newBuilder()
+            .setDay(it.day)
+            .setMonth(it.month)
+            .setYear(it.year)
+            .setExercise(it.exercise)
+            .setReps(it.reps)
+            .setRepsPlanned(it.repsPlanned)
+            .setWeight(it.weight)
+            .build()
+    }
 }
 
-enum class ExerciseType {
-    Chest,
-    Back,
-    Shoulders,
-    Arms,
-    Core,
-    Legs
+fun interpolateColors(t: Float, colors: List<Color>): Color {
+    val segment = when {
+        t < .33f -> 0
+        t < .66f -> 1
+        else -> 2
+    }
+    val localT = when (segment) {
+        0 -> t / .33f
+        1 -> (t - .33f) / (.33f)
+        else -> (t - .66f) / (.33f)
+    }
+    val colorStart = colors[segment]
+    val colorEnd = colors[segment + 1]
+    return lerp(colorStart, colorEnd, localT)
 }
 
 data object Date {

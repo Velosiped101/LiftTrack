@@ -1,8 +1,8 @@
 package com.velosiped.notes.presentation.screens.statisticsScreen
 
 import androidx.compose.ui.graphics.Color
-import com.velosiped.notes.domain.GraphDataFormula
-import com.velosiped.notes.domain.ProgramData
+import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
+import com.velosiped.notes.domain.usecase.statistics.ProgramData
 
 data class StatisticsUiState(
     val formula: GraphDataFormula = GraphDataFormula.Volume,

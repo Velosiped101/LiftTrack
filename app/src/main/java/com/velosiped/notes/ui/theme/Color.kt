@@ -9,7 +9,7 @@ val PurpleGrey40 = Color(0xFF313131)
 val Pink40 = Color(0xFF7D5260)
 
 // my colors
-val SurfaceDark = Color(0xFF000000)
+val SurfaceDark = Color(0xFF111111)
 val SurfaceLight = Color(0xFFFFFFFF)
 val IconTintDark = Color(0xFFFFFFFF)
 val IconTintLight = Color(0xFF000000)
@@ -25,8 +25,11 @@ val LittleAchievedLight = Color(0xFFF46036)
 val NotAchievedDark = Color(0xFFB22222)
 val NotAchievedLight = Color(0xFFD72638)
 
-val GreyLight = Color(0xFFCCCCCC)
-val GreyDark = Color(0xFF3C3C3C)
+val GreyLight = Color(0xFF444444)
+val GreyDark = Color(0xFFB9B9B9)
+
+val ReadOnlyFieldColorDark = Color(0xFF313131)
+val ReadOnlyFieldColorLight = Color(0xFFC4C4C4)
 
 val DialogDark = Color(0xFF3C3C3C)
 val DialogLight = Color(0xFFBBBBBB)
@@ -41,11 +44,6 @@ val CarbsColorLight = Color(0xFFA3D977)
 val ProteinColorDark = Color(0xFF80BFFF)
 val FatColorDark = Color(0xFFFFE082)
 val CarbsColorDark = Color(0xFFB2FF59)
-
-val TextSelectionBackgroundDark = Color(0xFF616161)
-val TextSelectionHandleDark = Color(0xFFFFFFFF)
-val TextSelectionBackgroundLight = Color(0xFF7C7C7C)
-val TextSelectionHandleLight = Color(0xFF000000)
 
 val VolumeColorLight = Color(0xFF4A90E2)
 val OneRepMaxColorLight = Color(0xFFE63946)

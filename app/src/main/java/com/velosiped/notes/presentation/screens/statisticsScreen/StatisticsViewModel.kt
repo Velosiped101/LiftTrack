@@ -2,8 +2,8 @@ package com.velosiped.notes.presentation.screens.statisticsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velosiped.notes.domain.GetGraphDataUseCase
-import com.velosiped.notes.domain.GraphDataFormula
+import com.velosiped.notes.domain.usecase.statistics.GetGraphDataUseCase
+import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -71,7 +71,7 @@ class StatisticsViewModel @Inject constructor(
                         }
                     }
 
-                    val values = graphMap.get(currentExercise) ?: emptyList()
+                    val values = graphMap[currentExercise] ?: emptyList()
                     _uiState.update {
                         it.copy(
                             dates = dates,

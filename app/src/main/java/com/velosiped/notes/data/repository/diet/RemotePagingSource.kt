@@ -3,8 +3,8 @@ package com.velosiped.notes.data.repository.diet
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.velosiped.notes.data.api.foodApi.FoodApiService
-import com.velosiped.notes.data.api.foodApi.toFoodList
 import com.velosiped.notes.data.database.food.Food
+import com.velosiped.notes.utils.toFoodList
 import retrofit2.HttpException
 import java.io.IOException
 

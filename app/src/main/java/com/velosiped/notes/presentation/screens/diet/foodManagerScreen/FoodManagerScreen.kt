@@ -77,8 +77,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.food.Food
-import com.velosiped.notes.presentation.screens.diet.components.FoodItemCard
-import com.velosiped.notes.presentation.screens.diet.components.FoodLargeImage
+import com.velosiped.notes.presentation.screens.components.FoodItemCard
+import com.velosiped.notes.presentation.screens.components.FoodLargeImage
 import com.velosiped.notes.ui.theme.foodInformationInput
 import com.velosiped.notes.ui.theme.screenMessageMedium
 import com.velosiped.notes.ui.theme.screenMessageSmall
@@ -115,7 +115,7 @@ fun FoodManagerScreen(
         focusManager.clearFocus()
         if (pagerState.currentPage == inputPage) {
             uiState.generatedUri?.let {
-                uiActions(FoodManagerUiAction.DeleteImageFile(context, it))
+                uiActions(FoodManagerUiAction.DeleteImageFile(context, it.toString()))
             }
             scope.launch { pagerState.animateScrollToPage(mainPage) }
         } else {
@@ -192,7 +192,9 @@ private fun InputPage(
         if (success) {
             uiActions(FoodManagerUiAction.UpdateImageFile(context))
         } else {
-            uiActions(FoodManagerUiAction.DeleteImageFile(context, uiState.generatedUri ?: return@rememberLauncherForActivityResult))
+            uiActions(FoodManagerUiAction.DeleteImageFile(context,
+                (uiState.generatedUri ?: return@rememberLauncherForActivityResult).toString()
+            ))
         }
     }
     val cameraPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -271,8 +273,8 @@ private fun MainPage(
     onFoodItemClicked: (Food) -> Unit,
     onLongClick: (Food) -> Unit,
 ) {
-    AnimatedContent(targetState = uiState.foodList.isNotEmpty(), label = "") {
-        when (it) {
+    AnimatedContent(targetState = uiState.foodList.isNotEmpty(), label = "") { targetState ->
+        when (targetState) {
             true -> LazyColumn(
                 contentPadding = PaddingValues(2.dp),
                 modifier = Modifier.fillMaxSize()

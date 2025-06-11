@@ -4,31 +4,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.velosiped.notes.data.database.exercise.Exercise
 import com.velosiped.notes.data.database.program.Program
-import com.velosiped.notes.data.repository.exercise.ExerciseRepository
-import com.velosiped.notes.data.repository.program.ProgramRepository
+import com.velosiped.notes.domain.usecase.training.TrainingUseCase
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.DayOfWeek
-import com.velosiped.notes.utils.EMPTY_STRING
 import com.velosiped.notes.utils.ExerciseType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProgramEditViewModel @Inject constructor(
-    private val programRepository: ProgramRepository,
-    private val exerciseRepository: ExerciseRepository
+    private val useCase: TrainingUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ProgramEditUiState> = MutableStateFlow(ProgramEditUiState())
         val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            val exercises = exerciseRepository.getAll().first()
-            programRepository.getAll().collect { programList ->
+            val exercises = useCase.getExerciseListUseCase()
+            useCase.observeProgramUseCase().collect { programList ->
                 _uiState.update {
                     it.copy(programList = programList, exerciseList = exercises)
                 }
@@ -75,7 +72,7 @@ class ProgramEditViewModel @Inject constructor(
 
     private fun selectProgramExercise(programExercise: Program?) {
         val programItem = programExercise ?: Program(
-            exercise = EMPTY_STRING,
+            exercise = Constants.EMPTY_STRING,
             dayOfWeek = _uiState.value.day.name,
             reps = 1
         )
@@ -103,29 +100,29 @@ class ProgramEditViewModel @Inject constructor(
 
     private fun insertToProgram() {
         val item = _uiState.value.selectedProgramItem ?: return
+        val sets = _uiState.value.sets
         viewModelScope.launch {
-            repeat(_uiState.value.sets) {
-                programRepository.insertToProgram(item)
-            }
+            useCase.manageExerciseInProgramUseCase.insert(item, sets)
         }
     }
 
     private fun deleteFromProgram() {
         val item = _uiState.value.selectedProgramItem ?: return
         viewModelScope.launch {
-            programRepository.deleteFromProgram(item)
+            useCase.manageExerciseInProgramUseCase.remove(item)
         }
     }
 
     private fun dropProgramForDay() {
+        val day = _uiState.value.day.name
         viewModelScope.launch {
-            programRepository.dropProgramForDay(_uiState.value.day.name)
+            useCase.manageDayInProgramUseCase.dropProgramForCurrentDay(day)
         }
     }
 
     private fun dropProgram() {
         viewModelScope.launch {
-            programRepository.dropProgram()
+            useCase.manageDayInProgramUseCase.dropProgram()
         }
     }
 }

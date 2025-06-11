@@ -1,8 +1,8 @@
 package com.velosiped.notes.presentation.screens.mainScreen
 
-import com.velosiped.notes.data.api.foodApi.cut
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.utils.DayProgress
+import com.velosiped.notes.utils.cut
 
 data class MainScreenUiState(
     val mealHistory: List<MealHistory> = listOf(),

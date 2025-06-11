@@ -1,6 +1,6 @@
 package com.velosiped.notes.presentation.screens.statisticsScreen
 
-import com.velosiped.notes.domain.GraphDataFormula
+import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
 
 sealed interface StatisticsUiAction {
     data class SetFormula(val formula: GraphDataFormula): StatisticsUiAction

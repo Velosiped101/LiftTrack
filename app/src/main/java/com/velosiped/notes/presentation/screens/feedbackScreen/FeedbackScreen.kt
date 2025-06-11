@@ -6,6 +6,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,12 +45,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.ui.theme.CustomTheme
@@ -56,7 +58,6 @@ import com.velosiped.notes.ui.theme.screenMessageMedium
 import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.ui.theme.topBarHeadline
 import com.velosiped.notes.ui.theme.underlineHint
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
@@ -158,6 +159,12 @@ private fun StartScreen(
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
                         count = FeedbackType.entries.size
+                    ),
+                    colors = SegmentedButtonDefaults.colors(
+                        activeBorderColor = MaterialTheme.colorScheme.outline,
+                        activeContainerColor = Color.Transparent,
+                        inactiveBorderColor = MaterialTheme.colorScheme.outline,
+                        inactiveContainerColor = Color.Transparent,
                     )
                 ) {
                     Text(
@@ -216,11 +223,19 @@ private fun StartScreen(
                 sendingEnabled = false
                 uiAction(FeedbackUiAction.SendFeedback)
             },
-            enabled = sendingEnabled
+            enabled = sendingEnabled,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = MaterialTheme.colorScheme.surface
+            )
         ) {
             Text(
                 text = stringResource(id = R.string.send_feedback),
-                style = MaterialTheme.typography.screenMessageSmall
+                style = MaterialTheme.typography.screenMessageSmall.let {
+                    if (!sendingEnabled) it.copy(color = CustomTheme.colors.readOnlyFieldColor)
+                    else it
+                }
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -254,16 +269,4 @@ private fun TopBar(
         },
         actions = { Box(modifier = Modifier.size(48.dp)) }
     )
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    FeedbackScreen(
-        uiState = FeedbackUiState(isSending = false, type = FeedbackType.BugReport),
-        uiAction = {},
-        sendingCompleted = MutableSharedFlow()
-    ) {
-
-    }
 }

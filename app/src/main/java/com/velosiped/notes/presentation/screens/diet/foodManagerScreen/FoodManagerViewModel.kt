@@ -1,17 +1,12 @@
 package com.velosiped.notes.presentation.screens.diet.foodManagerScreen
 
 import android.content.Context
-import android.net.Uri
-import android.os.Environment
-import androidx.compose.runtime.toMutableStateList
-import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velosiped.notes.data.repository.diet.DietRepository
 import com.velosiped.notes.data.database.food.Food
+import com.velosiped.notes.domain.usecase.diet.DietUseCase
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.Nutrient
-import com.velosiped.notes.utils.DOUBLE_PATTERN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,12 +14,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class FoodManagerViewModel @Inject constructor(
-    private val repository: DietRepository
+    private val useCase: DietUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<FoodManagerUiState> = MutableStateFlow(FoodManagerUiState())
         val uiState = _uiState.asStateFlow()
@@ -52,7 +46,7 @@ class FoodManagerViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getAll().collect { list ->
+            useCase.observeFoodListUseCase().collect { list ->
                 _uiState.update { it.copy(foodList = list) }
                 _loadingFinished.emit(Unit)
             }
@@ -69,15 +63,7 @@ class FoodManagerViewModel @Inject constructor(
 
     private fun getFoodInformation(food: Food?) {
         _uiState.update {
-            val pickedFoodInput = food?.let {
-                FoodInput(
-                    name = food.name,
-                    protein = food.protein.toString(),
-                    fat = food.fat.toString(),
-                    carbs = food.carbs.toString(),
-                    imageUri = food.imageUrl
-                )
-            } ?: FoodInput()
+            val pickedFoodInput = useCase.getFoodInformationUseCase(food)
             it.copy(
                 pickedFood = food,
                 pickedFoodInput = pickedFoodInput
@@ -86,16 +72,8 @@ class FoodManagerViewModel @Inject constructor(
     }
 
     private fun deleteFood(context: Context) {
-        val imageUris = mutableListOf<Uri>()
-        _uiState.value.selectedForDeleteList.filter { it.imageUrl != null }.forEach {
-            val uri = it.imageUrl!!.toUri()
-            imageUris.add(uri)
-        }
         viewModelScope.launch {
-            repository.delete(_uiState.value.selectedForDeleteList)
-            imageUris.forEach {
-                deleteImageFile(context = context, uri = it)
-            }
+            useCase.deleteFoodFromDbUseCase(_uiState.value.selectedForDeleteList, context)
         }
         _uiState.update {
             it.copy(
@@ -106,22 +84,13 @@ class FoodManagerViewModel @Inject constructor(
     }
 
     private fun onFoodClick(food: Food) {
-        val state = uiState.value
-        if (state.isInDeleteMode) {
-            val updatedList = state.selectedForDeleteList.toMutableStateList()
-            if (updatedList.contains(food)) {
-                updatedList.remove(food)
-                _uiState.update {
-                    it.copy(
-                        selectedForDeleteList = updatedList,
-                        isInDeleteMode = updatedList.isNotEmpty()
-                    )
-                }
-            } else {
-                updatedList.add(food)
-                _uiState.update {
-                    it.copy(selectedForDeleteList = updatedList)
-                }
+        if (_uiState.value.isInDeleteMode) {
+            val updatedList = useCase.foodClickedInDeleteModeUseCase(food, _uiState.value.selectedForDeleteList)
+            _uiState.update {
+                it.copy(
+                    selectedForDeleteList = updatedList,
+                    isInDeleteMode = updatedList.isNotEmpty()
+                )
             }
         } else {
             getFoodInformation(food)
@@ -142,17 +111,8 @@ class FoodManagerViewModel @Inject constructor(
     private fun confirmDialog() {
         val pickedFood = _uiState.value.pickedFood
         val pickedFoodInput = _uiState.value.pickedFoodInput
-        if (_uiState.value.isFoodInputValid) viewModelScope.launch {
-            repository.insert(
-                pickedFood?.copy(
-                    name = pickedFoodInput.name,
-                    protein = pickedFoodInput.protein.toDouble(),
-                    fat = pickedFoodInput.fat.toDouble(),
-                    carbs = pickedFoodInput.carbs.toDouble(),
-                    imageUrl = pickedFoodInput.imageUri
-                ) ?: pickedFoodInput.toFood()
-            )
-        }
+        if (!useCase.validateFoodInputUseCase(pickedFoodInput)) return
+        viewModelScope.launch { useCase.addFoodToDbUseCase(pickedFood, pickedFoodInput) }
     }
 
     private fun onFoodNameChanged(name: String) {
@@ -162,7 +122,7 @@ class FoodManagerViewModel @Inject constructor(
     }
 
     private fun onFoodNutrientChanged(nutrient: Nutrient, input: String) {
-        if (input.matches(Regex(DOUBLE_PATTERN))) {
+        if (input.matches(Regex(Constants.DOUBLE_PATTERN))) {
             _uiState.update {
                 when (nutrient) {
                     Nutrient.Protein -> it.copy(pickedFoodInput = it.pickedFoodInput.copy(protein = input))
@@ -181,8 +141,7 @@ class FoodManagerViewModel @Inject constructor(
     }
 
     private fun updateImageFile(context: Context) {
-        viewModelScope.launch { _uiState.value.pickedFood?.imageUrl?.toUri()
-            ?.let { deleteImageFile(context = context, uri = it) } }
+        deleteImageFile(context, _uiState.value.pickedFood?.imageUrl)
         _uiState.update {
             val uri = it.generatedUri
                 ?.buildUpon()
@@ -194,16 +153,13 @@ class FoodManagerViewModel @Inject constructor(
     }
 
     private fun createImageFile(context: Context) {
-        val imageDir = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "NotesImages")
-        imageDir.mkdir()
-        val image = File(imageDir, "img_${System.currentTimeMillis()}.jpg")
-        val imageUri = FileProvider.getUriForFile(context,"${context.packageName}.fileProvider",image)
+        val imageUri = useCase.createImageFileUseCase(context)
         _uiState.update {
             it.copy(generatedUri = imageUri)
         }
     }
 
-    private fun deleteImageFile(context: Context, uri: Uri) {
-        context.contentResolver.delete(uri, null, null)
+    private fun deleteImageFile(context: Context, uri: String?) {
+        useCase.deleteImageFileUseCase(uri, context)
     }
 }

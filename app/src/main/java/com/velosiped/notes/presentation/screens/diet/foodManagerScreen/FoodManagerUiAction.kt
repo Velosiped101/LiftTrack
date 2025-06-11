@@ -1,7 +1,6 @@
 package com.velosiped.notes.presentation.screens.diet.foodManagerScreen
 
 import android.content.Context
-import android.net.Uri
 import com.velosiped.notes.data.database.food.Food
 
 sealed interface FoodManagerUiAction {
@@ -17,6 +16,6 @@ sealed interface FoodManagerUiAction {
     data class OnFoodCarbsChanged(val carbs: String): FoodManagerUiAction
     data object DeleteFoodPicture: FoodManagerUiAction
     data class CreateImageFile(val context: Context): FoodManagerUiAction
-    data class DeleteImageFile(val context: Context, val uri: Uri): FoodManagerUiAction
+    data class DeleteImageFile(val context: Context, val uri: String?): FoodManagerUiAction
     data class UpdateImageFile(val context: Context): FoodManagerUiAction
 }

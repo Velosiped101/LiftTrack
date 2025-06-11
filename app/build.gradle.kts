@@ -56,6 +56,8 @@ android {
 
 dependencies {
     implementation(libs.firebase.perf.ktx)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
     val room_version = "2.6.1"
     val nav_version = "2.8.1"
     val work_version = "2.9.1"
@@ -67,15 +69,24 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("org.mockito:mockito-android:5.18.0")
 
     testImplementation(libs.junit)
-    testImplementation (libs.mockito.kotlin)
-    testImplementation (libs.truth)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.truth)
 
+    testImplementation (libs.androidx.core)
+    testImplementation (libs.androidx.core.testing)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockwebserver)
+    testImplementation (libs.mockk)
+
+    androidTestImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

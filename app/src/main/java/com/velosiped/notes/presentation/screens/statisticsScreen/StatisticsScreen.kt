@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,19 +53,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
-import com.velosiped.notes.domain.GraphDataFormula
-import com.velosiped.notes.domain.ProgramData
-import com.velosiped.notes.domain.RawGraphData
+import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
+import com.velosiped.notes.domain.usecase.statistics.ProgramData
 import com.velosiped.notes.ui.theme.CustomTheme
 import com.velosiped.notes.ui.theme.screenMessageLarge
 import com.velosiped.notes.ui.theme.screenMessageMedium
 import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.ui.theme.underlineHint
+import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.Date
-import com.velosiped.notes.utils.EMPTY_STRING
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.extensions.format
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -173,6 +172,7 @@ private fun Chart(
                 )
             )
         },
+        curvedEdges = false,
         labelProperties = LabelProperties(
             enabled = true,
             labels = dates,
@@ -252,7 +252,7 @@ private fun Table(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            TableRowText(text = EMPTY_STRING, modifier = Modifier.weight(1f))
+                            TableRowText(text = Constants.EMPTY_STRING, modifier = Modifier.weight(1f))
                             TableRowText(text = repsPlanned.toString(), modifier = Modifier.weight(1f))
                             TableRowText(text = repsDone.toString(), modifier = Modifier.weight(1f))
                             TableRowText(text = weightDone.toString(), modifier = Modifier.weight(1f))
@@ -284,7 +284,7 @@ private fun TableRowText(
 @Composable
 private fun TableHeader(modifier: Modifier = Modifier) {
     val headlines = listOf(
-        EMPTY_STRING,
+        Constants.EMPTY_STRING,
         stringResource(id = R.string.stat_table_reps_planned),
         stringResource(id = R.string.stat_table_reps),
         stringResource(id = R.string.stat_table_weight)
@@ -362,7 +362,7 @@ private fun FormulaPicker(
         mutableStateOf(false)
     }
     var dropdownMenuWidth by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
     val angle by animateFloatAsState(targetValue = if (expanded) 180f else 0f, label = "")
     Card(
@@ -469,6 +469,8 @@ private fun ExercisePicker(
                         Text(
                             text = it,
                             style = MaterialTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -502,15 +504,4 @@ private fun getLabeledGraphData(
 
         else -> listOf()
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    ControlPanel(
-        exercises = listOf("Bench press", "Dead lift", "Squat"),
-        currentFormula = GraphDataFormula.Volume,
-        onFormulaChanged = {},
-        onExerciseChanged = {},
-        onNavigateBack = { /*TODO*/ })
 }

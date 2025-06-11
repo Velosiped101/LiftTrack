@@ -43,7 +43,7 @@ val Typography.foodInformationInput: TextStyle
         textAlign = TextAlign.Center,
         fontFamily = FontFamily.Default,
         fontSize = 20.sp,
-        color = MaterialTheme.colorScheme.surfaceTint
+        color = MaterialTheme.colorScheme.onSurface
     )
 
 val Typography.underlineHint: TextStyle
@@ -52,7 +52,7 @@ val Typography.underlineHint: TextStyle
         textAlign = TextAlign.Start,
         fontFamily = FontFamily.Default,
         fontSize = 9.sp,
-        color = MaterialTheme.colorScheme.surfaceTint
+        color = MaterialTheme.colorScheme.onSurface
     )
 
 val Typography.topBarHeadline: TextStyle
@@ -187,7 +187,7 @@ val Typography.searchCheckbox: TextStyle
         textAlign = TextAlign.Start,
         fontFamily = FontFamily.Default,
         fontSize = 12.sp,
-        color = MaterialTheme.colorScheme.surfaceTint
+        color = MaterialTheme.colorScheme.onSurface
     )
 
 val Typography.searchBarInput: TextStyle
@@ -196,7 +196,7 @@ val Typography.searchBarInput: TextStyle
         textAlign = TextAlign.Start,
         fontFamily = FontFamily.Default,
         fontSize = 24.sp,
-        color = MaterialTheme.colorScheme.surfaceTint
+        color = MaterialTheme.colorScheme.onSurface
     )
 
 val Typography.pickedFood: TextStyle
@@ -205,5 +205,5 @@ val Typography.pickedFood: TextStyle
         textAlign = TextAlign.Start,
         fontFamily = FontFamily.Default,
         fontSize = 20.sp,
-        color = MaterialTheme.colorScheme.surfaceTint
+        color = MaterialTheme.colorScheme.onSurface
     )

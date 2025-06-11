@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.velosiped.notes.data.repository.diet.DietRepository
-import com.velosiped.notes.data.repository.tempProgress.AppProtoDataStoreRepository
+import com.velosiped.notes.data.repository.diet.DietRepositoryImpl
+import com.velosiped.notes.data.repository.tempprogress.AppProtoDataStoreRepositoryImpl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -14,8 +14,8 @@ import dagger.assisted.AssistedInject
 class DailyResetWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val dietRepository: DietRepository,
-    private val appProtoDataStoreRepository: AppProtoDataStoreRepository
+    private val dietRepository: DietRepositoryImpl,
+    private val appProtoDataStoreRepository: AppProtoDataStoreRepositoryImpl
 ): CoroutineWorker(appContext,workerParameters) {
     override suspend fun doWork(): Result {
         Log.e("DoWork", "doWork() started")

@@ -72,7 +72,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgress
@@ -442,7 +441,7 @@ private fun RepsTextBox(
     direction: Int,
     modifier: Modifier = Modifier
 ) {
-    val color by animateColorAsState( // TODO: try to use lerp
+    val color by animateColorAsState(
         targetValue = when {
             reps < repsPlanned * 0.75f -> CustomTheme.colors.notAchievedColor
             reps < repsPlanned -> CustomTheme.colors.almostAchievedColor
@@ -589,72 +588,5 @@ private fun TopBar(
             }
         },
         actions = { Box(modifier = Modifier.size(48.dp)) }
-    )
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun ProgramExecPreview() {
-    val programProgress = listOf(
-        ProgramProgress(
-            day = 3,
-            month = 3,
-            year = 2018,
-            reps = 5,
-            weight = 115f,
-            exercise = "Deadlift",
-            repsPlanned = 5
-        ),
-        ProgramProgress(
-            day = 3,
-            month = 3,
-            year = 2018,
-            reps = 2,
-            weight = 85f,
-            exercise = "Bench press",
-            repsPlanned = 5
-        ),
-        ProgramProgress(
-            day = 3,
-            month = 3,
-            year = 2018,
-            reps = 4,
-            weight = 102.5f,
-            exercise = "Squat",
-            repsPlanned = 6
-        ),
-        ProgramProgress(
-            day = 3,
-            month = 3,
-            year = 2018,
-            reps = 9,
-            weight = 82.5f,
-            exercise = "Vertical row",
-            repsPlanned = 8
-        ),
-    )
-//    ProgramExecScreen(
-//        uiState = ProgramExecUiState(programProgress = programProgress),
-//        uiAction = {},
-//        onNavigateBack = { /*TODO*/ },
-//        saveCompleted = flowOf()
-//    )
-    val programProgressItem = ProgramProgress(
-        day = 3,
-        month = 3,
-        year = 2018,
-        reps = 9,
-        weight = 82.5f,
-        exercise = "Vertical row",
-        repsPlanned = 8
-    )
-    TableItem(
-        exercise = "dsgsd",
-        reps = "10",
-        repsPlanned = "15",
-        weight = "500",
-        style = MaterialTheme.typography.tableItems,
-        enableColorIndication = true,
-        color = Color.Red
     )
 }

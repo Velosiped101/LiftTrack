@@ -10,6 +10,7 @@
     <string name="nutrients_per_100_grams">Nutrients per 100 grams:</string>
     <string name="app_needs_camera_permission">App needs your permission to use a camera</string>
     <string name="name">Name</string>
+    <string name="ingredient_name">Ingredient</string>
     <string name="protein">Protein, g</string>
     <string name="fat">Fat, g</string>
     <string name="carbs">Carbs, g</string>
@@ -146,4 +147,11 @@
     <string name="bad_gateway">Bad gateway</string>
     <string name="server_unavailable">Server unavailable</string>
     <string name="unknown_http_error">Unknown error</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
 </resources>
