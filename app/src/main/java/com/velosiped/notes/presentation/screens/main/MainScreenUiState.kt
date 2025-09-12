@@ -1,16 +1,15 @@
-package com.velosiped.notes.presentation.screens.mainScreen
+package com.velosiped.notes.presentation.screens.main
 
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.utils.DayProgress
+import com.velosiped.notes.utils.GraphData
 import com.velosiped.notes.utils.cut
 
 data class MainScreenUiState(
     val mealHistory: List<MealHistory> = listOf(),
     val dayProgress: DayProgress = DayProgress.Rest,
     val targetCalories: Int = 2500,
-    val currentExercise: String? = null,
-    val currentValues: List<Double> = listOf(),
-    val dates: List<String> = listOf()
+    val currentGraphData: GraphData = GraphData()
 ) {
     val totalProtein: Double
         get() = mealHistory.sumOf { it.protein * it.mass/100 }.cut()

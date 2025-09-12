@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "526290347214",
+    "project_id": "notes-5290c",
+    "storage_bucket": "notes-5290c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526290347214:android:6632bd8162770563db5c9f",
+        "android_client_info": {
+          "package_name": "com.velosiped.notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4Ge4PP6ATGga7YiYD6wVkJGftPQz7PgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

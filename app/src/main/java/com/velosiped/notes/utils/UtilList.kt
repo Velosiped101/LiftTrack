@@ -153,8 +153,8 @@ data object Date {
     }
 }
 
-enum class Nutrient {
-    Protein,
-    Fat,
-    Carbs
+enum class Nutrient(val nameTextId: Int) {
+    Protein(R.string.protein),
+    Fat(R.string.fat),
+    Carbs(R.string.carbs)
 }

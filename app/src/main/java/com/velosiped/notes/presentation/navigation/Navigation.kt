@@ -12,16 +12,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.velosiped.notes.StatisticsActivity
-import com.velosiped.notes.presentation.screens.mainScreen.MainScreen
+import com.velosiped.notes.presentation.screens.main.MainScreen
 import com.velosiped.notes.presentation.screens.diet.addMealScreen.AddMealScreen
 import com.velosiped.notes.presentation.screens.diet.addMealScreen.AddMealViewModel
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerScreen
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerViewModel
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeScreen
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeViewModel
-import com.velosiped.notes.presentation.screens.feedbackScreen.FeedbackScreen
-import com.velosiped.notes.presentation.screens.feedbackScreen.FeedbackViewModel
-import com.velosiped.notes.presentation.screens.mainScreen.MainViewModel
+import com.velosiped.notes.presentation.screens.main.MainViewModel
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsScreen
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsViewModel
 import com.velosiped.notes.presentation.screens.splashScreen.SplashScreen
@@ -81,9 +79,6 @@ fun Navigation(
                 navigateToStatistics = {
                     val intent = Intent(context, StatisticsActivity::class.java)
                     context.startActivity(intent)
-                },
-                navigateToFeedback = {
-                    navController.navigate(Routes.Feedback.name)
                 }
             )
         }
@@ -150,18 +145,6 @@ fun Navigation(
                 }
             )
         }
-        composable(Routes.Feedback.name) {
-            val viewModel = hiltViewModel<FeedbackViewModel>()
-            val uiState by viewModel.uiState.collectAsState()
-            FeedbackScreen(
-                uiState = uiState,
-                uiAction = viewModel::uiAction,
-                sendingCompleted = viewModel.sendingCompleted,
-                onNavigateBack = {
-                    navController.navigateUp()
-                }
-            )
-        }
     }
 }
 
@@ -173,6 +156,5 @@ enum class Routes {
     ProgramEdit,
     ProgramExec,
     NewRecipe,
-    Settings,
-    Feedback
+    Settings
 }

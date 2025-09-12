@@ -633,7 +633,7 @@ private fun PickedFoodListItem(
             )
         }
         Text(
-            text = stringResource(id = R.string.mass, mass),
+            text = mass.toString() + stringResource(id = R.string.g),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.pickedFood,

@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.velosiped.notes" />
+                  <option name="mobileSdkAppId" value="1:526290347214:android:6632bd8162770563db5c9f" />
+                  <option name="projectId" value="notes-5290c" />
+                  <option name="projectNumber" value="526290347214" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.velosiped.notes.presentation.navigation.Navigation
-import com.velosiped.notes.presentation.screens.mainScreen.MainViewModel
+import com.velosiped.notes.presentation.screens.main.MainViewModel
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsViewModel
 import com.velosiped.notes.ui.theme.CustomTheme
 import com.velosiped.notes.utils.ThemeMode

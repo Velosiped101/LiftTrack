@@ -25,7 +25,8 @@ data class CustomColors(
     val avgRepsDoneColor: Color,
     val avgRepsPlannedColor: Color,
     val avgWeightDoneColor: Color,
-    val readOnlyFieldColor: Color
+    val readOnlyFieldColor: Color,
+    val popUpWindowBackgroundColor: Color
 )
 
 private val lightColors = CustomColors(
@@ -42,7 +43,8 @@ private val lightColors = CustomColors(
     avgRepsDoneColor = AvgRepsColorLight,
     avgRepsPlannedColor = AvgPlannedRepsColorLight,
     avgWeightDoneColor = AvgWeightColorLight,
-    readOnlyFieldColor = ReadOnlyFieldColorLight
+    readOnlyFieldColor = ReadOnlyFieldColorLight,
+    popUpWindowBackgroundColor = Color(0xFFFFFFFF)
 )
 
 private val darkColors = CustomColors(
@@ -59,7 +61,8 @@ private val darkColors = CustomColors(
     avgRepsDoneColor = AvgRepsColorDark,
     avgRepsPlannedColor = AvgPlannedRepsColorDark,
     avgWeightDoneColor = AvgWeightColorDark,
-    readOnlyFieldColor = ReadOnlyFieldColorDark
+    readOnlyFieldColor = ReadOnlyFieldColorDark,
+    popUpWindowBackgroundColor = Color(0xFFFFFFFF)
 )
 
 private val LocalCustomColors = staticCompositionLocalOf {
@@ -77,7 +80,8 @@ private val LocalCustomColors = staticCompositionLocalOf {
         avgRepsDoneColor = Color.Unspecified,
         avgRepsPlannedColor = Color.Unspecified,
         avgWeightDoneColor = Color.Unspecified,
-        readOnlyFieldColor = Color.Unspecified
+        readOnlyFieldColor = Color.Unspecified,
+        popUpWindowBackgroundColor = Color.Unspecified
     )
 }
 

@@ -1,10 +1,11 @@
-package com.velosiped.notes.presentation.screens.mainScreen
+package com.velosiped.notes.presentation.screens.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.velosiped.notes.data.worker.WorkScheduler
 import com.velosiped.notes.domain.usecase.main.MainUseCase
 import com.velosiped.notes.domain.usecase.statistics.ProgramData
+import com.velosiped.notes.utils.GraphData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -56,11 +57,14 @@ class MainViewModel @Inject constructor(
     private fun startUpdatingGraphData(graphData: Map<String, List<ProgramData>>) {
         graphJob?.cancel()
         graphJob = useCase.cycleGraphDataUseCase(graphData) { exercise, values, dates ->
+            val currentGraphData = GraphData(
+                exercise = exercise,
+                values = values,
+                dates = dates
+            )
             _uiState.update {
                 it.copy(
-                    currentExercise = exercise,
-                    currentValues = values,
-                    dates = dates
+                    currentGraphData = currentGraphData
                 )
             }
         }

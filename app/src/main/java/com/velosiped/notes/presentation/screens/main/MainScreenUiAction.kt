@@ -1,4 +1,4 @@
-package com.velosiped.notes.presentation.screens.mainScreen
+package com.velosiped.notes.presentation.screens.main
 
 sealed interface MainScreenUiAction {
     data object CheckForProgramUpdate: MainScreenUiAction

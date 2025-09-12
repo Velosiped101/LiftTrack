@@ -24,8 +24,6 @@
     <string name="found_nothing">No food match your search</string>
     <string name="try_again">Try again</string>
     <string name="add_meal_start_message">Use a search above to add your meal.</string>
-    <string name="mass">%1$d g.</string>
-    <string name="cals">%1$d cal.</string>
     <string name="enter_mass">Mass, g</string>
     <string name="auto" translatable="false">Auto</string>
     <string name="manual">Manual</string>
@@ -48,6 +46,8 @@
     <string name="planned_reps">Need %1$d reps</string>
     <string name="done_reps">reps done</string>
     <string name="kg">kg</string>
+    <string name="g">g</string>
+    <string name="cals">cals</string>
     <string name="progress_execution_check_correctness">Is that right?</string>
     <string name="confirm">Confirm</string>
     <string name="theme_light">Light</string>
@@ -90,9 +90,9 @@
     <string name="statistics">Statistics</string>
     <string name="empty_graph_data">No data to show</string>
     <string name="small_graph_data">Not enough data to show</string>
-    <string name="not_enough_graph_data">Not enough data to show for %1$s</string>
+    <string name="not_enough_graph_data">Not enough data to show</string>
     <string name="graph_headline_volume">volume, kg</string>
-    <string name="graph_indicator_volume" translatable="false">K</string>
+    <string name="graph_indicator_volume">K</string>
     <string name="graph_total_volume">Total volume, kg</string>
     <string name="graph_one_rep_max">One rep max, kg</string>
     <string name="graph_raw_avg_reps">Average reps done</string>
