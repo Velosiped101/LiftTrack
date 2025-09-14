@@ -111,7 +111,7 @@ class FoodManagerViewModel @Inject constructor(
     private fun confirmDialog() {
         val pickedFood = _uiState.value.pickedFood
         val pickedFoodInput = _uiState.value.pickedFoodInput
-        if (!useCase.validateFoodInputUseCase(pickedFoodInput)) return
+       // if (!useCase.validateFoodInputUseCase(pickedFoodInput)) return
         viewModelScope.launch { useCase.addFoodToDbUseCase(pickedFood, pickedFoodInput) }
     }
 

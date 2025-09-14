@@ -23,17 +23,14 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
     private val _uiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
         val uiState = _uiState.asStateFlow()
-    fun uiAction(action: MainScreenUiAction) {
-        when (action) {
-            MainScreenUiAction.CheckForProgramUpdate -> checkForProgramUpdate()
-            MainScreenUiAction.ResetProgramProgress -> resetProgramProgress()
-        }
-    }
 
-    private val _changesFound = MutableSharedFlow<Boolean>()
-    val changesFound = _changesFound.asSharedFlow()
+    private val _programChangesFound = MutableSharedFlow<Boolean>()
+    val programChangesFound = _programChangesFound.asSharedFlow()
 
-    private var graphJob: Job? = null
+    private val _programResetDone = MutableSharedFlow<Unit>()
+    val programResetDone = _programChangesFound.asSharedFlow()
+
+    private var graphUpdateJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -41,7 +38,7 @@ class MainViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         mealHistory = data.mealHistory,
-                        dayProgress = data.dayProgress,
+                        trainingState = data.trainingState,
                         targetCalories = data.prefs.targetCalories
                     )
                 }
@@ -54,9 +51,23 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun checkForProgramUpdate() {
+        viewModelScope.launch {
+            val changesFound = useCase.checkForProgramUpdateUseCase()
+            _programChangesFound.emit(changesFound)
+        }
+    }
+
+    fun resetProgramProgress() {
+        viewModelScope.launch {
+            useCase.resetProgramProgressUseCase()
+            _programResetDone.emit(Unit)
+        }
+    }
+
     private fun startUpdatingGraphData(graphData: Map<String, List<ProgramData>>) {
-        graphJob?.cancel()
-        graphJob = useCase.cycleGraphDataUseCase(graphData) { exercise, values, dates ->
+        graphUpdateJob?.cancel()
+        graphUpdateJob = useCase.cycleGraphDataUseCase(graphData) { exercise, values, dates ->
             val currentGraphData = GraphData(
                 exercise = exercise,
                 values = values,
@@ -67,20 +78,6 @@ class MainViewModel @Inject constructor(
                     currentGraphData = currentGraphData
                 )
             }
-        }
-    }
-
-
-    private fun checkForProgramUpdate() {
-        viewModelScope.launch {
-            val changesFound = useCase.checkForProgramUpdateUseCase()
-            _changesFound.emit(changesFound)
-        }
-    }
-
-    private fun resetProgramProgress() {
-        viewModelScope.launch {
-            useCase.resetProgramProgressUseCase()
         }
     }
 }

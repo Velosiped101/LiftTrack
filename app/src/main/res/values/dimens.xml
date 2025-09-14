@@ -5,12 +5,22 @@
     <dimen name="total_cals_circular_indicator_padding">10dp</dimen>
 
     <dimen name="nutrient_bar_height">3dp</dimen>
+    <dimen name="nutrients_progress_bar_height">6dp</dimen>
     <dimen name="program_card_header_height">36dp</dimen>
     <dimen name="program_card_graph_height">250dp</dimen>
+    <dimen name="picked_food_item_height">24dp</dimen>
+    <dimen name="add_meal_loading_indicator_size">60dp</dimen>
+    <dimen name="add_meal_loading_indicator_stroke_width">8dp</dimen>
+    <dimen name="paging_list_indicators_height">20dp</dimen>
+    <dimen name="nutrients_row_height">14dp</dimen>
+    <dimen name="nutrients_row_name_min_width">10dp</dimen>
+    <dimen name="nutrients_row_value_min_width">25dp</dimen>
 
-    <dimen name="dialog_icon_size">24dp</dimen>
+    <dimen name="icon_size_small">24dp</dimen>
+    <dimen name="icon_size_medium">36dp</dimen>
     <dimen name="settings_card_icon_size">24dp</dimen>
     <dimen name="dialog_icon_button_width">60dp</dimen>
+    <dimen name="food_list_card_picture_size">100dp</dimen>
 
     <dimen name="space_by_4">4dp</dimen>
     <dimen name="space_by_8">8dp</dimen>
@@ -18,5 +28,6 @@
 
     <dimen name="popup_window_corner_radius">4dp</dimen>
     <dimen name="main_card_corner_radius">16dp</dimen>
+    <dimen name="food_list_card_corner_radius">12dp</dimen>
 
 </resources>

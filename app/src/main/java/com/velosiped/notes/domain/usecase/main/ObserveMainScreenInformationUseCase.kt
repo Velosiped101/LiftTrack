@@ -8,7 +8,7 @@ import com.velosiped.notes.domain.usecase.statistics.GetGraphDataUseCase
 import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
 import com.velosiped.notes.domain.usecase.statistics.ProgramData
 import com.velosiped.notes.proto.AppPreferences
-import com.velosiped.notes.utils.DayProgress
+import com.velosiped.notes.utils.TrainingState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -28,15 +28,15 @@ class ObserveMainScreenInformationUseCase @Inject constructor(
             getGraphDataUseCase(GraphDataFormula.Volume)
         ) { mealHistory, program, dataStore, graphData ->
             val programExecLocked = dataStore.programExecLock.programExecutionLocked
-            val dayProgress = when {
-                programExecLocked -> DayProgress.TrainingFinished
-                !programExecLocked && program.isEmpty() -> DayProgress.Rest
-                else -> DayProgress.Training
+            val trainingState = when {
+                programExecLocked -> TrainingState.TRAINING_FINISHED
+                !programExecLocked && program.isEmpty() -> TrainingState.REST
+                else -> TrainingState.TRAINING
             }
             val prefs = dataStore.appPreferences
             MainScreenData(
                 mealHistory = mealHistory,
-                dayProgress = dayProgress,
+                trainingState = trainingState,
                 prefs = prefs,
                 graphData = graphData
             )
@@ -46,7 +46,7 @@ class ObserveMainScreenInformationUseCase @Inject constructor(
 
 data class MainScreenData(
     val mealHistory: List<MealHistory>,
-    val dayProgress: DayProgress,
+    val trainingState: TrainingState,
     val prefs: AppPreferences,
     val graphData: Map<String, List<ProgramData>>
 )

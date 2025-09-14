@@ -37,7 +37,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
@@ -76,12 +75,6 @@ import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.exercise.Exercise
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageLarge
-import com.velosiped.notes.ui.theme.screenMessageMedium
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.tableHeadline
-import com.velosiped.notes.ui.theme.tableItems
-import com.velosiped.notes.ui.theme.topBarHeadline
 import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.DayOfWeek
 import com.velosiped.notes.utils.ExerciseType
@@ -202,7 +195,7 @@ private fun DayPicker(
             .fillMaxWidth()
             .height(40.dp)
     ) {
-        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        HorizontalDivider(color = CustomTheme.colors.dividerColor)
         Box(modifier = Modifier.fillMaxWidth()){
             Canvas(modifier = Modifier.matchParentSize()) {
                 drawRect(
@@ -239,7 +232,7 @@ private fun DayPicker(
                 }
             }
         }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        HorizontalDivider(color = CustomTheme.colors.dividerColor)
     }
 }
 
@@ -254,7 +247,7 @@ private fun DayText(
     ) {
         Text(
             text = stringResource(id = textId),
-            style = MaterialTheme.typography.screenMessageSmall,
+            style = CustomTheme.typography.screenMessageSmall,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -318,10 +311,10 @@ private fun ProgramList(
                     ProgramRow(
                         exercise = stringResource(id = R.string.program_exercise_headline),
                         reps = stringResource(id = R.string.program_exercise_reps_headline),
-                        style = MaterialTheme.typography.tableHeadline
+                        style = CustomTheme.typography.topBarHeadline
                     )
                     HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outline,
+                        color = CustomTheme.colors.dividerColor,
                         modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                     )
                     LazyColumn(
@@ -334,7 +327,7 @@ private fun ProgramList(
                             ProgramRow(
                                 exercise = it.exercise,
                                 reps = it.reps.toString(),
-                                style = MaterialTheme.typography.tableItems,
+                                style = CustomTheme.typography.screenMessageMedium,
                                 modifier = Modifier.clickable {
                                     uiAction(ProgramEditUiAction.SelectProgramExercise(it))
                                     showBottomSheet.value = true
@@ -352,7 +345,7 @@ private fun ProgramList(
                                 Icon(
                                     painter = painterResource(id = R.drawable.add_plus),
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.surfaceTint,
+                                    tint = CustomTheme.colors.iconsTintColor,
                                     modifier = Modifier.scale(.4f)
                                 )
                             }
@@ -371,7 +364,7 @@ private fun ProgramList(
                         Icon(
                             painter = painterResource(id = R.drawable.program_rest_day),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.surfaceTint,
+                            tint = CustomTheme.colors.iconsTintColor,
                             modifier = Modifier
                                 .fillMaxWidth(.5f)
                                 .aspectRatio(1f)
@@ -379,12 +372,12 @@ private fun ProgramList(
                         Spacer(modifier = Modifier.height(20.dp))
                         Text(
                             text = stringResource(id = R.string.empty_program_message),
-                            style = MaterialTheme.typography.screenMessageMedium
+                            style = CustomTheme.typography.screenMessageMedium
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         Text(
                             text = stringResource(id = R.string.build_program_exercise_message),
-                            style = MaterialTheme.typography.screenMessageSmall,
+                            style = CustomTheme.typography.screenMessageSmall,
                             modifier = Modifier
                                 .clickable(
                                     indication = null,
@@ -440,10 +433,10 @@ private fun ExerciseBottomSheet(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = operation,
-                style = MaterialTheme.typography.screenMessageLarge
+                style = CustomTheme.typography.screenMessageLarge
             )
             HorizontalDivider(
-                color = MaterialTheme.colorScheme.outline,
+                color = CustomTheme.colors.dividerColor,
                 modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
             )
             AnimatedContent(targetState = selectingExercise, label = "") { targetState ->
@@ -523,7 +516,7 @@ private fun ExercisePicker(
             items(uiState.exercisesForSelectedType.sortedBy { it.name }) { exercise ->
                 Text(
                     text = exercise.name,
-                    style = MaterialTheme.typography.screenMessageMedium.copy(textAlign = TextAlign.Start),
+                    style = CustomTheme.typography.screenMessageMedium.copy(textAlign = TextAlign.Start),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
@@ -543,7 +536,7 @@ private fun ExercisePicker(
                 val iconTint by animateColorAsState(
                     targetValue = if (it == uiState.exerciseType)
                         CustomTheme.colors.selectedOptionColor
-                    else MaterialTheme.colorScheme.surfaceTint,
+                    else CustomTheme.colors.iconsTintColor,
                     label = ""
                 )
                 IconButton(onClick = { onExerciseTypePicked(it) }) {
@@ -580,7 +573,7 @@ private fun SetsAndRepsSetter(
     ) {
         Text(
             text = uiState.selectedProgramItem?.exercise ?: Constants.EMPTY_STRING,
-            style = MaterialTheme.typography.screenMessageMedium,
+            style = CustomTheme.typography.screenMessageMedium,
             modifier = Modifier.padding(top = 8.dp)
         )
         if (exerciseId == null) {
@@ -639,16 +632,16 @@ private fun SetterSlider(
     ){
         Text(
             text = text,
-            style = MaterialTheme.typography.screenMessageMedium
+            style = CustomTheme.typography.screenMessageMedium
         )
         Slider(
             value = initialValue,
             onValueChange = { onValueChange(it) },
             valueRange = range,
             colors = SliderDefaults.colors(
-                activeTrackColor = MaterialTheme.colorScheme.surfaceTint,
-                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-                thumbColor = MaterialTheme.colorScheme.outline
+                activeTrackColor = CustomTheme.colors.dividerColor,
+                inactiveTrackColor = CustomTheme.colors.dividerColor,
+                thumbColor = CustomTheme.colors.dividerColor
             )
         )
     }
@@ -684,7 +677,7 @@ private fun TopBar(
         title = {
             Text(
                 text = stringResource(id = R.string.program_edit_headline),
-                style = MaterialTheme.typography.topBarHeadline,
+                style = CustomTheme.typography.topBarHeadline,
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -693,7 +686,7 @@ private fun TopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier
                         .fillMaxSize()
                         .scale(.5f)
@@ -705,7 +698,7 @@ private fun TopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_menu_24),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier
                         .fillMaxSize()
                         .scale(.5f)
@@ -725,8 +718,8 @@ private fun DeleteProgramDialog(
 ) {
     BasicAlertDialog(onDismissRequest = { onDismiss() }) {
         Card(
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+            colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.listItemColors.containerColor),
+            border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -780,12 +773,12 @@ private fun DialogIcon(
             Icon(
                 painter = painter,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.surfaceTint,
+                tint = CustomTheme.colors.iconsTintColor,
                 modifier = Modifier.size(36.dp)
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.screenMessageSmall
+                style = CustomTheme.typography.screenMessageSmall
             )
         }
     }

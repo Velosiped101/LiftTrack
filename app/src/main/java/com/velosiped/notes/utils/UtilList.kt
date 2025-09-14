@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.lerp
 import com.velosiped.notes.R
 import com.velosiped.notes.data.api.foodApi.Product
 import com.velosiped.notes.data.database.food.Food
+import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgress
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodInput
 import com.velosiped.notes.proto.ProtoProgramProgress
@@ -158,3 +159,9 @@ enum class Nutrient(val nameTextId: Int) {
     Fat(R.string.fat),
     Carbs(R.string.carbs)
 }
+
+fun List<MealHistory>.getNutrientsIntake() = NutrientsIntake(
+    protein = this.sumOf { it.protein.toDouble() }.toFloat(),
+    fat = this.sumOf { it.fat.toDouble() }.toFloat(),
+    carbs = this.sumOf { it.carbs.toDouble() }.toFloat()
+)

@@ -11,9 +11,9 @@ import com.velosiped.notes.data.database.ingredient.IngredientDao
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistoryDao
 import com.velosiped.notes.domain.repository.DietRepository
+import com.velosiped.notes.utils.NutrientsIntake
 import com.velosiped.notes.utils.SearchMode
-import com.velosiped.notes.utils.TotalNutrients
-import com.velosiped.notes.utils.cut
+import com.velosiped.notes.utils.getNutrientsIntake
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -55,18 +55,9 @@ class DietRepositoryImpl(
         mealHistoryDao.clear()
     }
 
-    override fun getCurrentTotalNutrients(): Flow<TotalNutrients> {
-        return mealHistoryDao.getAll().map { list ->
-            val totalProtein = list.sumOf { it.protein * it.mass/100 }.cut()
-            val totalFat = list.sumOf { it.fat * it.mass/100 }.cut()
-            val totalCarbs = list.sumOf { it.carbs * it.mass/100 }.cut()
-            val totalCals = ((totalProtein + totalCarbs) * 4 + totalFat * 9).toInt()
-            TotalNutrients(
-                cals = totalCals,
-                protein = totalProtein,
-                fat = totalFat,
-                carbs = totalCarbs
-            )
+    override fun getCurrentTotalNutrients(): Flow<NutrientsIntake> {
+        return mealHistoryDao.getAll().map {
+            it.getNutrientsIntake()
         }
     }
 

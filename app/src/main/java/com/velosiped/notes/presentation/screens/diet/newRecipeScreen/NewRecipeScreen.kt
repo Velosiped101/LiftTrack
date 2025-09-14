@@ -50,7 +50,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -73,7 +72,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -89,14 +87,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
+import coil3.toCoilUri
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.ingredient.Ingredient
-import com.velosiped.notes.presentation.screens.components.FoodLargeImage
+import com.velosiped.notes.presentation.screens.components.fooditem.FoodImage
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.inputFieldInput
-import com.velosiped.notes.ui.theme.inputFieldNameSided
-import com.velosiped.notes.ui.theme.topBarHeadline
-import com.velosiped.notes.ui.theme.underlineHint
 import com.velosiped.notes.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -193,7 +188,7 @@ fun NewRecipeScreen(
                 },
                     shape = RoundedCornerShape(100),
                     elevation = FloatingActionButtonDefaults.elevation(0.dp),
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = CustomTheme.colors.floatingButtonColor
                 ) {
                     val rotationAngle = animateFloatAsState(
                         targetValue = when (pagerState.currentPage) {
@@ -205,7 +200,7 @@ fun NewRecipeScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.back),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.surfaceTint,
+                        tint = CustomTheme.colors.iconsTintColor,
                         modifier = Modifier.rotate(rotationAngle.value)
                     )
                 }
@@ -243,23 +238,23 @@ private fun ConfirmationPage(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        FoodLargeImage(
-            uri = uiState.imageUri,
-            onClick = {
-                if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    uiState.generatedUri?.let {
-                        cameraLauncher.launch(it)
-                    }
-                } else {
-                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                    Log.e("permission", "request done")
-                }
-            },
-            onDeletePic = { uiActions(NewRecipeUiAction.DeleteFoodImage) }
+        FoodImage(
+            uri = uiState.imageUri?.toCoilUri(),
+//            onClick = {
+//                if (ContextCompat.checkSelfPermission(
+//                        context,
+//                        Manifest.permission.CAMERA
+//                    ) == PackageManager.PERMISSION_GRANTED
+//                ) {
+//                    uiState.generatedUri?.let {
+//                        cameraLauncher.launch(it)
+//                    }
+//                } else {
+//                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+//                    Log.e("permission", "request done")
+//                }
+//            },
+//            onDeletePic = { uiActions(NewRecipeUiAction.DeleteFoodImage) }
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -274,7 +269,7 @@ private fun ConfirmationPage(
             )
             Text(
                 text = stringResource(id = R.string.name),
-                style = MaterialTheme.typography.underlineHint
+                style = CustomTheme.typography.underlineHint
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -300,7 +295,7 @@ private fun ConfirmationPage(
                 )
                 Text(
                     text = stringResource(id = R.string.mass_placeholder),
-                    style = MaterialTheme.typography.underlineHint
+                    style = CustomTheme.typography.underlineHint
                 )
             }
             MassRadioButton(selected = !isAutoMass, text = stringResource(id = R.string.manual)) {
@@ -323,11 +318,11 @@ private fun MassRadioButton(
         RadioButton(
             selected = selected, onClick = onClick,
             colors = RadioButtonDefaults.colors(
-                selectedColor = MaterialTheme.colorScheme.surfaceTint,
-                unselectedColor = MaterialTheme.colorScheme.surfaceTint
+                selectedColor = CustomTheme.colors.iconsTintColor,
+                unselectedColor = CustomTheme.colors.iconsTintColor
             )
         )
-        Text(text = text, style = MaterialTheme.typography.underlineHint)
+        Text(text = text, style = CustomTheme.typography.underlineHint)
     }
 }
 
@@ -461,7 +456,7 @@ private fun InputField(
     modifier: Modifier = Modifier,
     alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     textFieldAlignment: Alignment = Alignment.Center,
-    textStyle: TextStyle = MaterialTheme.typography.inputFieldInput,
+    textStyle: TextStyle = CustomTheme.typography.textFieldInput,
     keyboardType: KeyboardType = KeyboardType.Number,
     underlineHint: String = Constants.EMPTY_STRING,
     isReadOnly: Boolean = false,
@@ -493,19 +488,19 @@ private fun InputField(
                     if (isReadOnly && showLockIcon) Icon(
                         painter = painterResource(id = R.drawable.lock),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.surfaceTint,
+                        tint = CustomTheme.colors.iconsTintColor,
                         modifier = Modifier
                             .size(12.dp)
                             .align(Alignment.CenterEnd)
                     )
                 }
                 HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outline,
+                    color = CustomTheme.colors.dividerColor,
                     modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
                 )
                 Text(
                     text = underlineHint,
-                    style = MaterialTheme.typography.underlineHint,
+                    style = CustomTheme.typography.underlineHint,
                     modifier = Modifier.onGloballyPositioned { coordinates ->
                         val heightPx = coordinates.size.height
                         val height = with(localDensity) { heightPx.toDp() }
@@ -514,7 +509,6 @@ private fun InputField(
                 )
             }
         },
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceTint),
         readOnly = isReadOnly,
         modifier = modifier
     )
@@ -542,8 +536,8 @@ private fun IngredientCard(
     }
     Card(
         shape = RoundedCornerShape(25),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
+        colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.listItemColors.containerColor),
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
@@ -574,7 +568,7 @@ private fun IngredientCard(
                         textFieldAlignment = Alignment.CenterStart,
                         keyboardType = KeyboardType.Unspecified,
                         underlineHint = stringResource(id = R.string.ingredient_name),
-                        textStyle = MaterialTheme.typography.inputFieldNameSided,
+                        textStyle = CustomTheme.typography.textFieldInput,
                         onUnderlineHeightMeasured = { dropMenuOffset = it },
                         isReadOnly = isReadOnly,
                         showLockIcon = true,
@@ -602,7 +596,7 @@ private fun IngredientCard(
                         offset = DpOffset(x = 0.dp, y = -dropMenuOffset),
                         modifier = Modifier
                             .width(with(LocalDensity.current) { inputWidth.toDp() })
-                            .background(MaterialTheme.colorScheme.surface)
+                            .background(CustomTheme.colors.mainBackgroundColor)
                     ) {
                         ingredientsFound.forEach {
                             DropdownMenuItem(
@@ -625,7 +619,7 @@ private fun IngredientCard(
                     Icon(
                         painter = painterResource(id = R.drawable.delete_from_list),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.surfaceTint,
+                        tint = CustomTheme.colors.iconsTintColor,
                         modifier = Modifier.scale(.35f)
                     )
                 }
@@ -698,7 +692,7 @@ private fun TopBar(
         title = {
             Text(
                 text = stringResource(id = R.string.new_recipe_headline),
-                style = MaterialTheme.typography.topBarHeadline,
+                style = CustomTheme.typography.topBarHeadline,
                 modifier = Modifier.fillMaxWidth(),
             )
         },

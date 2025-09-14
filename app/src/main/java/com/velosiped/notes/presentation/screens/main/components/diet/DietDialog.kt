@@ -5,10 +5,11 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
-import com.velosiped.notes.presentation.screens.components.BasicPopUpWindow
+import com.velosiped.notes.presentation.screens.components.popupwindow.BasePopUpWindow
 import com.velosiped.notes.presentation.screens.components.DialogIconButton
 import com.velosiped.notes.ui.theme.CustomTheme
 
@@ -25,20 +26,20 @@ fun DietDialog(
         onDismissRequest = onDismiss,
         modifier = modifier
     ) {
-        BasicPopUpWindow(
+        BasePopUpWindow(
             options = {
                 DialogIconButton(
-                    iconId = R.drawable.new_recipe,
+                    painter = painterResource(R.drawable.new_recipe),
                     text = stringResource(id = R.string.new_recipe),
                     onClick = { onCreateNewRecipe() }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.add_meal,
+                    painter = painterResource(R.drawable.add_meal),
                     text = stringResource(id = R.string.add_meal),
                     onClick = { onAddMeal() }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.manage_food_db,
+                    painter = painterResource(R.drawable.manage_food_db),
                     text = stringResource(id = R.string.food_manager),
                     onClick = { onManageLocalFoodDb() }
                 )

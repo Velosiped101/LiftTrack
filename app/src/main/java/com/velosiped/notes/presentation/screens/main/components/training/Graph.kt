@@ -3,7 +3,6 @@ package com.velosiped.notes.presentation.screens.main.components.training
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,8 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.underlineHint
 import com.velosiped.notes.utils.SPACE
 import com.velosiped.notes.utils.THOUSAND
 import com.velosiped.notes.utils.TWO
@@ -39,7 +36,7 @@ fun Graph(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        val lineColor = MaterialTheme.colorScheme.outline
+        val lineColor = CustomTheme.colors.graphColors.lineColor
         val yAxeDimension = stringResource(id = R.string.graph_indicator_volume)
         val label = exercise + String.SPACE + stringResource(id = R.string.graph_headline_volume)
 
@@ -58,13 +55,13 @@ fun Graph(
             enabled = true,
             labels = dates,
             padding = dimensionResource(R.dimen.space_by_4),
-            textStyle = MaterialTheme.typography.underlineHint,
+            textStyle = CustomTheme.typography.underlineHint,
         )
         val labelHelperProperties = LabelHelperProperties(
-            textStyle = MaterialTheme.typography.screenMessageSmall
+            textStyle = CustomTheme.typography.screenMessageSmall
         )
         val indicatorProperties = HorizontalIndicatorProperties(
-            textStyle = MaterialTheme.typography.underlineHint,
+            textStyle = CustomTheme.typography.underlineHint,
             padding = dimensionResource(R.dimen.space_by_4),
             contentBuilder = { value ->
                 (value / Float.THOUSAND).format(Int.TWO) + yAxeDimension

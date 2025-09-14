@@ -18,7 +18,7 @@ import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgre
 @Database(
     entities = [Food::class, Exercise::class, MealHistory::class,
         Program::class, Ingredient::class, ProgramProgress::class],
-    version = 11
+    version = 1
 )
 abstract class NotesDatabase: RoomDatabase() {
     abstract fun foodDao(): FoodDao

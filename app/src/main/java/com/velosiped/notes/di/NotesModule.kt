@@ -20,12 +20,12 @@ import com.velosiped.notes.data.repository.exercise.ExerciseRepositoryImpl
 import com.velosiped.notes.data.repository.program.ProgramRepositoryImpl
 import com.velosiped.notes.data.repository.tempprogress.AppProtoDataStoreRepositoryImpl
 import com.velosiped.notes.data.repository.tempprogress.appProtoDataStore
+import com.velosiped.notes.domain.TextFieldValidator
 import com.velosiped.notes.domain.usecase.diet.DietUseCase
 import com.velosiped.notes.domain.usecase.diet.addmeal.ConfirmMealAdditionUseCase
 import com.velosiped.notes.domain.usecase.diet.addmeal.ManagePickedFoodListUseCase
 import com.velosiped.notes.domain.usecase.diet.addmeal.ObserveTotalNutrientsUseCase
 import com.velosiped.notes.domain.usecase.diet.addmeal.SearchFoodUseCase
-import com.velosiped.notes.domain.usecase.diet.addmeal.ValidateMassUseCase
 import com.velosiped.notes.domain.usecase.diet.foodmanager.AddFoodToDbUseCase
 import com.velosiped.notes.domain.usecase.diet.foodmanager.CreateImageFileUseCase
 import com.velosiped.notes.domain.usecase.diet.foodmanager.DeleteFoodFromDbUseCase
@@ -97,6 +97,7 @@ object NotesModule {
             "notes-database"
         )
             .createFromAsset("notesAssetDatabase.db")
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
@@ -188,7 +189,6 @@ object NotesModule {
         dietRepository: DietRepositoryImpl,
         protoDataStoreRepository: AppProtoDataStoreRepositoryImpl
     ): DietUseCase = DietUseCase(
-        validateMassUseCase = ValidateMassUseCase(),
         searchFoodUseCase = SearchFoodUseCase(dietRepository),
         confirmMealAdditionUseCase = ConfirmMealAdditionUseCase(dietRepository),
         observeTotalNutrientsUseCase = ObserveTotalNutrientsUseCase(
@@ -203,7 +203,6 @@ object NotesModule {
         createImageFileUseCase = CreateImageFileUseCase(),
         deleteImageFileUseCase = DeleteImageFileUseCase(),
         observeFoodListUseCase = ObserveFoodListUseCase(dietRepository),
-        validateFoodInputUseCase = ValidateFoodInputUseCase(),
         deleteFoodFromDbUseCase = DeleteFoodFromDbUseCase(dietRepository),
         createNewIngredientsUseCase = CreateNewIngredientsUseCase(dietRepository),
         searchForIngredientsUseCase = SearchForIngredientsUseCase(dietRepository)
@@ -257,4 +256,8 @@ object NotesModule {
         ),
         resetProgramProgressUseCase = ResetProgramProgressUseCase(appProtoDataStoreRepository)
     )
+
+    @Provides
+    @Singleton
+    fun provideTextFieldValidator(): TextFieldValidator = TextFieldValidator()
 }

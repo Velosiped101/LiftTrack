@@ -36,7 +36,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -58,9 +57,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageLarge
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.topBarHeadline
 import com.velosiped.notes.utils.CalorieSurplus
 import com.velosiped.notes.utils.DailyActivityK
 import com.velosiped.notes.utils.Sex
@@ -90,7 +86,7 @@ fun SettingsScreen(
     val hourValues = (0..23).toList()
     val minuteValues = (0..59).toList()
     val scaffoldColor by animateColorAsState(
-        targetValue = MaterialTheme.colorScheme.background,
+        targetValue = CustomTheme.colors.mainBackgroundColor,
         animationSpec = tween(500),
         label = ""
     )
@@ -131,11 +127,11 @@ fun SettingsScreen(
                     )
                     Text(
                         text = stringResource(id = R.string.reset_time),
-                        style = MaterialTheme.typography.screenMessageSmall
+                        style = CustomTheme.typography.screenMessageSmall
                     )
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
                         shape = RoundedCornerShape(25),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -155,7 +151,7 @@ fun SettingsScreen(
                                 valueName = stringResource(id = R.string.hour)
                             )
                             VerticalDivider(
-                                color = MaterialTheme.colorScheme.outline,
+                                color = CustomTheme.colors.dividerColor,
                                 modifier = Modifier.fillMaxHeight()
                             )
                             WheelPicker(
@@ -180,7 +176,7 @@ fun SettingsScreen(
                     )
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
                         shape = RoundedCornerShape(25),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -200,7 +196,7 @@ fun SettingsScreen(
                                 valueName = stringResource(id = R.string.age)
                             )
                             VerticalDivider(
-                                color = MaterialTheme.colorScheme.outline,
+                                color = CustomTheme.colors.dividerColor,
                                 modifier = Modifier.fillMaxHeight()
                             )
                             WheelPicker(
@@ -210,7 +206,7 @@ fun SettingsScreen(
                                 valueName = stringResource(id = R.string.height)
                             )
                             VerticalDivider(
-                                color = MaterialTheme.colorScheme.outline,
+                                color = CustomTheme.colors.dividerColor,
                                 modifier = Modifier.fillMaxHeight()
                             )
                             WheelPicker(
@@ -240,13 +236,13 @@ fun SettingsScreen(
                         uiAction(SettingsUiAction.ConfirmSettings)
                         onNavigateBack()
                     },
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
+                    colors = ButtonDefaults.buttonColors(containerColor = CustomTheme.colors.listItemColors.containerColor),
                     modifier = Modifier.padding(bottom = 8.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.confirm_settings),
-                        style = MaterialTheme.typography.screenMessageSmall
+                        style = CustomTheme.typography.screenMessageSmall
                     )
                 }
             }
@@ -267,7 +263,7 @@ private fun <T: TextRepresentable> SegmentedSelector(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
     ){
-        Text(text = text, style = MaterialTheme.typography.screenMessageSmall)
+        Text(text = text, style = CustomTheme.typography.screenMessageSmall)
         Spacer(modifier = Modifier.height(4.dp))
         SingleChoiceSegmentedButtonRow(
             modifier = Modifier.fillMaxWidth()
@@ -281,9 +277,9 @@ private fun <T: TextRepresentable> SegmentedSelector(
                         count = values.size
                     ),
                     colors = SegmentedButtonDefaults.colors(
-                        activeBorderColor = MaterialTheme.colorScheme.outline,
+                        activeBorderColor = CustomTheme.colors.dividerColor,
                         activeContainerColor = Color.Transparent,
-                        inactiveBorderColor = MaterialTheme.colorScheme.outline,
+                        inactiveBorderColor = CustomTheme.colors.dividerColor,
                         inactiveContainerColor = Color.Transparent,
                     )
                 ) {
@@ -291,7 +287,7 @@ private fun <T: TextRepresentable> SegmentedSelector(
                         text = stringResource(value.textId),
                         maxLines = 1,
                         overflow = TextOverflow.Clip,
-                        style = MaterialTheme.typography.screenMessageSmall,
+                        style = CustomTheme.typography.screenMessageSmall,
                     )
                 }
             }
@@ -334,7 +330,7 @@ private fun <T: Number> WheelPicker(
             Icon(
                 painter = painterResource(id = R.drawable.two_way_arrow),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.surfaceTint,
+                tint = CustomTheme.colors.iconsTintColor,
                 modifier = Modifier
                     .height(height)
                     .aspectRatio(1f)
@@ -353,13 +349,13 @@ private fun <T: Number> WheelPicker(
                     ){
                         Text(
                             text = value.toString(),
-                            style = MaterialTheme.typography.screenMessageLarge
+                            style = CustomTheme.typography.screenMessageLarge
                         )
                     }
                 }
             }
         }
-        Text(text = valueName, style = MaterialTheme.typography.screenMessageSmall)
+        Text(text = valueName, style = CustomTheme.typography.screenMessageSmall)
     }
 }
 
@@ -370,7 +366,7 @@ private fun TargetCaloriesCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
         shape = RoundedCornerShape(25),
         modifier = modifier
             .fillMaxWidth()
@@ -386,12 +382,12 @@ private fun TargetCaloriesCard(
             AnimatedContent(targetState = targetCalories, label = ""){ targetState ->
                 Text(
                     text = targetState.toString(),
-                    style = MaterialTheme.typography.screenMessageLarge
+                    style = CustomTheme.typography.screenMessageLarge
                 )
             }
             Text(
                 text = stringResource(id = R.string.target_calories),
-                style = MaterialTheme.typography.screenMessageSmall
+                style = CustomTheme.typography.screenMessageSmall
             )
         }
     }
@@ -406,7 +402,7 @@ private fun TopBar(
         title = { 
             Text(
                 text = stringResource(R.string.settings_headline),
-                style = MaterialTheme.typography.topBarHeadline,
+                style = CustomTheme.typography.topBarHeadline,
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -415,7 +411,7 @@ private fun TopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier
                         .fillMaxSize()
                         .scale(.5f)

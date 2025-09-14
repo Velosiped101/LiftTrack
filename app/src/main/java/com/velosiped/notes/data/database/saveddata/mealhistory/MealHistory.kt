@@ -8,9 +8,8 @@ data class MealHistory(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
     val time: String,
     val name: String,
-    val protein: Double,
-    val fat: Double,
-    val carbs: Double,
-    val totalCal: Double,
+    val protein: Float,
+    val fat: Float,
+    val carbs: Float,
     val mass: Int
 )

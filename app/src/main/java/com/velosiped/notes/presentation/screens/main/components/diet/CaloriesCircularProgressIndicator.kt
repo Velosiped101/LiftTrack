@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,9 +23,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
+import com.velosiped.notes.presentation.screens.components.CustomHorizontalDivider
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageLarge
-import com.velosiped.notes.ui.theme.screenMessageSmall
 import com.velosiped.notes.utils.FULL_CIRCLE_ANGLE
 import com.velosiped.notes.utils.HALF_CIRCLE_ANGLE
 import com.velosiped.notes.utils.ONE
@@ -47,10 +45,10 @@ fun CaloriesCircularProgressIndicator(
     val progress = currentValue/targetValue.toFloat()
     val sweepAngle = (progress * Float.FULL_CIRCLE_ANGLE).coerceIn(Float.ZERO, Float.FULL_CIRCLE_ANGLE)
     val colors = listOf(
-        CustomTheme.colors.notAchievedColor,
-        CustomTheme.colors.littleAchievedColor,
-        CustomTheme.colors.almostAchievedColor,
-        CustomTheme.colors.achievedColor
+        CustomTheme.colors.progressColors.notAchievedColor,
+        CustomTheme.colors.progressColors.littleAchievedColor,
+        CustomTheme.colors.progressColors.almostAchievedColor,
+        CustomTheme.colors.progressColors.achievedColor
     )
     val capColor = interpolateColors(progress, colors)
     val strokeWidth = dimensionResource(R.dimen.total_cals_circular_indicator_stroke_width)
@@ -94,16 +92,13 @@ fun CaloriesCircularProgressIndicator(
         ) {
             Text(
                 text = currentValue.toString(),
-                style = MaterialTheme.typography.screenMessageLarge,
+                style = CustomTheme.typography.screenMessageLarge,
                 maxLines = Int.ONE
             )
-            HorizontalDivider(
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.fillMaxWidth()
-            )
+            CustomHorizontalDivider()
             Text(
                 text = targetValue.toString(),
-                style = MaterialTheme.typography.screenMessageSmall,
+                style = CustomTheme.typography.screenMessageSmall,
                 maxLines = Int.ONE
             )
         }

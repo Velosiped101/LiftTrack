@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,8 +18,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.underlineHint
 import com.velosiped.notes.utils.NINETY_PERCENT
 import com.velosiped.notes.utils.Nutrient
 import com.velosiped.notes.utils.ONE
@@ -33,9 +30,9 @@ fun NutrientBar(
     modifier: Modifier = Modifier
 ) {
     val color = when (nutrient) {
-        Nutrient.Protein -> CustomTheme.colors.proteinColor
-        Nutrient.Fat -> CustomTheme.colors.fatColor
-        Nutrient.Carbs -> CustomTheme.colors.carbsColor
+        Nutrient.Protein -> CustomTheme.colors.nutrientColors.proteinColor
+        Nutrient.Fat -> CustomTheme.colors.nutrientColors.fatColor
+        Nutrient.Carbs -> CustomTheme.colors.nutrientColors.carbsColor
     }
     Column(
         horizontalAlignment = Alignment.Start,
@@ -44,7 +41,7 @@ fun NutrientBar(
     ) {
         Text(
             text = stringResource(nutrient.nameTextId),
-            style = MaterialTheme.typography.screenMessageSmall
+            style = CustomTheme.typography.screenMessageSmall
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.space_by_4)),
@@ -59,7 +56,7 @@ fun NutrientBar(
             )
             Text(
                 text = value.toString(),
-                style = MaterialTheme.typography.underlineHint,
+                style = CustomTheme.typography.underlineHint,
                 maxLines = Int.ONE,
                 overflow = TextOverflow.Ellipsis
             )

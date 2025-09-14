@@ -31,7 +31,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,10 +57,6 @@ import com.velosiped.notes.R
 import com.velosiped.notes.domain.usecase.statistics.GraphDataFormula
 import com.velosiped.notes.domain.usecase.statistics.ProgramData
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageLarge
-import com.velosiped.notes.ui.theme.screenMessageMedium
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.underlineHint
 import com.velosiped.notes.utils.Constants
 import com.velosiped.notes.utils.Date
 import ir.ehsannarmani.compose_charts.LineChart
@@ -81,7 +76,7 @@ fun StatisticsScreen(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(CustomTheme.colors.mainBackgroundColor)
     ) {
         Graph(
             exercise = uiState.exercise,
@@ -120,15 +115,15 @@ private fun Graph(
         when (exercise) {
             null -> Text(
                 text = stringResource(id = R.string.empty_graph_data),
-                style = MaterialTheme.typography.screenMessageMedium
+                style = CustomTheme.typography.screenMessageMedium
             )
             else -> Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.matchParentSize()
             ){
-                Text(text = exercise, style = MaterialTheme.typography.screenMessageLarge)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+                Text(text = exercise, style = CustomTheme.typography.screenMessageLarge)
+                HorizontalDivider(color = CustomTheme.colors.dividerColor)
                 AnimatedContent(targetState = formula, label = "label") { targetFormula ->
                     when (targetFormula) {
                         GraphDataFormula.Volume, GraphDataFormula.OneRepMax -> {
@@ -177,13 +172,13 @@ private fun Chart(
             enabled = true,
             labels = dates,
             padding = 4.dp,
-            textStyle = MaterialTheme.typography.underlineHint,
+            textStyle = CustomTheme.typography.underlineHint,
         ),
         labelHelperProperties = LabelHelperProperties(
-            textStyle = MaterialTheme.typography.screenMessageSmall
+            textStyle = CustomTheme.typography.screenMessageSmall
         ),
         indicatorProperties = HorizontalIndicatorProperties(
-            textStyle = MaterialTheme.typography.underlineHint,
+            textStyle = CustomTheme.typography.underlineHint,
             padding = 4.dp,
             contentBuilder = { value ->
                 (value / 1000.0).format(2) + indicatorText
@@ -230,11 +225,11 @@ private fun Table(
                         contentAlignment = Alignment.CenterStart,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface)
+                            .background(CustomTheme.colors.mainBackgroundColor)
                     ) {
                         Text(
                             text = date,
-                            style = MaterialTheme.typography.screenMessageMedium,
+                            style = CustomTheme.typography.screenMessageMedium,
                             modifier = Modifier.padding(4.dp)
                         )
                     }
@@ -243,7 +238,8 @@ private fun Table(
                     val repsPlanned = values.first.toInt()
                     val repsDone = values.second.toInt()
                     val weightDone = values.third
-                    val color = if (repsDone >= repsPlanned) CustomTheme.colors.achievedColor else CustomTheme.colors.notAchievedColor
+                    val color = if (repsDone >= repsPlanned) CustomTheme.colors.progressColors.achievedColor
+                    else CustomTheme.colors.progressColors.notAchievedColor
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ){
@@ -276,7 +272,7 @@ private fun TableRowText(
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.screenMessageMedium,
+        style = CustomTheme.typography.screenMessageMedium,
         modifier = modifier
     )
 }
@@ -296,7 +292,7 @@ private fun TableHeader(modifier: Modifier = Modifier) {
         headlines.forEach {
             Text(
                 text = it,
-                style = MaterialTheme.typography.screenMessageMedium,
+                style = CustomTheme.typography.screenMessageMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
@@ -330,13 +326,13 @@ private fun ControlPanel(
         ) {
             Text(
                 text = stringResource(id = R.string.return_back),
-                style = MaterialTheme.typography.screenMessageSmall
+                style = CustomTheme.typography.screenMessageSmall
             )
             IconButton(onClick = { onNavigateBack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier.scale(.75f)
                 )
             }
@@ -366,7 +362,7 @@ private fun FormulaPicker(
     }
     val angle by animateFloatAsState(targetValue = if (expanded) 180f else 0f, label = "")
     Card(
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
@@ -380,9 +376,9 @@ private fun FormulaPicker(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(id = R.string.formula),
-                style = MaterialTheme.typography.screenMessageMedium
+                style = CustomTheme.typography.screenMessageMedium
             )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+            HorizontalDivider(color = CustomTheme.colors.dividerColor)
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -393,13 +389,13 @@ private fun FormulaPicker(
             ) {
                 Text(
                     text = stringResource(currentFormula.textId),
-                    style = MaterialTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
+                    style = CustomTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
                     modifier = Modifier.weight(1f)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.expand_meal_history),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier
                         .clip(RoundedCornerShape(100))
                         .scale(.5f)
@@ -410,7 +406,7 @@ private fun FormulaPicker(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(CustomTheme.colors.mainBackgroundColor)
                     .width(with(LocalDensity.current) { dropdownMenuWidth.toDp() })
                     .fillMaxHeight()
             ) {
@@ -419,7 +415,7 @@ private fun FormulaPicker(
                         text = {
                             Text(
                                 text = stringResource(it.textId),
-                                style = MaterialTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start)
+                                style = CustomTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start)
                             )
                         },
                         onClick = {
@@ -440,7 +436,7 @@ private fun ExercisePicker(
     modifier: Modifier = Modifier
 ) {
     Card(
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
@@ -452,9 +448,9 @@ private fun ExercisePicker(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(id = R.string.exercise),
-                style = MaterialTheme.typography.screenMessageMedium
+                style = CustomTheme.typography.screenMessageMedium
             )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+            HorizontalDivider(color = CustomTheme.colors.dividerColor)
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -468,7 +464,7 @@ private fun ExercisePicker(
                     ) {
                         Text(
                             text = it,
-                            style = MaterialTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
+                            style = CustomTheme.typography.screenMessageSmall.copy(textAlign = TextAlign.Start),
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(8.dp)

@@ -5,9 +5,9 @@ import com.velosiped.notes.data.database.food.Food
 import com.velosiped.notes.data.database.ingredient.Ingredient
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.domain.repository.DietRepository
-import com.velosiped.notes.utils.Constants
+import com.velosiped.notes.utils.NutrientsIntake
 import com.velosiped.notes.utils.SearchMode
-import com.velosiped.notes.utils.TotalNutrients
+import com.velosiped.notes.utils.getNutrientsIntake
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -53,17 +53,8 @@ class FakeDietRepository: DietRepository {
         mealHistory.clear()
     }
 
-    override fun getCurrentTotalNutrients(): Flow<TotalNutrients> {
-        val totalProtein = mealHistory.sumOf { it.protein }
-        val totalFat = mealHistory.sumOf { it.fat }
-        val totalCarbs = mealHistory.sumOf { it.carbs }
-        val totalCals = (totalProtein + totalCarbs) * Constants.CAL_PER_GRAM_PROTEIN_CARB + Constants.CAL_PER_GRAM_FAT * totalFat
-        val totalNutrients = TotalNutrients(
-            protein = totalProtein,
-            fat = totalFat,
-            carbs = totalCarbs,
-            cals = totalCals.toInt()
-        )
+    override fun getCurrentTotalNutrients(): Flow<NutrientsIntake> {
+        val totalNutrients = mealHistory.getNutrientsIntake()
         return flow { emit(totalNutrients) }
     }
 

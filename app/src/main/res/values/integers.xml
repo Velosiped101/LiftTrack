@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="paging_list_loading_indicator_tween_duration">750</integer>
+</resources>

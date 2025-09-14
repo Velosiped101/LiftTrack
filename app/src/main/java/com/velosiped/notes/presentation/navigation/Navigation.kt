@@ -1,24 +1,21 @@
 package com.velosiped.notes.presentation.navigation
 
-import android.content.Intent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.velosiped.notes.StatisticsActivity
-import com.velosiped.notes.presentation.screens.main.MainScreen
-import com.velosiped.notes.presentation.screens.diet.addMealScreen.AddMealScreen
-import com.velosiped.notes.presentation.screens.diet.addMealScreen.AddMealViewModel
+import com.velosiped.notes.presentation.screens.diet.addmeal.AddMealScreen
+import com.velosiped.notes.presentation.screens.diet.addmeal.AddMealViewModel
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerScreen
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerViewModel
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeScreen
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeViewModel
+import com.velosiped.notes.presentation.screens.main.MainScreenWrapper
 import com.velosiped.notes.presentation.screens.main.MainViewModel
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsScreen
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsViewModel
@@ -52,45 +49,20 @@ fun Navigation(
             )
         }
         composable(Routes.Main.name) {
-            val uiState by mainViewModel.uiState.collectAsState()
-            val context = LocalContext.current
-            MainScreen(
-                uiState = uiState,
-                uiAction = mainViewModel::uiAction,
-                changesFound = mainViewModel.changesFound,
-                navigateToNewRecipe = {
-                    navController.navigate(Routes.NewRecipe.name)
-                },
-                navigateToAddMeal = {
-                    navController.navigate(Routes.AddMeal.name)
-                },
-                navigateToFoodDbManager = {
-                    navController.navigate(Routes.FoodManager.name)
-                },
-                navigateToProgramManager = {
-                    navController.navigate(Routes.ProgramEdit.name)
-                },
-                navigateToProgramExec = {
-                    navController.navigate(Routes.ProgramExec.name)
-                },
-                navigateToSettings = {
-                    navController.navigate(Routes.Settings.name)
-                },
-                navigateToStatistics = {
-                    val intent = Intent(context, StatisticsActivity::class.java)
-                    context.startActivity(intent)
-                }
+            MainScreenWrapper(
+                viewModel = mainViewModel,
+                navController = navController
             )
         }
         composable(Routes.AddMeal.name) {
             val viewModel = hiltViewModel<AddMealViewModel>()
             val uiState by viewModel.uiState.collectAsState()
-            AddMealScreen(
-                uiState = uiState,
-                uiActions = viewModel::uiAction,
-                saveCompleted = viewModel.saveCompleted,
-                onNavigateBack = { navController.navigateUp() }
-            )
+//            AddMealScreen(
+//                uiState = uiState,
+//                uiActions = viewModel::uiAction,
+//                saveCompleted = viewModel.saveCompleted,
+//                navigateBack = { navController.navigateUp() }
+//            )
         }
         composable(Routes.FoodManager.name) {
             val viewModel = hiltViewModel<FoodManagerViewModel>()

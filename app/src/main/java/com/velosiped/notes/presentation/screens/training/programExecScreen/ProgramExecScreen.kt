@@ -43,7 +43,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -76,14 +75,6 @@ import androidx.compose.ui.unit.dp
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgress
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.largeCounter
-import com.velosiped.notes.ui.theme.screenMessageLarge
-import com.velosiped.notes.ui.theme.screenMessageMedium
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.smallCounter
-import com.velosiped.notes.ui.theme.tableHeadline
-import com.velosiped.notes.ui.theme.tableItems
-import com.velosiped.notes.ui.theme.underlineHint
 import com.velosiped.notes.utils.WeightIncrement
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -209,15 +200,15 @@ private fun ProgramPage(
         ){
             Text(
                 text = programProgressItem.exercise,
-                style = MaterialTheme.typography.screenMessageLarge
+                style = CustomTheme.typography.screenMessageLarge
             )
             HorizontalDivider(
-                color = MaterialTheme.colorScheme.outline,
+                color = CustomTheme.colors.dividerColor,
                 modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
             )
             Text(
                 text = stringResource(id = R.string.planned_reps, programProgressItem.repsPlanned),
-                style = MaterialTheme.typography.screenMessageSmall
+                style = CustomTheme.typography.screenMessageSmall
             )
         }
         Column(
@@ -244,7 +235,7 @@ private fun ProgramPage(
             )
             Text(
                 text = stringResource(R.string.done_reps),
-                style = MaterialTheme.typography.screenMessageSmall
+                style = CustomTheme.typography.screenMessageSmall
             )
         }
         Spacer(modifier = Modifier.height(1.dp))
@@ -277,7 +268,7 @@ private fun ConfirmationPage(
     ) {
         Text(
             text = stringResource(id = R.string.progress_execution_check_correctness),
-            style = MaterialTheme.typography.screenMessageMedium,
+            style = CustomTheme.typography.screenMessageMedium,
         )
         Spacer(modifier = Modifier.height(24.dp))
         TableItem(
@@ -285,11 +276,11 @@ private fun ConfirmationPage(
             reps = stringResource(id = R.string.program_exercise_reps_headline),
             repsPlanned = stringResource(id = R.string.program_exercise_reps_planned_headline),
             weight = stringResource(id = R.string.program_exercise_weight_headline),
-            style = MaterialTheme.typography.tableHeadline,
+            style = CustomTheme.typography.screenMessageMedium,
             enableColorIndication = false
         )
         HorizontalDivider(
-            color = MaterialTheme.colorScheme.surfaceTint,
+            color = CustomTheme.colors.dividerColor,
             modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
         )
         LazyColumn(
@@ -299,16 +290,16 @@ private fun ConfirmationPage(
         ) {
             items(programProgress) {
                 val color = when {
-                    it.reps < it.repsPlanned * 0.75f -> CustomTheme.colors.notAchievedColor
-                    it.reps < it.repsPlanned -> CustomTheme.colors.almostAchievedColor
-                    else -> CustomTheme.colors.achievedColor
+                    it.reps < it.repsPlanned * 0.75f -> CustomTheme.colors.progressColors.notAchievedColor
+                    it.reps < it.repsPlanned -> CustomTheme.colors.progressColors.almostAchievedColor
+                    else -> CustomTheme.colors.progressColors.achievedColor
                 }
                 TableItem(
                     exercise = it.exercise,
                     reps = it.reps.toString(),
                     repsPlanned = it.repsPlanned.toString(),
                     weight = it.weight.toString(),
-                    style = MaterialTheme.typography.tableItems,
+                    style = CustomTheme.typography.screenMessageMedium,
                     enableColorIndication = true,
                     color = color
                 )
@@ -317,9 +308,9 @@ private fun ConfirmationPage(
         Button(
             onClick = { onConfirm() },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+            border = BorderStroke(1.dp, CustomTheme.colors.dividerColor)
         ) {
-            Text(text = stringResource(id = R.string.confirm), style = MaterialTheme.typography.screenMessageSmall)
+            Text(text = stringResource(id = R.string.confirm), style = CustomTheme.typography.screenMessageSmall)
         }
         Spacer(modifier = Modifier.height(12.dp))
     }
@@ -409,7 +400,7 @@ private fun PageNavigationButton(
             Icon(
                 painter = painterResource(id = R.drawable.next),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.surfaceTint,
+                tint = CustomTheme.colors.iconsTintColor,
                 modifier = Modifier.rotate(if (isNextButton) 0f else 180f)
             )
         }
@@ -427,9 +418,9 @@ private fun RepsSlider(
         onValueChange = { onValueChange(it) },
         valueRange = 0f..repsPlanned + 5,
         colors = SliderDefaults.colors(
-            activeTrackColor = MaterialTheme.colorScheme.surfaceTint,
-            inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-            thumbColor = MaterialTheme.colorScheme.outline
+            activeTrackColor = CustomTheme.colors.dividerColor,
+            inactiveTrackColor = CustomTheme.colors.dividerColor,
+            thumbColor = CustomTheme.colors.dividerColor
         )
     )
 }
@@ -443,9 +434,9 @@ private fun RepsTextBox(
 ) {
     val color by animateColorAsState(
         targetValue = when {
-            reps < repsPlanned * 0.75f -> CustomTheme.colors.notAchievedColor
-            reps < repsPlanned -> CustomTheme.colors.almostAchievedColor
-            else -> CustomTheme.colors.achievedColor
+            reps < repsPlanned * 0.75f -> CustomTheme.colors.progressColors.notAchievedColor
+            reps < repsPlanned -> CustomTheme.colors.progressColors.almostAchievedColor
+            else -> CustomTheme.colors.progressColors.achievedColor
         },
         animationSpec = tween(1000),
         label = "color"
@@ -491,7 +482,7 @@ private fun RepsTextBox(
         ) { targetState ->
             Text(
                 text = targetState.toString(),
-                style = MaterialTheme.typography.largeCounter,
+                style = CustomTheme.typography.screenMessageLarge,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -527,13 +518,13 @@ private fun WeightSetter(
             AnimatedContent(targetState = weight, label = ""){ targetState ->
                 Text(
                     text = targetState.toString(),
-                    style = MaterialTheme.typography.smallCounter
+                    style = CustomTheme.typography.screenMessageSmall
                 )
             }
-            Text(text = stringResource(id = R.string.kg), style = MaterialTheme.typography.screenMessageSmall)
+            Text(text = stringResource(id = R.string.kg), style = CustomTheme.typography.screenMessageSmall)
             if (showWeightIncreaseHint) Text(
                 text = stringResource(id = R.string.increase_hint, initialWeight),
-                style = MaterialTheme.typography.underlineHint
+                style = CustomTheme.typography.underlineHint
             )
         }
         Row(
@@ -556,13 +547,13 @@ private fun WeightChangeButton(
 ) {
     Card(
         onClick = { onClick() },
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        border = BorderStroke(1.dp, CustomTheme.colors.listItemColors.borderColor),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         modifier = Modifier.padding(2.dp)
     ) {
         Text(
             text = increment,
-            style = MaterialTheme.typography.screenMessageSmall,
+            style = CustomTheme.typography.screenMessageSmall,
             modifier = Modifier.padding(4.dp)
         )
     }
@@ -580,7 +571,7 @@ private fun TopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint,
+                    tint = CustomTheme.colors.iconsTintColor,
                     modifier = Modifier
                         .fillMaxSize()
                         .scale(.5f)

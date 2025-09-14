@@ -25,11 +25,10 @@ class ConfirmMealAdditionUseCase @Inject constructor(
             val meal = MealHistory(
                 time = time,
                 name = it.key.name,
-                protein = it.key.protein,
-                fat = it.key.fat,
-                carbs = it.key.carbs,
-                mass = it.value,
-                totalCal = totalCals
+                protein = it.key.protein.toFloat(),
+                fat = it.key.fat.toFloat(),
+                carbs = it.key.carbs.toFloat(),
+                mass = it.value
             )
             dietRepository.insertToHistory(meal)
         }

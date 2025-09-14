@@ -1,4 +1,4 @@
-package com.velosiped.notes.presentation.screens.components
+package com.velosiped.notes.presentation.screens.components.popupwindow
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,25 +10,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
+import com.velosiped.notes.presentation.screens.components.DialogIconButton
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.utils.TWO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicPopUpWindow(
+fun BasePopUpWindow(
     options: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    headerText: String? = null
+    header: @Composable (() -> Unit)? = null
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -43,18 +41,12 @@ fun BasicPopUpWindow(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.space_by_8))
         ) {
-            headerText?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.titleMedium.copy(textAlign = TextAlign.Center),
-                    maxLines = Int.TWO
-                )
-            }
+            header?.invoke()
             options.let {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     it()
                 }
@@ -67,15 +59,15 @@ fun BasicPopUpWindow(
 @Composable
 private fun NoHeaderDialogPreview() {
     CustomTheme {
-        BasicPopUpWindow(
+        BasePopUpWindow(
             options = {
                 DialogIconButton(
-                    iconId = R.drawable.statistics,
+                    painter = painterResource(R.drawable.statistics),
                     text = "Statistics",
                     onClick = { }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.manage_program,
+                    painter = painterResource(R.drawable.manage_program),
                     text = "Manage program",
                     onClick = { }
                 )
@@ -89,25 +81,29 @@ private fun NoHeaderDialogPreview() {
 @Composable
 private fun HeaderDialogPreview() {
     CustomTheme {
-        BasicPopUpWindow(
+        BasePopUpWindow(
             options = {
                 DialogIconButton(
-                    iconId = R.drawable.new_session,
+                    painter = painterResource(R.drawable.new_session),
                     text = "New session",
                     onClick = { }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.drop_current,
+                    painter = painterResource(R.drawable.drop_current),
                     text = "Drop current",
                     onClick = { }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.eye,
+                    painter = painterResource(R.drawable.eye),
                     text = "Eye",
                     onClick = { }
                 )
             },
-            headerText = "Pick one of the following options",
+            header = {
+                PopUpWindowTextHeader(
+                    text = "Pick one of the following options"
+                )
+            },
             modifier = Modifier.fillMaxWidth()
         )
     }

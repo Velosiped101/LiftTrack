@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -16,6 +15,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import com.velosiped.notes.R
 import com.velosiped.notes.presentation.screens.settingsScreen.SettingsViewModel
+import com.velosiped.notes.ui.theme.CustomTheme
 
 @Composable
 fun SplashScreen(
@@ -38,7 +38,7 @@ fun SplashScreen(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize().background(CustomTheme.colors.mainBackgroundColor)
     ) {
         if (isSuperScreen) Image(
             painter = painterResource(id = R.drawable.smile),
@@ -49,7 +49,7 @@ fun SplashScreen(
         ) else Icon(
             painter = painterResource(id = R.drawable.hourglass),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.surfaceTint,
+            tint = CustomTheme.colors.iconsTintColor,
             modifier = Modifier
                 .fillMaxWidth(.25f).scale(.5f)
         )

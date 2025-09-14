@@ -4,8 +4,8 @@ import androidx.paging.PagingData
 import com.velosiped.notes.data.database.food.Food
 import com.velosiped.notes.data.database.ingredient.Ingredient
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
+import com.velosiped.notes.utils.NutrientsIntake
 import com.velosiped.notes.utils.SearchMode
-import com.velosiped.notes.utils.TotalNutrients
 import kotlinx.coroutines.flow.Flow
 
 interface DietRepository {
@@ -27,5 +27,5 @@ interface DietRepository {
 
     suspend fun clearMealHistory()
 
-    fun getCurrentTotalNutrients(): Flow<TotalNutrients>
+    fun getCurrentTotalNutrients(): Flow<NutrientsIntake>
 }

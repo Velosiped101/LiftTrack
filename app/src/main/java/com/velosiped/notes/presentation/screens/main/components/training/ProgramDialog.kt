@@ -5,10 +5,11 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
-import com.velosiped.notes.presentation.screens.components.BasicPopUpWindow
+import com.velosiped.notes.presentation.screens.components.popupwindow.BasePopUpWindow
 import com.velosiped.notes.presentation.screens.components.DialogIconButton
 import com.velosiped.notes.ui.theme.CustomTheme
 
@@ -24,15 +25,15 @@ fun ProgramDialog(
         onDismissRequest = onDismiss,
         modifier = modifier
     ) {
-        BasicPopUpWindow(
+        BasePopUpWindow(
             options = {
                 DialogIconButton(
-                    iconId = R.drawable.statistics,
+                    painter = painterResource(R.drawable.statistics),
                     text = stringResource(id = R.string.statistics),
                     onClick = { onStatistics() }
                 )
                 DialogIconButton(
-                    iconId = R.drawable.manage_program,
+                    painter = painterResource(R.drawable.manage_program),
                     text = stringResource(id = R.string.manage_program),
                     onClick = { onProgramManager() }
                 )

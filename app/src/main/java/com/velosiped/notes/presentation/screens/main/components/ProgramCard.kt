@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,16 +13,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
+import com.velosiped.notes.presentation.screens.components.CustomHorizontalDivider
 import com.velosiped.notes.presentation.screens.main.components.training.Graph
 import com.velosiped.notes.presentation.screens.main.components.training.ProgramCardHeader
 import com.velosiped.notes.ui.theme.CustomTheme
-import com.velosiped.notes.ui.theme.screenMessageMedium
-import com.velosiped.notes.utils.DayProgress
+import com.velosiped.notes.utils.TrainingState
 import com.velosiped.notes.utils.GraphData
 
 @Composable
 fun ProgramCard(
-    currentProgress: DayProgress,
+    currentTrainingState: TrainingState,
     currentGraphData: GraphData,
     onStartTrainingClicked: () -> Unit,
     onClick: () -> Unit,
@@ -40,11 +38,11 @@ fun ProgramCard(
             modifier = Modifier.fillMaxWidth()
         ) {
             ProgramCardHeader(
-                currentProgress = currentProgress,
+                currentTrainingState = currentTrainingState,
                 onIconClicked = onStartTrainingClicked,
                 modifier = Modifier.fillMaxWidth()
             )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+            CustomHorizontalDivider()
             if (currentGraphData.exercise != null) {
                 Graph(
                     exercise = currentGraphData.exercise,
@@ -61,7 +59,7 @@ fun ProgramCard(
                 ) {
                     Text(
                         text = stringResource(R.string.empty_graph_data),
-                        style = MaterialTheme.typography.screenMessageMedium
+                        style = CustomTheme.typography.screenMessageMedium
                     )
                 }
             }
@@ -75,7 +73,7 @@ private fun Preview() {
     CustomTheme {
         ProgramCard(
             onClick = { },
-            currentProgress = DayProgress.Training,
+            currentTrainingState = TrainingState.TRAINING,
             currentGraphData = GraphData(),
             onStartTrainingClicked = {  },
             modifier = Modifier.fillMaxWidth(),

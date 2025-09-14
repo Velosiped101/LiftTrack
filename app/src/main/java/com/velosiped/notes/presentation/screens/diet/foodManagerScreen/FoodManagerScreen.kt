@@ -1,8 +1,6 @@
 package com.velosiped.notes.presentation.screens.diet.foodManagerScreen
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,11 +42,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,8 +60,6 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -73,17 +67,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
+import coil3.toUri
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.food.Food
-import com.velosiped.notes.presentation.screens.components.FoodItemCard
-import com.velosiped.notes.presentation.screens.components.FoodLargeImage
-import com.velosiped.notes.ui.theme.foodInformationInput
-import com.velosiped.notes.ui.theme.screenMessageMedium
-import com.velosiped.notes.ui.theme.screenMessageSmall
-import com.velosiped.notes.ui.theme.topBarHeadline
-import com.velosiped.notes.ui.theme.underlineHint
+import com.velosiped.notes.presentation.screens.components.fooditem.FoodImage
+import com.velosiped.notes.presentation.screens.components.fooditem.FoodItemCard
+import com.velosiped.notes.ui.theme.CustomTheme
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
@@ -221,16 +210,16 @@ private fun InputPage(
             },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        FoodLargeImage(
+        FoodImage(
             uri = uiState.pickedFoodInput.imageUri?.toUri(),
-            onClick = {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    uiState.generatedUri?.let { cameraLauncher.launch(it) }
-                } else {
-                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                }
-            },
-            onDeletePic = { uiActions(FoodManagerUiAction.DeleteFoodPicture) }
+//            onClick = {
+//                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//                    uiState.generatedUri?.let { cameraLauncher.launch(it) }
+//                } else {
+//                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+//                }
+//            },
+//            onDeletePic = { uiActions(FoodManagerUiAction.DeleteFoodPicture) }
         )
         Spacer(modifier = Modifier.height(16.dp))
         InputField(
@@ -281,13 +270,12 @@ private fun MainPage(
             ) {
                 items(uiState.foodList.sortedBy { it.name }) { item ->
                     val colors = if (uiState.selectedForDeleteList.contains(item))
-                        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-                    else CardDefaults.cardColors(containerColor = Color.Transparent)
+                        CardDefaults.cardColors(containerColor = CustomTheme.colors.listItemColors.markedForDeleteColor)
+                    else CardDefaults.cardColors(containerColor = CustomTheme.colors.listItemColors.containerColor)
                     FoodItemCard(
                         food = item,
                         onFoodItemClicked = { onFoodItemClicked(item) },
-                        onLongClick = { onLongClick(item) },
-                        colors = colors
+                        onLongClick = { onLongClick(item) }
                     )
                 }
             }
@@ -300,18 +288,18 @@ private fun MainPage(
                     Icon(
                         painter = painterResource(id = R.drawable.empty_food_menu),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.surfaceTint,
+                        tint = CustomTheme.colors.iconsTintColor,
                         modifier = Modifier.fillMaxWidth(.5f)
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(id = R.string.empty_food_menu_message),
-                        style = MaterialTheme.typography.screenMessageMedium
+                        style = CustomTheme.typography.screenMessageMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(id = R.string.empty_food_menu_message_hint),
-                        style = MaterialTheme.typography.screenMessageSmall
+                        style = CustomTheme.typography.screenMessageSmall
                     )
                 }
             }
@@ -358,15 +346,14 @@ private fun InputField(
                 ) {
                     textField()
                     Spacer(modifier = Modifier.height(4.dp))
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+                    HorizontalDivider(color = CustomTheme.colors.dividerColor)
                 }
             },
-            textStyle = MaterialTheme.typography.foodInformationInput,
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.surfaceTint)
+            textStyle = CustomTheme.typography.textFieldInput
         )
         Text(
             text = fieldName,
-            style = MaterialTheme.typography.underlineHint
+            style = CustomTheme.typography.underlineHint
         )
     }
 }
@@ -395,7 +382,7 @@ private fun TopBar(
                 ) {
                     Text(
                         text = stringResource(id = R.string.food_manager_headline),
-                        style = MaterialTheme.typography.topBarHeadline,
+                        style = CustomTheme.typography.topBarHeadline,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -409,7 +396,7 @@ private fun TopBar(
                         .scale(0.5f),
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.surfaceTint
+                    tint = CustomTheme.colors.iconsTintColor
                 )
             }
         },
@@ -436,7 +423,7 @@ private fun TopBar(
                                         .scale(0.5f),
                                     painter = painterResource(id = R.drawable.add_plus),
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.surfaceTint
+                                    tint = CustomTheme.colors.iconsTintColor
                                 )
                             }
                         }
@@ -448,12 +435,11 @@ private fun TopBar(
                                 .scale(0.5f),
                             painter = painterResource(id = R.drawable.confirm),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.surfaceTint
+                            tint = CustomTheme.colors.iconsTintColor
                         )
                     }
                 }
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
+        }
     )
 }
