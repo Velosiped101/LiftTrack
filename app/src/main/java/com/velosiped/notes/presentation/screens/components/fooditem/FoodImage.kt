@@ -1,5 +1,6 @@
 package com.velosiped.notes.presentation.screens.components.fooditem
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.Uri
 import coil3.compose.AsyncImage
 import com.velosiped.notes.R
 import com.velosiped.notes.ui.theme.CustomTheme

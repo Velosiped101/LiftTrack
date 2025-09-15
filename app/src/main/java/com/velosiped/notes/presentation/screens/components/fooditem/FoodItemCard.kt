@@ -3,6 +3,7 @@ package com.velosiped.notes.presentation.screens.components.fooditem
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.toUri
+import androidx.core.net.toUri
 import com.velosiped.notes.R
 import com.velosiped.notes.data.database.food.Food
 import com.velosiped.notes.ui.theme.CustomTheme
@@ -31,15 +33,21 @@ fun FoodItemCard(
     food: Food,
     onFoodItemClicked: (Food) -> Unit,
     onLongClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    markedForDelete: Boolean = false
 ) {
+    val containerColor = if (markedForDelete) CustomTheme.colors.listItemColors.markedForDeleteColor
+    else CustomTheme.colors.listItemColors.containerColor
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(dimensionResource(R.dimen.food_list_card_corner_radius)))
-            .combinedClickable(onLongClick = onLongClick) {
-                onFoodItemClicked(food)
-            }
-            .background(CustomTheme.colors.listItemColors.containerColor),
+            .combinedClickable(
+                onLongClick = onLongClick,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onFoodItemClicked(food) }
+            .background(containerColor),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

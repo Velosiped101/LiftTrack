@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id ("com.google.protobuf") version "0.9.4"
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -121,10 +120,6 @@ dependencies {
     implementation(libs.compose.charts)
 
     implementation(libs.mobileads)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.database)
 }
 
 protobuf {

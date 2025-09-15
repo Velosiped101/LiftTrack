@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.velosiped.notes.utils.EMPTY
 
 @Composable
 fun AddMealScreenWrapper(
@@ -29,7 +30,7 @@ fun AddMealScreenWrapper(
         currentIntake = uiState.currentIntake,
         selectedFoodMap = uiState.selectedFoodMap,
         targetCalories = uiState.targetCalories,
-        selectedFoodMass = uiState.selectedFoodMass.toString(),
+        selectedFoodMass = uiState.selectedFoodMass,
         removeFoodFromSelectedMap = viewModel::removeFoodFromPickedList,
         selectFood = viewModel::onFoodPicked,
         confirmMeal = viewModel::confirmMealAddition,

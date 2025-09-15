@@ -10,8 +10,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.velosiped.notes.presentation.screens.diet.addmeal.AddMealScreen
+import com.velosiped.notes.presentation.screens.diet.addmeal.AddMealScreenWrapper
 import com.velosiped.notes.presentation.screens.diet.addmeal.AddMealViewModel
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerScreen
+import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerScreenWrapper
 import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerViewModel
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeScreen
 import com.velosiped.notes.presentation.screens.diet.newRecipeScreen.NewRecipeViewModel
@@ -56,22 +58,16 @@ fun Navigation(
         }
         composable(Routes.AddMeal.name) {
             val viewModel = hiltViewModel<AddMealViewModel>()
-            val uiState by viewModel.uiState.collectAsState()
-//            AddMealScreen(
-//                uiState = uiState,
-//                uiActions = viewModel::uiAction,
-//                saveCompleted = viewModel.saveCompleted,
-//                navigateBack = { navController.navigateUp() }
-//            )
+            AddMealScreenWrapper(
+                viewModel = viewModel,
+                navigateBack = { navController.popBackStack() }
+            )
         }
         composable(Routes.FoodManager.name) {
             val viewModel = hiltViewModel<FoodManagerViewModel>()
-            val uiState by viewModel.uiState.collectAsState()
-            FoodManagerScreen(
-                uiState = uiState,
-                uiActions = viewModel::uiActions,
-                onNavigateBack = { navController.navigateUp() },
-                loadingFinished = viewModel.loadingFinished
+            FoodManagerScreenWrapper(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
         composable(Routes.ProgramEdit.name) {

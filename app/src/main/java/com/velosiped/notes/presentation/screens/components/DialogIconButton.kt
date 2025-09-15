@@ -29,7 +29,7 @@ fun DialogIconButton(
         modifier = modifier.width(dimensionResource(R.dimen.dialog_icon_button_width))
     ) {
         IconButton(
-            onClick = onClick
+            onClick = { onClick() }
         ) {
             CustomIcon(painter = painter)
         }

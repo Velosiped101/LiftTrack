@@ -120,7 +120,10 @@ fun AddMealScreen(
         MassInputDialog(
             value = selectedFoodMass,
             onValueChange = changeSelectedFoodMass,
-            onConfirm = insertSelectedFoodToMap,
+            onConfirm = {
+                insertSelectedFoodToMap()
+                massDialogIsActive = false
+            },
             onDismiss = { massDialogIsActive = false }
         )
     }

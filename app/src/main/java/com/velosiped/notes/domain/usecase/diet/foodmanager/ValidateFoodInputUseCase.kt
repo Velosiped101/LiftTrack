@@ -1,6 +1,6 @@
 package com.velosiped.notes.domain.usecase.diet.foodmanager
 
-import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodInput
+import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerUiState.FoodInput
 
 class ValidateFoodInputUseCase {
     operator fun invoke(foodInput: FoodInput): Boolean {

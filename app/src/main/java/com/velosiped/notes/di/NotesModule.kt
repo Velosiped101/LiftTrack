@@ -55,6 +55,7 @@ import com.velosiped.notes.domain.usecase.training.programexec.FinishTrainingUse
 import com.velosiped.notes.domain.usecase.training.programexec.GetTrainingStateUseCase
 import com.velosiped.notes.domain.usecase.training.programexec.UpdateStoredProgressUseCase
 import com.velosiped.notes.proto.AppProtoStore
+import com.velosiped.notes.utils.CameraHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,7 +98,6 @@ object NotesModule {
             "notes-database"
         )
             .createFromAsset("notesAssetDatabase.db")
-            .fallbackToDestructiveMigration(true)
             .build()
     }
 
@@ -260,4 +260,8 @@ object NotesModule {
     @Provides
     @Singleton
     fun provideTextFieldValidator(): TextFieldValidator = TextFieldValidator()
+
+    @Provides
+    fun provideCameraHelper(@ApplicationContext context: Context): CameraHelper =
+        CameraHelper(context = context)
 }

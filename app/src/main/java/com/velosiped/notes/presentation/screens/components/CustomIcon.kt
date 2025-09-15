@@ -19,18 +19,17 @@ fun CustomIcon(
     contentDescription: String? = null,
     onClick: (() -> Unit)? = null
 ) {
+    val iconModifier = if (onClick != null) {
+        modifier.clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+        ) { onClick() }
+    } else modifier
+
     Icon(
         painter = painter,
         contentDescription = contentDescription,
         tint = CustomTheme.colors.iconsTintColor,
-        modifier = modifier
-            .size(dimensionResource(R.dimen.icon_size_small))
-            .clickable(
-                enabled = onClick != null,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                onClick?.invoke()
-            }
+        modifier = iconModifier.size(dimensionResource(R.dimen.icon_size_small))
     )
 }

@@ -83,7 +83,7 @@ class AddMealViewModel @Inject constructor(
     fun onMassInputChanged(input: String) {
         val massIsValid = textFieldValidator.validateMass(input)
         if (massIsValid) _uiState.update {
-            it.copy(selectedFoodMass = input.toInt())
+            it.copy(selectedFoodMass = input)
         }
     }
 
@@ -95,7 +95,7 @@ class AddMealViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 selectedFood = pickedFood.first,
-                selectedFoodMass = pickedFood.second
+                selectedFoodMass = pickedFood.second?.toString() ?: String.EMPTY
             )
         }
     }
@@ -103,7 +103,7 @@ class AddMealViewModel @Inject constructor(
     fun addFoodToPickedList() {
         val updatedList = useCase.managePickedFoodListUseCase.addFood(
             uiState.value.selectedFood!!,
-            uiState.value.selectedFoodMass!!,
+            uiState.value.selectedFoodMass.toInt(),
             uiState.value.selectedFoodMap
         )
         _uiState.update {

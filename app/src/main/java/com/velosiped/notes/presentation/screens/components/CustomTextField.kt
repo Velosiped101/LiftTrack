@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.velosiped.notes.R
@@ -21,7 +23,9 @@ import com.velosiped.notes.ui.theme.CustomTheme
 fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    underlineHint: String? = null,
+    keyboardType: KeyboardType = KeyboardType.Unspecified
 ) {
     BasicTextField(
         value = TextFieldValue(
@@ -31,7 +35,9 @@ fun CustomTextField(
         onValueChange = { onValueChange(it.text) },
         singleLine = true,
         textStyle = CustomTheme.typography.screenMessageMedium,
-        keyboardOptions = KeyboardOptions(showKeyboardOnFocus = true),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType
+        ),
         cursorBrush = SolidColor(CustomTheme.colors.textFieldColors.cursorColor),
         decorationBox = {
             Column(
@@ -40,6 +46,12 @@ fun CustomTextField(
             ) {
                 it()
                 CustomHorizontalDivider()
+                underlineHint?.let {
+                    Text(
+                        text = it,
+                        style = CustomTheme.typography.underlineHint
+                    )
+                }
             }
         },
         modifier = modifier
@@ -67,6 +79,7 @@ private fun NumberPreview() {
         CustomTextField(
             value = "56.0",
             onValueChange = {  },
+            underlineHint = "mass, g",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.space_by_4))

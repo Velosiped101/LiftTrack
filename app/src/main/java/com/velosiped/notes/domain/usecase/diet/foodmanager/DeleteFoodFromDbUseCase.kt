@@ -10,15 +10,7 @@ import javax.inject.Inject
 class DeleteFoodFromDbUseCase @Inject constructor(
     private val dietRepository: DietRepository
 ) {
-    suspend operator fun invoke(foodToDeleteList: List<Food>, context: Context) {
-        val imageUris = foodToDeleteList.mapNotNull { it.imageUrl?.toUri() }
+    suspend operator fun invoke(foodToDeleteList: List<Food>) {
         dietRepository.delete(foodToDeleteList)
-        imageUris.forEach {
-            try {
-                context.contentResolver.delete(it, null, null) // i'm tired
-            } catch (e: Exception) {
-                Log.e("delete image file error", e.message.toString())
-            }
-        }
     }
 }

@@ -6,6 +6,7 @@ object Constants {
     const val DOUBLE_PATTERN = "^\\d{0,2}(\\.\\d{0,2})?$"
     const val GENERATED_ID_INITIAL = 2000000000
     const val CAL_PER_GRAM_PROTEIN_CARB = 4
+    const val INT_PATTERN = ""
     const val CAL_PER_GRAM_FAT = 9
 }
 

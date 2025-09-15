@@ -2,12 +2,13 @@ package com.velosiped.notes.utils
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
+import androidx.core.net.toUri
 import com.velosiped.notes.R
 import com.velosiped.notes.data.api.foodApi.Product
 import com.velosiped.notes.data.database.food.Food
 import com.velosiped.notes.data.database.saveddata.mealhistory.MealHistory
 import com.velosiped.notes.data.database.saveddata.programProgress.ProgramProgress
-import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodInput
+import com.velosiped.notes.presentation.screens.diet.foodManagerScreen.FoodManagerUiState.FoodInput
 import com.velosiped.notes.proto.ProtoProgramProgress
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -26,21 +27,23 @@ fun ClosedFloatingPointRange<Float>.toFloatList(step: Float): List<Float> {
 
 fun FoodInput.toFood(): Food {
     return Food(
+        id = this.id,
         name = this.name,
         protein = this.protein.toDouble(),
         fat = this.fat.toDouble(),
         carbs = this.carbs.toDouble(),
-        imageUrl = this.imageUri
+        imageUrl = this.imageUri?.toString()
     )
 }
 
 fun Food?.toFoodInput(): FoodInput = this?.let {
     FoodInput(
+        id = this.id,
         name = this.name,
         protein = this.protein.toString(),
         fat = this.fat.toString(),
         carbs = this.carbs.toString(),
-        imageUri = this.imageUrl
+        imageUri = this.imageUrl?.toUri()
     )
 } ?: FoodInput()
 

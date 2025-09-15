@@ -9,6 +9,8 @@
     <string name="carbs_short">C</string>
     <string name="nutrients_per_100_grams">Nutrients per 100 grams:</string>
     <string name="app_needs_camera_permission">App needs your permission to use a camera</string>
+    <string name="take_a_new_photo">Take a new photo</string>
+    <string name="delete_current_photo">Delete current photo</string>
     <string name="name">Name</string>
     <string name="ingredient_name">Ingredient</string>
     <string name="protein">Protein, g</string>

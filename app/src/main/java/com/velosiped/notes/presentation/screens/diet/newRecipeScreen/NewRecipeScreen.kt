@@ -239,7 +239,7 @@ private fun ConfirmationPage(
         modifier = Modifier.fillMaxSize()
     ) {
         FoodImage(
-            uri = uiState.imageUri?.toCoilUri(),
+            uri = uiState.imageUri,
 //            onClick = {
 //                if (ContextCompat.checkSelfPermission(
 //                        context,
