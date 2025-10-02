@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen_dest_new_recipe">New recipe</string>
+    <string name="main_screen_dest_add_meal">Add meal</string>
+    <string name="main_screen_dest_food_manager">Food manager</string>
+
+    <string name="main_screen_dest_stats">Statistics</string>
+    <string name="main_screen_dest_program_manager">Program manager</string>
+
+    <string name="main_screen_training_continue_previous">Resume old</string>
+    <string name="main_screen_training_start_new">Start new</string>
+    <string name="main_screen_training_program_changed">Looks like you\'ve changed your program</string>
+
+    <string name="training_state_rest">Rest day</string>
+    <string name="training_state_awaits">Training awaits</string>
+    <string name="training_state_done">Training done</string>
+
+    <string name="main_screen_diet_card_header">Calorie intake for today</string>
+
+    <string name="main_screen_training_card_empty_graph">No data to show</string>
+
+    <string name="main_screen_settings_card_header">Settings</string>
+</resources>

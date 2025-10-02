@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_food_menu_message">Your food database is empty.</string>
+    <string name="empty_food_menu_message_hint">Press plus icon to add a new food.</string>
+    <string name="food_manager_headline">My food</string>
+    <string name="food_manager_name">Name</string>
+    <string name="food_manager_protein">Protein</string>
+    <string name="food_manager_fat">Fat</string>
+    <string name="food_manager_carbs">Carbs</string>
+</resources>

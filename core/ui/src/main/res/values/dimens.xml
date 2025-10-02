@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="circular_indicator_stroke_width">8dp</dimen>
+    <dimen name="paging_list_indicators_height">20dp</dimen>
+    <dimen name="nutrients_row_height">14dp</dimen>
+    <dimen name="nutrients_row_name_min_width">10dp</dimen>
+    <dimen name="nutrients_row_value_min_width">25dp</dimen>
+    <dimen name="card_border_width">1dp</dimen>
+    <dimen name="icon_size_default">24dp</dimen>
+    <dimen name="dialog_icon_button_width">60dp</dimen>
+    <dimen name="food_list_card_picture_size">100dp</dimen>
+    <dimen name="top_bar_action_box_size">48dp</dimen>
+
+    <dimen name="space_by_4">4dp</dimen>
+    <dimen name="space_by_8">8dp</dimen>
+    <dimen name="space_by_12">12dp</dimen>
+
+    <dimen name="popup_window_corner_radius">4dp</dimen>
+    <dimen name="box_card_corner_radius">12dp</dimen>
+</resources>

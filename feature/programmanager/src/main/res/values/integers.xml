@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="day_picker_gradient_end_y">150</integer>
+    <integer name="program_manager_min_sets">1</integer>
+    <integer name="program_manager_max_sets">5</integer>
+    <integer name="program_manager_min_reps">5</integer>
+    <integer name="program_manager_max_reps">20</integer>
+</resources>

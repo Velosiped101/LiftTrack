@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">LiftTrack</string>
+
+    <string name="protein">Protein</string>
+    <string name="fat">Fat</string>
+    <string name="carbs">Carbs</string>
+
+    <string name="protein_short">P</string>
+    <string name="fat_short">F</string>
+    <string name="carbs_short">C</string>
+
+    <string name="app_needs_camera_permission">App needs your permission to use a camera</string>
+    <string name="take_a_new_photo">Take a new photo</string>
+    <string name="delete_current_photo">Delete current photo</string>
+
+    <string name="retry">Retry</string>
+
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+
+
+
+
+
+    <string name="small_graph_data">Not enough data to show</string>
+    <string name="not_enough_graph_data">Not enough data to show</string>
+    <string name="graph_headline_volume">volume, kg</string>
+    <string name="graph_indicator_volume">K</string>
+    <string name="graph_total_volume">Total volume, kg</string>
+    <string name="graph_one_rep_max">One rep max, kg</string>
+    <string name="graph_raw_avg_reps">Average reps done</string>
+    <string name="graph_raw_avg_reps_planned">Average reps planned</string>
+    <string name="graph_raw_avg_weight">Average weight done, kg</string>
+    <string name="graph_raw_max_reps">Max reps done</string>
+    <string name="graph_raw_max_reps_planned">Max reps planned</string>
+    <string name="graph_raw_max_weight">Max weight done, kg</string>
+    <string name="formula">Formula</string>
+    <string name="exercise">Exercise</string>
+    <string name="formula_volume">Volume</string>
+    <string name="formula_one_rep_max">One rep max</string>
+    <string name="formula_raw">Raw</string>
+    <string name="feedback_message_type">Message</string>
+    <string name="feedback_bug_report_type">Bug report</string>
+    <string name="allow_system_info">Share device information</string>
+    <string name="send_feedback">Send</string>
+    <string name="send_feedback_headline">Send your feedback</string>
+    <string name="feedback_success">Thank you for your feedback</string>
+    <string name="feedback_failure">I could not receive your feedback =(.\nTry again later.</string>
+    <string name="feedback_content_placeholder">It is a completely different kind of text field… altogether</string>
+    <string name="meal_history">Today\'s meal history</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+
+
+    <string name="unknown_host">Unknown host</string>
+    <string name="socket_timeout">Server timeout</string>
+    <string name="connection_error">Connection failed</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="unknown_connection_error">Unknown connection error</string>
+    <string name="bad_request">Bad request</string>
+    <string name="forbidden">Forbidden</string>
+    <string name="not_found">Not found</string>
+    <string name="too_many_requests">Too many requests</string>
+    <string name="server_error">Server error</string>
+    <string name="bad_gateway">Bad gateway</string>
+    <string name="server_unavailable">Server unavailable</string>
+    <string name="unknown_http_error">Unknown error</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+</resources>

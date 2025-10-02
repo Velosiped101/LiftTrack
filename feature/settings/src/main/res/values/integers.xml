@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="reset_hour_min">0</integer>
+    <integer name="reset_hour_max">23</integer>
+    <integer name="reset_minute_min">0</integer>
+    <integer name="reset_minute_max">59</integer>
+    <integer name="body_mass_min">30</integer>
+    <integer name="body_mass_max">250</integer>
+    <integer name="age_min">10</integer>
+    <integer name="age_max">99</integer>
+    <integer name="height_min">100</integer>
+    <integer name="height_max">250</integer>
+</resources>

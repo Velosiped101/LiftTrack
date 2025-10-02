@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option java_package = "com.velosiped.notes.data.datastore";
+option java_multiple_files = true;
+
+message ProtoProgramProgress {
+    int32 day = 1;
+    int32 month = 2;
+    int32 year = 3;
+    int32 reps = 4;
+    int32 repsPlanned = 5;
+    string exercise = 6;
+    float weight = 7;
+};
+
+enum ProtoThemeMode {
+    System = 0;
+    Dark = 1;
+    Light = 2;
+};
+
+enum ProtoSex {
+    Male = 0;
+    Female = 1;
+};
+
+enum ProtoDailyActivityK {
+    Minimal = 0;
+    Slight = 1;
+    Medium = 2;
+    High = 3;
+    VeryHigh = 4;
+};
+
+enum ProtoCalorieSurplus {
+    Maintenance = 0;
+    Surplus = 1;
+    Deficit = 2;
+};
+
+message ProtoResetTime {
+    int32 hour = 1;
+    int32 minute = 2;
+};
+
+message AppPreferences {
+    ProtoThemeMode themeMode = 1;
+    float bodyMass = 2;
+    int32 targetCalories = 3;
+    int32 height = 4;
+    int32 age = 5;
+    ProtoSex sex = 6;
+    ProtoDailyActivityK dailyActivityK = 7;
+    ProtoCalorieSurplus calorieSurplus = 8;
+    bool isNotFirstLaunch = 9;
+    ProtoResetTime resetTime = 10;
+};
+
+message ProgramExecLock {
+    bool programExecutionLocked = 1;
+};
+
+message AppProtoStore {
+    repeated ProtoProgramProgress protoProgramProgressItems = 1;
+    AppPreferences appPreferences = 2;
+    ProgramExecLock programExecLock = 3;
+};

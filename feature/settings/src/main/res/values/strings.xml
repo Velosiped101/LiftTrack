@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="theme">Theme</string>
+    <string name="sex">Sex</string>
+    <string name="sex_male">Male</string>
+    <string name="sex_female">Female</string>
+    <string name="daily_activity">Daily activity</string>
+    <string name="daily_activity_minimal">Min</string>
+    <string name="daily_activity_slight">Low</string>
+    <string name="daily_activity_medium">Mid</string>
+    <string name="daily_activity_high">High</string>
+    <string name="daily_activity_very_high">Ultra</string>
+    <string name="goal">Goal</string>
+    <string name="goal_maintenance">Maintain</string>
+    <string name="goal_surplus">Gain</string>
+    <string name="goal_deficit">Lose</string>
+
+    <string name="settings_age">Age</string>
+    <string name="settings_height">Height, cm</string>
+    <string name="settings_body_mass">Mass, kg</string>
+    <string name="settings_target_calories">Target calories</string>
+    <string name="settings_confirm">Confirm</string>
+    <string name="settings_hour">Hour</string>
+    <string name="settings_minute">Minute</string>
+    <string name="settings_reset_time">Daily reset time</string>
+
+    <string name="settings_headline">Settings</string>
+</resources>

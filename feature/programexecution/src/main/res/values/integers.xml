@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="program_exec_reps_min">0</integer>
+    <integer name="program_exec_reps_max_overtop">5</integer>
+    <integer name="program_exec_weight_max">500</integer>
+    <integer name="program_exec_weight_min">0</integer>
+</resources>

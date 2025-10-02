@@ -1,0 +1,8 @@
+<paths>
+    <external-files-path
+        name="NotesImages"
+        path="/" />
+    <external-cache-path
+        name="cache"
+        path="/" />
+</paths>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="program_exec_results_row_height">36dp</dimen>
+    <dimen name="program_exec_reps_counter_blur_radius">10dp</dimen>
+    <dimen name="program_exec_reps_counter_blur_height">100dp</dimen>
+    <dimen name="program_exec_reps_setter_spacer_height">50dp</dimen>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="try_again">Try again</string>
+    <string name="found_nothing">No food match your search</string>
+    <string name="add_meal_start_message">Use a search above to add your meal.</string>
+    <string name="add_meal_confirm">Confirm</string>
+    <string name="enter_mass_in_grams">Enter mass in grams</string>
+    <string name="add_meal_g">g</string>
+    <string name="local">Local</string>
+    <string name="remote">Remote</string>
+</resources>

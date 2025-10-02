@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="total_cals_circular_indicator_stroke_width">14dp</dimen>
+    <dimen name="total_cals_circular_indicator_cap_diameter">8dp</dimen>
+    <dimen name="total_cals_circular_indicator_padding">10dp</dimen>
+
+    <dimen name="nutrient_bar_height">3dp</dimen>
+    <dimen name="program_card_header_height">36dp</dimen>
+    <dimen name="program_card_graph_height">250dp</dimen>
+</resources>

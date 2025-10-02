@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="day_picker_height">40dp</dimen>
+    <dimen name="exercise_type_icon_size">48dp</dimen>
+</resources>

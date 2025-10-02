@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_return">Return</string>
+    <string name="stats_table_date">Date</string>
+    <string name="stats_table_reps">Done</string>
+    <string name="stats_table_reps_planned">Planned</string>
+    <string name="stats_table_weight">Weight, kg</string>
+    <string name="stats_empty_graph_data">No data to show</string>
+    <string name="stats_formula_volume">Volume</string>
+    <string name="stats_formula_one_rep_max">One rep max</string>
+    <string name="stats_formula_raw">Raw table</string>
+</resources>

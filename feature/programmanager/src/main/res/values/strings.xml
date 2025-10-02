@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="program_manager_clear_program">Clear program</string>
+    <string name="program_manager_clear_program_for_day">Clear current day</string>
+    <string name="program_manager_exercise_new">New exercise</string>
+    <string name="program_manager_exercise_update">Update</string>
+    <string name="program_manager_sets">Sets -</string>
+    <string name="program_manager_reps">Reps -</string>
+    <string name="program_manager_list_exercise_headline">Exercise</string>
+    <string name="program_manager_list_reps_headline">Reps</string>
+    <string name="program_manager_headline">My program</string>
+    <string name="program_manager_empty_program">Rest day</string>
+    <string name="program_manager_build_program">Add new exercise</string>
+    <string name="program_manager_are_you_sure">Are you sure? This can\'t be undone.</string>
+    <string name="program_manager_confirm_drop">Delete whole program</string>
+    <string name="program_manager_confirm_drop_for_day">Delete program for this day</string>
+</resources>

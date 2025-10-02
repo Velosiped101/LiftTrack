@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="add_meal_loading_indicator_size">60dp</dimen>
+    <dimen name="nutrients_progress_bar_height">6dp</dimen>
+</resources>

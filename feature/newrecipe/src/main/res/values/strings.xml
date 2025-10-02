@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_recipe_name">Name</string>
+    <string name="new_recipe_mass">Mass</string>
+    <string name="new_recipe_mass_auto">Auto</string>
+    <string name="new_recipe_mass_manual">Manual</string>
+    <string name="new_recipe_ingredient_name">Ingredient</string>
+    <string name="new_recipe_ingredient_protein">Protein</string>
+    <string name="new_recipe_ingredient_fat">Fat</string>
+    <string name="new_recipe_ingredient_carbs">Carbs</string>
+    <string name="new_recipe_ingredient_mass">Mass</string>
+    <string name="new_recipe_headline">New dish</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="program_exec_results_exercise">Exercise</string>
+    <string name="program_exec_results_weight">Weight</string>
+    <string name="program_exec_results_reps_planned">Reps planned</string>
+    <string name="program_exec_results_reps_done">Reps</string>
+    <string name="program_exec_table_header">Is that right?</string>
+    <string name="program_exec_confirm">Confirm</string>
+    <string name="program_exec_reps_needed">Reps needed:</string>
+    <string name="program_exec_reps_done">reps done</string>
+    <string name="program_exec_increase_hint">Time to increase</string>
+    <string name="program_exec_headline">Training execution</string>
+    <string name="program_exec_kg">kg</string>
+</resources>
